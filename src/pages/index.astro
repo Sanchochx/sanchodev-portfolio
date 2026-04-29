@@ -1,0 +1,35 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import Hero from '../components/Hero.astro';
+import Bio from '../components/Bio.astro';
+import SkillsBento from '../components/SkillsBento.astro';
+import Projects from '../components/Projects.astro';
+import Contact from '../components/Contact.astro';
+import Footer from '../components/Footer.astro';
+
+const title = 'Santiago Sánchez Márquez | Fullstack Developer';
+const description =
+  'Portafolio de Santiago Sánchez Márquez — Fullstack Developer e IT Engineering Student. Frontend, backend y arquitectura de datos con foco en código limpio y aplicaciones de alto rendimiento.';
+---
+
+<BaseLayout title={title} description={description}>
+  <Nav />
+  <main>
+    <Hero />
+    <Bio />
+    <SkillsBento />
+    <Projects />
+    <Contact />
+  </main>
+  <Footer />
+</BaseLayout>
+
+<style is:global>
+  /* Smooth scroll para los anclas del Nav, respetando preferencias de movimiento reducido. */
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+</style>

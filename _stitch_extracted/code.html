@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>DEV_ARCHITECT // PROJECT_PORTFOLIO</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                "on-surface-variant": "#b9ccb2",
+                "surface-container-lowest": "#0e0e0e",
+                "on-primary-container": "#007117",
+                "surface-bright": "#3a3939",
+                "on-primary": "#003907",
+                "error-container": "#93000a",
+                "inverse-on-surface": "#313030",
+                "surface": "#131313",
+                "outline": "#84967e",
+                "on-secondary": "#2f3131",
+                "on-background": "#e5e2e1",
+                "secondary-fixed-dim": "#c6c6c7",
+                "surface-variant": "#353534",
+                "surface-tint": "#00e639",
+                "on-tertiary": "#313030",
+                "primary-fixed-dim": "#00e639",
+                "on-tertiary-container": "#616060",
+                "secondary": "#c6c6c7",
+                "primary-container": "#00ff41",
+                "primary-fixed": "#72ff70",
+                "inverse-surface": "#e5e2e1",
+                "tertiary-container": "#dfdcdb",
+                "tertiary": "#fcf8f8",
+                "on-secondary-fixed-variant": "#454747",
+                "on-error-container": "#ffdad6",
+                "on-error": "#690005",
+                "on-secondary-container": "#b4b5b5",
+                "on-primary-fixed": "#002203",
+                "error": "#ffb4ab",
+                "secondary-fixed": "#e2e2e2",
+                "surface-container-low": "#1c1b1b",
+                "inverse-primary": "#006e16",
+                "surface-container-highest": "#353534",
+                "outline-variant": "#3b4b37",
+                "on-primary-fixed-variant": "#00530e",
+                "background": "#131313",
+                "surface-dim": "#131313",
+                "surface-container": "#201f1f",
+                "tertiary-fixed-dim": "#c8c6c5",
+                "surface-container-high": "#2a2a2a",
+                "primary": "#ebffe2",
+                "secondary-container": "#454747",
+                "on-tertiary-fixed-variant": "#474746",
+                "on-secondary-fixed": "#1a1c1c",
+                "on-tertiary-fixed": "#1c1b1b",
+                "on-surface": "#e5e2e1",
+                "tertiary-fixed": "#e5e2e1"
+            },
+            "borderRadius": {
+                "DEFAULT": "0.125rem",
+                "lg": "0.25rem",
+                "xl": "0.5rem",
+                "full": "0.75rem"
+            },
+            "spacing": {
+                "gutter": "24px",
+                "card-padding": "32px",
+                "container-max": "1200px",
+                "unit": "8px",
+                "section-gap": "120px"
+            },
+            "fontFamily": {
+                "headline-xl": ["Space Grotesk"],
+                "headline-lg": ["Space Grotesk"],
+                "headline-md": ["Space Grotesk"],
+                "body-lg": ["Inter"],
+                "code-snippet": ["Space Grotesk"],
+                "mono-label": ["Space Grotesk"],
+                "body-md": ["Inter"]
+            },
+            "fontSize": {
+                "headline-xl": ["64px", {"lineHeight": "1.1", "letterSpacing": "-0.04em", "fontWeight": "700"}],
+                "headline-lg": ["48px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                "headline-md": ["32px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                "code-snippet": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                "mono-label": ["14px", {"lineHeight": "1.5", "letterSpacing": "0.1em", "fontWeight": "500"}],
+                "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .glass-card {
+            background: rgba(10, 10, 10, 0.6);
+            backdrop-filter: blur(24px);
+            border: 1px solid rgba(0, 255, 65, 0.15);
+        }
+        .glass-card:hover {
+            border: 1px solid rgba(0, 255, 65, 0.4);
+            transition: all 0.3s ease;
+        }
+        body {
+            background-color: #0A0A0A;
+            color: #e5e2e1;
+        }
+    </style>
+</head>
+<body class="font-body-md antialiased">
+<!-- TopNavBar Shell -->
+<header class="fixed top-0 w-full z-50 bg-black/80 backdrop-blur-xl border-b border-white/10">
+<nav class="flex justify-between items-center px-8 h-16 max-w-[1440px] mx-auto">
+<div class="text-2xl font-bold tracking-tighter text-[#00FF41] font-headline-md">
+                DEV_ARCHITECT
+            </div>
+<div class="hidden md:flex items-center gap-8">
+<a class="text-[#00FF41] border-b border-[#00FF41] pb-1 font-mono-label uppercase tracking-widest text-sm transition-all opacity-80" href="#">PROJECTS</a>
+<a class="text-white/60 hover:text-[#00FF41] font-mono-label uppercase tracking-widest text-sm transition-colors duration-300" href="#">THOUGHTS</a>
+<a class="text-white/60 hover:text-[#00FF41] font-mono-label uppercase tracking-widest text-sm transition-colors duration-300" href="#">STACK</a>
+<a class="text-white/60 hover:text-[#00FF41] font-mono-label uppercase tracking-widest text-sm transition-colors duration-300" href="#">TERMINAL</a>
+</div>
+<div class="flex items-center gap-4 text-[#00FF41]">
+<span class="material-symbols-outlined cursor-pointer hover:opacity-70 transition-all">account_tree</span>
+<span class="material-symbols-outlined cursor-pointer hover:opacity-70 transition-all">code</span>
+</div>
+</nav>
+</header>
+<main class="pt-32 pb-24 px-6 md:px-12 max-w-[1440px] mx-auto">
+<!-- Header Section -->
+<section class="mb-section-gap">
+<div class="flex flex-col gap-4">
+<span class="font-mono-label text-[#00FF41] tracking-[0.3em] uppercase text-xs">ARCHIVE_INDEX_v2.4</span>
+<h1 class="font-headline-xl text-on-surface">SELECTED_WORKS</h1>
+<p class="font-body-lg text-on-surface-variant max-w-2xl">
+                    High-precision engineering solutions bridging the gap between complex system architecture and seamless user interaction.
+                </p>
+</div>
+</section>
+<!-- Project Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter">
+<!-- Project Card 1 -->
+<article class="glass-card flex flex-col p-card-padding group">
+<div class="relative w-full aspect-video mb-6 overflow-hidden bg-surface-container">
+<img class="w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-500" data-alt="minimalist dashboard interface with dark theme and neon green data visualizations on a glass surface" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBkl0jqOJ86PX1b0NJ64GcETUCuzyi6DhaA7PmBLlwMQkI0oEUCNE3Hzv7FtPxIQF9d01EgvVltHii3PtWbLQbfwVIMZC6I4bHHItU9avKLaEX335KUgmolJfP0KoMUfq4xwhFbix5_wqGhUsJHASUfiNdJyPL8I-Mi1s07G4FZ1mMLCsnqAPdTH_ZokJwry4Y_jp_XISnLQlJxbRgEtFX_r-muiXdwW2lZxsesYAHXovnXbgcC-Ma2_oLZAnB0pgHN2-FjYuN4Gn8"/>
+<div class="absolute top-4 right-4 bg-black/60 backdrop-blur-md px-3 py-1 border border-white/10">
+<span class="font-mono-label text-[10px] text-[#00FF41]">STABLE_BUILD</span>
+</div>
+</div>
+<h3 class="font-headline-md text-white mb-2 uppercase tracking-tight">KRYPTOS_CORE</h3>
+<p class="font-body-md text-on-surface-variant mb-6 leading-relaxed">
+                    A decentralized node-orchestration engine for distributed computing clusters.
+                </p>
+<div class="space-y-4 mb-8">
+<div>
+<div class="flex items-center gap-2 mb-1">
+<span class="w-1.5 h-1.5 bg-[#00FF41] rounded-full"></span>
+<span class="font-mono-label text-xs text-white/40 uppercase">Problem</span>
+</div>
+<p class="text-sm text-on-surface-variant pl-4 border-l border-white/5">High latency in cross-continental node synchronization.</p>
+</div>
+<div>
+<div class="flex items-center gap-2 mb-1">
+<span class="w-1.5 h-1.5 bg-[#00FF41] rounded-full"></span>
+<span class="font-mono-label text-xs text-white/40 uppercase">Tech Decision</span>
+</div>
+<p class="text-sm text-on-surface-variant pl-4 border-l border-white/5">Implemented custom Gossip protocol over UDP for faster state propagation.</p>
+</div>
+</div>
+<div class="flex flex-wrap gap-2 mb-8">
+<span class="px-3 py-1 border border-white/10 text-[#00FF41] font-mono-label text-[10px]">RUST</span>
+<span class="px-3 py-1 border border-white/10 text-[#00FF41] font-mono-label text-[10px]">WASM</span>
+<span class="px-3 py-1 border border-white/10 text-[#00FF41] font-mono-label text-[10px]">GRPC</span>
+</div>
+<a class="mt-auto inline-flex items-center gap-2 font-mono-label text-xs text-white hover:text-[#00FF41] transition-colors group/btn" href="#">
+<span>[ VIEW_SOURCE ]</span>
+<span class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">terminal</span>
+</a>
+</article>
+<!-- Project Card 2 -->
+<article class="glass-card flex flex-col p-card-padding group">
+<div class="relative w-full aspect-video mb-6 overflow-hidden bg-surface-container">
+<img class="w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-500" data-alt="abstract 3D representation of a neural network with glowing green synapses against a deep black background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC4N1dzIkdtU7DFMePo_JAm-LZS7NKlIJMz_sE32VluQYGkCa7fRG3gVyM_09GGXgijHAeEc7QqD5GUMuYmxn1A_KyS_M42fmi3FCmQXb1w8v35UrEmGY9kPChW4KDEovmDGkpsffVpu2spmQbh74A0cu2c-VYbvivztYAsJ4_t0GenvCz8uATVVfaQoZ-its3BAzx-YVwBtnblKaYP-IMOLnsIHnKbKX3tgJSNCE9cf9jkgyj7FLRyC0RXRvGh_knrZ3Wqf_hLTdI"/>
+<div class="absolute top-4 right-4 bg-black/60 backdrop-blur-md px-3 py-1 border border-white/10">
+<span class="font-mono-label text-[10px] text-[#00FF41]">ACTIVE_DEV</span>
+</div>
+</div>
+<h3 class="font-headline-md text-white mb-2 uppercase tracking-tight">SYNAPSE_UI</h3>
+<p class="font-body-md text-on-surface-variant mb-6 leading-relaxed">
+                    Neural-link interface framework for low-latency bio-mechanical data visualization.
+                </p>
+<div class="space-y-4 mb-8">
+<div>
+<div class="flex items-center gap-2 mb-1">
+<span class="w-1.5 h-1.5 bg-[#00FF41] rounded-full"></span>
+<span class="font-mono-label text-xs text-white/40 uppercase">Problem</span>
+</div>
+<p class="text-sm text-on-surface-variant pl-4 border-l border-white/5">Cognitive overload during high-velocity data streams.</p>
+</div>
+<div>
+<div class="flex items-center gap-2 mb-1">
+<span class="w-1.5 h-1.5 bg-[#00FF41] rounded-full"></span>
+<span class="font-mono-label text-xs text-white/40 uppercase">Tech Decision</span>
+</div>
+<p class="text-sm text-on-surface-variant pl-4 border-l border-white/5">Foveated rendering and priority-based visual hierarchy systems.</p>
+</div>
+</div>
+<div class="flex flex-wrap gap-2 mb-8">
+<span class="px-3 py-1 border border-white/10 text-[#00FF41] font-mono-label text-[10px]">TYPESCRIPT</span>
+<span class="px-3 py-1 border border-white/10 text-[#00FF41] font-mono-label text-[10px]">WEBGL</span>
+<span class="px-3 py-1 border border-white/10 text-[#00FF41] font-mono-label text-[10px]">THREE.JS</span>
+</div>
+<a class="mt-auto inline-flex items-center gap-2 font-mono-label text-xs text-white hover:text-[#00FF41] transition-colors group/btn" href="#">
+<span>[ VIEW_SOURCE ]</span>
+<span class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">terminal</span>
+</a>
+</article>
+<!-- Project Card 3 -->
+<article class="glass-card flex flex-col p-card-padding group">
+<div class="relative w-full aspect-video mb-6 overflow-hidden bg-surface-container">
+<img class="w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-500" data-alt="architectural blueprint of a server farm rendered in thin green lines on a dark glass surface" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDnX_tdIuLMQmInWygltHnqe9W85n7LPQN6lNT5bSArp_sd6GaXThDEW19jdAG-r5X1JPCmGI8sN8I-AVOyoCxEG-jMkpPwJrriVsdhy06KbDDvx91yxBzmFc9s4ugwxhehM5E9i2Otyhpy_Sivb5IZKLSndC3Ap_aPSPx7KMO22DR2jV5B5-KNQuGoiokNYluT9t0_PYyxPvmhO4ZsEJHjnT866650_IzPWqnUHtUhIHFwuoy1jhKvR_behx3MtJrwPFrjYOHD8nI"/>
+<div class="absolute top-4 right-4 bg-black/60 backdrop-blur-md px-3 py-1 border border-white/10">
+<span class="font-mono-label text-[10px] text-[#00FF41]">LEGACY_V1</span>
+</div>
+</div>
+<h3 class="font-headline-md text-white mb-2 uppercase tracking-tight">VOID_SENTINEL</h3>
+<p class="font-body-md text-on-surface-variant mb-6 leading-relaxed">
+                    Automated threat detection and mitigation system for hybrid-cloud infrastructures.
+                </p>
+<div class="space-y-4 mb-8">
+<div>
+<div class="flex items-center gap-2 mb-1">
+<span class="w-1.5 h-1.5 bg-[#00FF41] rounded-full"></span>
+<span class="font-mono-label text-xs text-white/40 uppercase">Problem</span>
+</div>
+<p class="text-sm text-on-surface-variant pl-4 border-l border-white/5">False positive fatigue in SOC environments.</p>
+</div>
+<div>
+<div class="flex items-center gap-2 mb-1">
+<span class="w-1.5 h-1.5 bg-[#00FF41] rounded-full"></span>
+<span class="font-mono-label text-xs text-white/40 uppercase">Tech Decision</span>
+</div>
+<p class="text-sm text-on-surface-variant pl-4 border-l border-white/5">ML-driven anomaly detection with context-aware alerting logic.</p>
+</div>
+</div>
+<div class="flex flex-wrap gap-2 mb-8">
+<span class="px-3 py-1 border border-white/10 text-[#00FF41] font-mono-label text-[10px]">GO</span>
+<span class="px-3 py-1 border border-white/10 text-[#00FF41] font-mono-label text-[10px]">K8S</span>
+<span class="px-3 py-1 border border-white/10 text-[#00FF41] font-mono-label text-[10px]">TERRAFORM</span>
+</div>
+<a class="mt-auto inline-flex items-center gap-2 font-mono-label text-xs text-white hover:text-[#00FF41] transition-colors group/btn" href="#">
+<span>[ VIEW_SOURCE ]</span>
+<span class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">terminal</span>
+</a>
+</article>
+</div>
+</main>
+<!-- Footer Shell -->
+<footer class="w-full py-12 border-t border-white/5 bg-black">
+<div class="flex flex-col md:flex-row justify-between items-center px-12 gap-6 max-w-[1440px] mx-auto">
+<div class="font-mono-label text-[10px] tracking-[0.2em] text-white/30">
+                © 2024 SYSTEM_OPERATOR // ENCRYPTED
+            </div>
+<div class="flex gap-12">
+<a class="font-mono-label text-[10px] tracking-[0.2em] text-white/30 hover:text-white transition-colors cursor-pointer uppercase" href="#">GITHUB</a>
+<a class="font-mono-label text-[10px] tracking-[0.2em] text-white/30 hover:text-white transition-colors cursor-pointer uppercase" href="#">LINKEDIN</a>
+<a class="font-mono-label text-[10px] tracking-[0.2em] text-white/30 hover:text-white transition-colors cursor-pointer uppercase" href="#">DOCS</a>
+</div>
+<div class="font-mono-label text-[10px] tracking-[0.2em] text-[#00FF41] animate-pulse">
+                STATUS: [ OPTIMAL ]
+            </div>
+</div>
+</footer>
+</body></html>

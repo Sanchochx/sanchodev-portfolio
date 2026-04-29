@@ -1,0 +1,517 @@
+---
+// Widget flotante de chat — esquina inferior derecha. Llama a /api/chat
+// (Cloudflare Pages Function en functions/api/chat.ts).
+// Diseño "terminal cyber" portado del mockup Stitch (scanline, λ_SYS prompt,
+// timestamps en cada mensaje, input estilo prompt). Bilingüe ES/EN — el
+// modelo detecta el idioma y responde en el mismo.
+import { Icon } from 'astro-icon/components';
+
+const MAX_INPUT = 1000;
+---
+
+<div id="chat-widget" class="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-4">
+  {/*
+    Panel del chat. Glassmorphism + scanline overlay para look CRT.
+    Hidden por defecto — el toggle lo abre.
+  */}
+  <div
+    id="chat-panel"
+    role="dialog"
+    aria-label="Chat with Santiago"
+    aria-hidden="true"
+    class="hidden w-[min(94vw,400px)] h-[min(80vh,600px)] bg-black/40 border border-white/10 rounded-xl shadow-2xl flex-col overflow-hidden relative backdrop-blur-[24px]"
+  >
+    {/* Scanline CRT overlay — puramente decorativo. */}
+    <div class="absolute inset-0 chat-scanline pointer-events-none opacity-20"></div>
+
+    {/* HEADER — green pulsing dot + system label + close button. */}
+    <header class="p-4 border-b border-white/10 flex justify-between items-center bg-white/5 relative">
+      <div class="flex items-center gap-3">
+        <div class="relative shrink-0">
+          <div class="w-2 h-2 bg-primary-container rounded-full"></div>
+          <div class="absolute inset-0 w-2 h-2 bg-primary-container rounded-full animate-ping opacity-75"></div>
+        </div>
+        <div class="min-w-0">
+          <h2 class="font-display text-[11px] font-bold text-on-surface tracking-[0.2em] m-0 leading-tight">
+            C.A.P.P 2.0
+          </h2>
+          <p class="text-[9px] font-sans text-primary-container/80 uppercase tracking-tighter m-0 leading-tight">
+            System Status: Online // Bilingual ES/EN
+          </p>
+        </div>
+      </div>
+      <button
+        id="chat-close"
+        type="button"
+        aria-label="Close chat"
+        class="text-on-surface/40 hover:text-on-surface transition-colors p-1 rounded focus:outline-none focus-visible:ring-1 focus-visible:ring-primary-container/60 shrink-0"
+      >
+        <Icon name="material-symbols:close" width={16} height={16} aria-hidden="true" />
+      </button>
+    </header>
+
+    {/* CHAT HISTORY — scroll vertical. */}
+    <div
+      id="chat-messages"
+      role="log"
+      aria-live="polite"
+      class="flex-1 overflow-y-auto p-5 flex flex-col gap-5 chat-scrollbar relative"
+    >
+    </div>
+
+    {/* INPUT AREA — input estilo prompt + glow al focus. */}
+    <div class="p-4 bg-white/5 border-t border-white/10 relative">
+      <div class="relative group">
+        <div
+          class="absolute -inset-1 bg-primary-container/10 blur-md opacity-0 group-focus-within:opacity-100 transition-opacity pointer-events-none"
+        ></div>
+        <div
+          class="relative flex items-end bg-black/60 border border-white/10 rounded-lg overflow-hidden focus-within:border-primary-container/50 transition-colors"
+        >
+          <textarea
+            id="chat-input"
+            rows="1"
+            maxlength={MAX_INPUT}
+            placeholder="QUERY SYSTEM..."
+            aria-label="Chat message input"
+            class="flex-1 bg-transparent border-none text-on-surface font-sans text-sm py-3 px-4 focus:outline-none placeholder:text-on-surface/20 placeholder:uppercase placeholder:tracking-wider resize-none max-h-32 disabled:opacity-50"
+          ></textarea>
+          <button
+            id="chat-send"
+            type="button"
+            aria-label="Send message"
+            class="m-2 p-1.5 bg-primary-container text-on-primary rounded-md active:scale-95 hover:brightness-110 transition flex items-center justify-center shrink-0 disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:brightness-100"
+          >
+            <Icon name="material-symbols:send" width={18} height={18} aria-hidden="true" />
+          </button>
+        </div>
+      </div>
+      <div class="mt-2 flex justify-between items-center px-1 gap-3">
+        <span class="text-[9px] font-display text-on-surface/20 uppercase tracking-widest">
+          Protocol: HTTPS_SECURE
+        </span>
+        <span
+          id="chat-tokens"
+          class="text-[9px] font-display text-on-surface/20 uppercase tracking-widest"
+        >
+          Tokens: 0/{MAX_INPUT}
+        </span>
+      </div>
+    </div>
+  </div>
+
+  {/*
+    FLOATING TRIGGER. Glow verde, ícono cambia según estado.
+    Permanece visible siempre — abrir/cerrar el panel desde acá.
+  */}
+  <button
+    id="chat-toggle"
+    type="button"
+    aria-label="Open chat"
+    aria-expanded="false"
+    aria-controls="chat-panel"
+    class="w-14 h-14 bg-primary-container text-on-primary rounded-full shadow-[0_0_24px_-2px_rgba(0,255,65,0.55)] hover:shadow-[0_0_32px_0_rgba(0,255,65,0.8)] flex items-center justify-center active:scale-90 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-container focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
+  >
+    <Icon
+      id="chat-icon-open"
+      name="material-symbols:chat-bubble"
+      width={26}
+      height={26}
+      aria-hidden="true"
+    />
+    <Icon
+      id="chat-icon-close"
+      name="material-symbols:close"
+      width={26}
+      height={26}
+      class="hidden"
+      aria-hidden="true"
+    />
+  </button>
+</div>
+
+<style is:global>
+  /* `is:global` porque las burbujas / typing / sugerencias se crean en runtime
+     con `document.createElement` y no llevan el atributo data-astro-cid-XXX
+     que Astro usa para el scoping — sin global no aplican estilos. */
+
+  /* Estado abierto: forzamos display flex (Tailwind aplica `hidden` por defecto). */
+  #chat-panel.is-open {
+    display: flex;
+  }
+
+  /* CRT scanline — gradiente repetido cada 4px. */
+  .chat-scanline {
+    background: linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 0.02) 50%,
+      rgba(255, 255, 255, 0) 100%
+    );
+    background-size: 100% 4px;
+  }
+
+  /* Scrollbar fino con thumb verde al hover. */
+  .chat-scrollbar::-webkit-scrollbar {
+    width: 4px;
+  }
+  .chat-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .chat-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+  }
+  .chat-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #00ff41;
+  }
+
+  /* ============ MENSAJES (estilo chat tipo WhatsApp/iMessage) ============ */
+
+  .chat-msg {
+    display: flex;
+    max-width: 80%;
+    animation: chat-msg-in 220ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .chat-msg.user {
+    align-self: flex-end;
+    justify-content: flex-end;
+  }
+  .chat-msg.assistant,
+  .chat-msg.error {
+    align-self: flex-start;
+  }
+
+  .chat-msg-bubble {
+    position: relative;
+    padding: 0.55rem 0.85rem 1.25rem;
+    border-radius: 1.1rem;
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 0.9rem;
+    line-height: 1.45;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    box-shadow: 0 1px 1px rgb(0 0 0 / 0.15);
+  }
+
+  /* Burbuja del usuario — fondo verde sólido, texto oscuro (alto contraste). */
+  .chat-msg.user .chat-msg-bubble {
+    background: #00ff41;
+    color: #003907;
+    border-bottom-right-radius: 0.3rem;
+  }
+
+  /* Burbuja del asistente — gris translúcido (estilo iMessage gray). */
+  .chat-msg.assistant .chat-msg-bubble {
+    background: rgb(255 255 255 / 0.08);
+    color: #e5e2e1;
+    border: 1px solid rgb(255 255 255 / 0.06);
+    border-bottom-left-radius: 0.3rem;
+  }
+
+  /* Burbuja de error — rojo apagado, izquierda. */
+  .chat-msg.error .chat-msg-bubble {
+    background: rgb(147 0 10 / 0.6);
+    color: #ffdad6;
+    border-bottom-left-radius: 0.3rem;
+  }
+
+  /* Timestamp inline al fondo de la burbuja — convención chat. */
+  .chat-msg-time {
+    position: absolute;
+    right: 0.65rem;
+    bottom: 0.3rem;
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 0.62rem;
+    letter-spacing: 0.04em;
+    line-height: 1;
+    pointer-events: none;
+  }
+  .chat-msg.user .chat-msg-time {
+    color: rgb(0 57 7 / 0.65);
+  }
+  .chat-msg.assistant .chat-msg-time,
+  .chat-msg.error .chat-msg-time {
+    color: rgb(229 226 225 / 0.4);
+  }
+
+  @keyframes chat-msg-in {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* ============ TYPING INDICATOR ============ */
+
+  /* La burbuja typing usa el mismo estilo que un mensaje del asistente,
+     pero con padding ajustado para los 3 dots y sin espacio para timestamp. */
+  .chat-typing-bubble {
+    padding: 0.65rem 0.95rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+  }
+  .chat-typing-dot {
+    width: 0.4rem;
+    height: 0.4rem;
+    border-radius: 9999px;
+    background: #00ff41;
+    display: inline-block;
+    animation: chat-typing-bounce 1s infinite ease-in-out;
+  }
+  .chat-typing-dot:nth-child(2) {
+    animation-delay: 0.15s;
+  }
+  .chat-typing-dot:nth-child(3) {
+    animation-delay: 0.3s;
+  }
+  @keyframes chat-typing-bounce {
+    0%, 60%, 100% {
+      transform: translateY(0);
+      opacity: 0.4;
+    }
+    30% {
+      transform: translateY(-3px);
+      opacity: 1;
+    }
+  }
+
+  /* ============ SUGGESTION CHIPS ============ */
+
+  .chat-suggestions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    align-self: flex-start;
+    max-width: 90%;
+    animation: chat-msg-in 280ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .chat-suggestion {
+    font-family: 'Space Grotesk', system-ui, sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    padding: 0.35rem 0.7rem;
+    border-radius: 9999px;
+    background: transparent;
+    color: rgb(229 226 225 / 0.7);
+    border: 1px solid rgb(0 255 65 / 0.3);
+    cursor: pointer;
+    transition: background 160ms ease, color 160ms ease, border-color 160ms ease;
+  }
+  .chat-suggestion:hover,
+  .chat-suggestion:focus-visible {
+    background: rgb(0 255 65 / 0.1);
+    color: #ffffff;
+    border-color: rgb(0 255 65 / 0.5);
+    outline: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .chat-msg,
+    .chat-suggestions,
+    .chat-typing-dot,
+    [data-icon] {
+      animation: none !important;
+    }
+  }
+</style>
+
+<script>
+  (() => {
+    const toggleBtn = document.getElementById('chat-toggle') as HTMLButtonElement | null;
+    const closeBtn = document.getElementById('chat-close') as HTMLButtonElement | null;
+    const panel = document.getElementById('chat-panel');
+    const iconOpen = document.getElementById('chat-icon-open');
+    const iconClose = document.getElementById('chat-icon-close');
+    const messagesEl = document.getElementById('chat-messages');
+    const inputEl = document.getElementById('chat-input') as HTMLTextAreaElement | null;
+    const sendBtn = document.getElementById('chat-send') as HTMLButtonElement | null;
+    const tokensEl = document.getElementById('chat-tokens');
+
+    if (!toggleBtn || !panel || !messagesEl || !inputEl || !sendBtn) return;
+
+    type Role = 'user' | 'assistant';
+    type Bubble = Role | 'error';
+    const MAX_INPUT = inputEl.maxLength || 1000;
+    const history: Array<{ role: Role; content: string }> = [];
+    let isLoading = false;
+    let isOpen = false;
+
+    const setLoading = (state: boolean) => {
+      isLoading = state;
+      sendBtn.disabled = state;
+      inputEl.disabled = state;
+    };
+
+    const scrollToBottom = () => {
+      messagesEl.scrollTop = messagesEl.scrollHeight;
+    };
+
+    const timestamp = (): string => {
+      const d = new Date();
+      const pad = (n: number) => String(n).padStart(2, '0');
+      return `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
+    };
+
+    const updateTokens = () => {
+      if (tokensEl) {
+        tokensEl.textContent = `Tokens: ${inputEl.value.length}/${MAX_INPUT}`;
+      }
+    };
+
+    const appendMessage = (role: Bubble, text: string) => {
+      const msg = document.createElement('div');
+      msg.className = `chat-msg ${role}`;
+
+      const bubble = document.createElement('div');
+      bubble.className = 'chat-msg-bubble';
+      bubble.textContent = text;
+
+      const time = document.createElement('span');
+      time.className = 'chat-msg-time';
+      time.textContent = timestamp();
+      bubble.appendChild(time);
+
+      msg.appendChild(bubble);
+      messagesEl.appendChild(msg);
+      scrollToBottom();
+      return msg;
+    };
+
+    const appendTyping = () => {
+      // Misma estructura que un mensaje del asistente, pero el contenido es
+      // 3 puntos animados en lugar de texto.
+      const msg = document.createElement('div');
+      msg.className = 'chat-msg assistant';
+      msg.id = 'chat-typing-row';
+
+      const bubble = document.createElement('div');
+      bubble.className = 'chat-msg-bubble chat-typing-bubble';
+      bubble.innerHTML =
+        '<span class="chat-typing-dot"></span><span class="chat-typing-dot"></span><span class="chat-typing-dot"></span>';
+
+      msg.appendChild(bubble);
+      messagesEl.appendChild(msg);
+      scrollToBottom();
+      return msg;
+    };
+
+    const SUGGESTIONS = [
+      'What is your background?',
+      '¿En qué proyectos has trabajado?',
+      'Which technologies do you use?',
+    ];
+
+    const appendSuggestions = () => {
+      const container = document.createElement('div');
+      container.className = 'chat-suggestions';
+      container.id = 'chat-suggestions';
+      SUGGESTIONS.forEach((label) => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'chat-suggestion';
+        btn.textContent = label;
+        btn.addEventListener('click', () => {
+          inputEl.value = label;
+          updateTokens();
+          sendMessage();
+        });
+        container.appendChild(btn);
+      });
+      messagesEl.appendChild(container);
+      scrollToBottom();
+    };
+
+    const removeSuggestions = () => {
+      document.getElementById('chat-suggestions')?.remove();
+    };
+
+    const sendMessage = async () => {
+      const text = inputEl.value.trim();
+      if (!text || isLoading) return;
+
+      removeSuggestions();
+      inputEl.value = '';
+      inputEl.style.height = 'auto';
+      updateTokens();
+
+      appendMessage('user', text);
+      history.push({ role: 'user', content: text });
+
+      const typingRow = appendTyping();
+      setLoading(true);
+      const historyToSend = history.slice(0, -1);
+
+      try {
+        const res = await fetch('/api/chat', {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({ message: text, history: historyToSend }),
+        });
+        const data = (await res.json()) as { reply?: string; error?: string };
+        typingRow.remove();
+        if (data.reply) {
+          appendMessage('assistant', data.reply);
+          history.push({ role: 'assistant', content: data.reply });
+        } else {
+          appendMessage('error', data.error || 'Something went wrong.');
+          history.pop();
+        }
+      } catch {
+        typingRow.remove();
+        appendMessage('error', 'Network error. Please try again.');
+        history.pop();
+      } finally {
+        setLoading(false);
+        inputEl.focus();
+      }
+    };
+
+    const setOpen = (open: boolean) => {
+      isOpen = open;
+      panel.classList.toggle('is-open', open);
+      panel.classList.toggle('hidden', !open);
+      panel.setAttribute('aria-hidden', String(!open));
+      toggleBtn.setAttribute('aria-expanded', String(open));
+      iconOpen?.classList.toggle('hidden', open);
+      iconClose?.classList.toggle('hidden', !open);
+      if (open) {
+        if (history.length === 0 && !messagesEl.hasChildNodes()) {
+          appendMessage(
+            'assistant',
+            "Connection established. I am Santiago's digital twin. Ask me anything about his background, projects, or experience — feel free to write in English or Spanish."
+          );
+          appendSuggestions();
+        }
+        inputEl.focus();
+      }
+    };
+
+    toggleBtn.addEventListener('click', () => setOpen(!isOpen));
+    closeBtn?.addEventListener('click', () => setOpen(false));
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && isOpen) setOpen(false);
+    });
+
+    sendBtn.addEventListener('click', sendMessage);
+
+    inputEl.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        sendMessage();
+      }
+    });
+
+    inputEl.addEventListener('input', () => {
+      inputEl.style.height = 'auto';
+      inputEl.style.height = Math.min(inputEl.scrollHeight, 128) + 'px';
+      updateTokens();
+    });
+  })();
+</script>

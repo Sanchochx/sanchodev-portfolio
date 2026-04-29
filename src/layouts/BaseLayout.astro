@@ -1,0 +1,138 @@
+---
+// BaseLayout — única fuente de verdad para `<html>`, `<head>` y assets globales.
+// Las fuentes self-hosted (`@fontsource/*`) y la utility `.glass` viven en global.css,
+// por lo que importarlo aquí cubre tipografías + Tailwind + glassmorphism en una línea.
+import '../styles/global.css';
+import ChatWidget from '../components/ChatWidget.astro';
+
+export interface Props {
+  title: string;
+  description: string;
+  ogImage?: string;
+  canonical?: string;
+}
+
+const { title, description, ogImage, canonical } = Astro.props;
+
+// `Astro.site` viene de astro.config.mjs (TODO: dominio final pendiente para US-DEPLOY-001).
+// Construye URLs absolutas para canonical, og:url y og:image (los crawlers exigen absolutas).
+const siteUrl = Astro.site ?? new URL('https://example.com');
+const canonicalUrl = new URL(canonical ?? Astro.url.pathname, siteUrl).toString();
+const ogImageUrl = new URL(ogImage ?? '/og-default.png', siteUrl).toString();
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
+
+    {/* Open Graph */}
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImageUrl} />
+
+    {/* Twitter Card */}
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+  </head>
+  <body class="text-on-surface font-sans">
+    <div id="matrix-bg" aria-hidden="true"></div>
+    <slot />
+    <ChatWidget />
+
+    <script>
+      // Cursor trail — partículas verdes que decaen, portado del demo.
+      // Se desactiva con prefers-reduced-motion o en dispositivos sin hover (touch).
+      (() => {
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        if (window.matchMedia('(hover: none)').matches) return;
+
+        const canvas = document.createElement('canvas');
+        canvas.style.cssText =
+          'position:fixed;inset:0;z-index:9999;pointer-events:none;';
+        document.body.appendChild(canvas);
+        const ctx = canvas.getContext('2d');
+        if (!ctx) return;
+
+        type Particle = {
+          x: number; y: number; r: number; alpha: number;
+          vx: number; vy: number; decay: number;
+        };
+        const particles: Particle[] = [];
+        let W = (canvas.width = window.innerWidth);
+        let H = (canvas.height = window.innerHeight);
+
+        window.addEventListener('resize', () => {
+          W = canvas.width = window.innerWidth;
+          H = canvas.height = window.innerHeight;
+        });
+
+        document.addEventListener('mousemove', (e) => {
+          for (let i = 0; i < 4; i++) {
+            particles.push({
+              x: e.clientX,
+              y: e.clientY,
+              r: Math.random() * 2.5 + 0.5,
+              alpha: 0.7 + Math.random() * 0.3,
+              vx: (Math.random() - 0.5) * 2,
+              vy: (Math.random() - 0.5) * 2,
+              decay: 0.03 + Math.random() * 0.02,
+            });
+          }
+        });
+
+        const GLOW = '#00ff41';
+        const loop = () => {
+          ctx.clearRect(0, 0, W, H);
+          ctx.shadowBlur = 8;
+          ctx.shadowColor = GLOW;
+          for (let i = particles.length - 1; i >= 0; i--) {
+            const p = particles[i];
+            p.x += p.vx;
+            p.y += p.vy;
+            p.alpha -= p.decay;
+            if (p.alpha <= 0) {
+              particles.splice(i, 1);
+              continue;
+            }
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(0, 255, 65, ${p.alpha})`;
+            ctx.fill();
+          }
+          ctx.shadowBlur = 0;
+          requestAnimationFrame(loop);
+        };
+        loop();
+      })();
+    </script>
+
+    <style>
+      #matrix-bg {
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        opacity: 0.18;
+        pointer-events: none;
+        background: url('/images/matrix_bg.gif') center / cover;
+        mix-blend-mode: screen;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        #matrix-bg {
+          display: none;
+        }
+      }
+    </style>
+  </body>
+</html>

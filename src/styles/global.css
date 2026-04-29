@@ -1,0 +1,64 @@
+/*
+ * Punto único de entrada de estilos globales.
+ * - Fuentes self-hosted vía @fontsource.
+ * - Directivas de Tailwind y utilities de componentes (glassmorphism).
+ * - US-PAGES-001 importa este archivo desde el layout base.
+ */
+
+/* Space Grotesk — weights usados en DESIGN.md: 400 (code-snippet), 500 (mono-label), 600 (headline-lg/md), 700 (headline-xl). */
+@import '@fontsource/space-grotesk/400.css';
+@import '@fontsource/space-grotesk/500.css';
+@import '@fontsource/space-grotesk/600.css';
+@import '@fontsource/space-grotesk/700.css';
+
+/* Inter — weight 400 cubre body-lg y body-md; 500 reservado para énfasis en copy. */
+@import '@fontsource/inter/400.css';
+@import '@fontsource/inter/500.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ * El color de fondo base vive en `html`, no en `body`, para que el #matrix-bg
+ * con `z-index: -1` (declarado en BaseLayout) quede visible por encima del bg
+ * del documento sin que el body lo tape.
+ */
+html {
+  background-color: theme('colors.surface');
+}
+
+/*
+ * Glassmorphism — Level 2/3 de DESIGN.md ("Elevation & Depth").
+ * Superficies translúcidas con backdrop blur + borde sutil.
+ * Se usan como clase única (.glass) o combinadas con .glass-hover para interactividad.
+ */
+@layer components {
+  .glass {
+    background-color: rgb(255 255 255 / 0.03);
+    border: 1px solid rgb(255 255 255 / 0.08);
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
+    border-radius: theme('borderRadius.lg');
+  }
+
+  /* Variante más opaca para nav/pop-overs — blur agresivo, mayor legibilidad sobre contenido. */
+  .glass-nav {
+    background-color: rgb(255 255 255 / 0.04);
+    border-bottom: 1px solid rgb(255 255 255 / 0.06);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    backdrop-filter: blur(24px) saturate(180%);
+  }
+
+  /* Opt-in para elementos interactivos: borde más visible + glow verde en hover (200ms). */
+  .glass-hover {
+    transition: border-color 200ms ease, box-shadow 200ms ease;
+  }
+
+  .glass-hover:hover,
+  .glass-hover:focus-visible {
+    border-color: rgb(255 255 255 / 0.18);
+    /* 0 255 65 = primary-container (#00ff41) en rgb — alpha 15% para el glow. */
+    box-shadow: 0 0 24px 0 rgb(0 255 65 / 0.15);
+  }
+}

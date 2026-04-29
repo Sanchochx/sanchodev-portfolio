@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Santiago Sánchez Márquez | Fullstack Developer</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;900&amp;family=Inter:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary": "#c6c6c7",
+                        "primary-fixed-dim": "#00e639",
+                        "on-tertiary-container": "#616060",
+                        "surface-container-high": "#2a2a2a",
+                        "on-secondary": "#2f3131",
+                        "surface": "#131313",
+                        "on-secondary-fixed": "#1a1c1c",
+                        "surface-container-low": "#1c1b1b",
+                        "secondary-fixed-dim": "#c6c6c7",
+                        "surface-tint": "#00e639",
+                        "on-primary-container": "#007117",
+                        "outline-variant": "#3b4b37",
+                        "inverse-surface": "#e5e2e1",
+                        "on-error-container": "#ffdad6",
+                        "error-container": "#93000a",
+                        "on-surface-variant": "#b9ccb2",
+                        "tertiary-fixed-dim": "#c8c6c5",
+                        "surface-variant": "#353534",
+                        "inverse-on-surface": "#313030",
+                        "on-surface": "#e5e2e1",
+                        "inverse-primary": "#006e16",
+                        "on-tertiary": "#313030",
+                        "on-error": "#690005",
+                        "primary-fixed": "#72ff70",
+                        "on-secondary-fixed-variant": "#454747",
+                        "surface-dim": "#131313",
+                        "tertiary": "#fcf8f8",
+                        "surface-container-lowest": "#0e0e0e",
+                        "background": "#131313",
+                        "on-primary-fixed": "#002203",
+                        "primary-container": "#00ff41",
+                        "on-tertiary-fixed": "#1c1b1b",
+                        "surface-container": "#201f1f",
+                        "on-primary": "#003907",
+                        "surface-bright": "#3a3939",
+                        "primary": "#ebffe2",
+                        "surface-container-highest": "#353534",
+                        "on-secondary-container": "#b4b5b5",
+                        "outline": "#84967e",
+                        "tertiary-container": "#dfdcdb",
+                        "secondary-fixed": "#e2e2e2",
+                        "on-background": "#e5e2e1",
+                        "on-tertiary-fixed-variant": "#474746",
+                        "error": "#ffb4ab",
+                        "on-primary-fixed-variant": "#00530e",
+                        "secondary-container": "#454747",
+                        "tertiary-fixed": "#e5e2e1"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "container-max": "1200px",
+                        "section-gap": "120px",
+                        "card-padding": "32px",
+                        "gutter": "24px",
+                        "unit": "8px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Inter"],
+                        "code-snippet": ["Space Grotesk"],
+                        "headline-lg": ["Space Grotesk"],
+                        "body-lg": ["Inter"],
+                        "headline-md": ["Space Grotesk"],
+                        "headline-xl": ["Space Grotesk"],
+                        "mono-label": ["Space Grotesk"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "code-snippet": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "headline-lg": ["48px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "headline-md": ["32px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                        "headline-xl": ["64px", {"lineHeight": "1.1", "letterSpacing": "-0.04em", "fontWeight": "700"}],
+                        "mono-label": ["14px", {"lineHeight": "1.5", "letterSpacing": "0.1em", "fontWeight": "500"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            background-color: #0A0A0A;
+            color: #e5e2e1;
+            overflow-x: hidden;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            border: 0.5px solid rgba(255, 255, 255, 0.1);
+        }
+        .grid-pattern {
+            background-image: radial-gradient(circle, rgba(0, 255, 65, 0.1) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+    </style>
+</head>
+<body class="font-body-md text-on-background">
+<!-- TopNavBar Shell -->
+<nav class="fixed top-6 left-1/2 -translate-x-1/2 w-[90%] max-w-7xl rounded-none border border-white/10 bg-black/40 backdrop-blur-xl flex justify-between items-center px-8 py-4 z-50 shadow-[0_0_20px_rgba(0,0,0,0.5)]">
+<div class="text-2xl font-black tracking-tighter text-[#00FF41] font-['Space_Grotesk'] uppercase">DEV_ARCHITECT</div>
+<div class="hidden md:flex gap-8 items-center">
+<a class="font-['Space_Grotesk'] tracking-tighter uppercase text-sm font-bold text-[#00FF41] border-b border-[#00FF41] pb-1" href="#work">WORK</a>
+<a class="font-['Space_Grotesk'] tracking-tighter uppercase text-sm font-bold text-white/60 hover:text-white transition-colors duration-200" href="#bio">BIO</a>
+<a class="font-['Space_Grotesk'] tracking-tighter uppercase text-sm font-bold text-white/60 hover:text-white transition-colors duration-200" href="#tech">TECH</a>
+<a class="font-['Space_Grotesk'] tracking-tighter uppercase text-sm font-bold text-white/60 hover:text-white transition-colors duration-200" href="#contact">CONTACT</a>
+</div>
+<button class="bg-primary-container text-on-primary px-6 py-2 font-['Space_Grotesk'] font-bold text-sm tracking-tighter hover:opacity-90 active:scale-95 transition-all duration-150">RESUME</button>
+</nav>
+<!-- Hero Section -->
+<section class="min-h-screen flex flex-col justify-center items-center relative px-6 grid-pattern">
+<div class="absolute inset-0 bg-gradient-to-b from-transparent to-[#0A0A0A] pointer-events-none"></div>
+<div class="relative z-10 text-center max-w-4xl">
+<span class="font-mono-label text-primary-container mb-4 block uppercase tracking-[0.3em]">SYSTEM INITIALIZED</span>
+<h1 class="font-headline-xl text-white mb-6 uppercase">
+                Santiago Sánchez Márquez
+            </h1>
+<div class="flex flex-col md:flex-row items-center justify-center gap-4">
+<span class="font-headline-md text-secondary uppercase italic">Fullstack Developer</span>
+<div class="w-12 h-[1px] bg-primary-container hidden md:block"></div>
+<span class="font-body-lg text-secondary/60">IT Engineering Student</span>
+</div>
+<div class="mt-12 flex gap-4 justify-center">
+<a class="bg-primary-container text-on-primary px-8 py-4 font-mono-label font-bold uppercase transition-all hover:brightness-110" href="#work">View Projects</a>
+<a class="border border-white/20 text-white px-8 py-4 font-mono-label font-bold uppercase hover:border-primary-container hover:text-primary-container transition-all" href="#contact">Get In Touch</a>
+</div>
+</div>
+<div class="absolute bottom-10 left-10 hidden lg:block">
+<div class="text-[10px] font-code-snippet text-primary-container/40 leading-relaxed uppercase">
+                &gt; LOCating_server... [OK]<br/>
+                &gt; FETCHING_profile... [OK]<br/>
+                &gt; STATUS: active_dev
+            </div>
+</div>
+</section>
+<!-- Bio / Why I Code Section -->
+<section class="py-section-gap max-w-7xl mx-auto px-6" id="bio">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter items-center">
+<div class="lg:col-span-7">
+<span class="font-mono-label text-primary-container uppercase mb-4 block">01 / ORIGIN STORY</span>
+<h2 class="font-headline-lg text-white mb-8 uppercase">Why I Code</h2>
+<div class="space-y-6 text-body-lg text-secondary">
+<p>My journey into software development began in childhood, sparked by a raw curiosity about how digital worlds are constructed. What started as simple exploration evolved into a deep-seated passion for problem-solving through engineering.</p>
+<p>As an IT Engineering student, I bridge the gap between theoretical computer science and practical, high-performance web applications. I view every project as an architectural challenge—one that requires precision, scalability, and an obsession with clean code.</p>
+</div>
+</div>
+<div class="lg:col-span-5 flex justify-center lg:justify-end">
+<div class="relative group">
+<div class="absolute -inset-4 border border-primary-container/20 group-hover:border-primary-container/50 transition-colors duration-500"></div>
+<img class="w-80 h-96 object-cover grayscale group-hover:grayscale-0 transition-all duration-700 relative z-10" data-alt="Close-up of a high-resolution laptop screen displaying complex colorful lines of code in a dark environment with neon green reflections" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBFXyfQw9Mu3TBIHKH9bjqaMbTFeEtVr1haxFeQGdp4Ev8U2r1hzlFTxzbsoAVwxpie6wPIpeSuXQXkwr_Rxwro5q5vmjW0J7woi_CumtjVaU-ACKKv1Ov6E98FJm5OpGPk6Cjmnx0ZupEyVMf9Hp6G5TTv-tDAuLYnw1vDII58lsw3d59nQ82yrzdtB6P82-AbjSgleAL1TjjGxZkW3loYtU0rrslRDX3pD2Afgigvfm_ynE4TFIBoSCMfEnG6AzrdTce8NXkRfvg"/>
+<div class="absolute bottom-4 right-4 z-20 bg-primary-container text-on-primary p-2">
+<span class="material-symbols-outlined text-2xl">code</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Skills Bento Grid -->
+<section class="py-section-gap bg-surface-container-lowest" id="tech">
+<div class="max-w-7xl mx-auto px-6">
+<div class="mb-16">
+<span class="font-mono-label text-primary-container uppercase mb-4 block">02 / CORE TECH</span>
+<h2 class="font-headline-lg text-white uppercase">Technical Expertise</h2>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+<!-- Large Skill Card -->
+<div class="col-span-2 row-span-2 glass-card p-card-padding flex flex-col justify-between hover:border-primary-container/30 transition-all">
+<div>
+<span class="material-symbols-outlined text-primary-container text-4xl mb-6">javascript</span>
+<h3 class="font-headline-md text-white mb-2">Frontend</h3>
+<p class="text-body-md text-secondary/70">Crafting reactive UIs with modern frameworks.</p>
+</div>
+<div class="flex flex-wrap gap-2 mt-8">
+<span class="bg-surface-variant px-3 py-1 font-code-snippet text-[12px] text-white">REACT</span>
+<span class="bg-surface-variant px-3 py-1 font-code-snippet text-[12px] text-white">ANGULAR</span>
+<span class="bg-surface-variant px-3 py-1 font-code-snippet text-[12px] text-white">TYPESCRIPT</span>
+</div>
+</div>
+<!-- Medium Skill Card -->
+<div class="col-span-2 glass-card p-gutter flex items-center gap-6 hover:border-primary-container/30 transition-all">
+<span class="material-symbols-outlined text-primary-container text-3xl">terminal</span>
+<div>
+<h4 class="font-headline-md text-sm uppercase tracking-widest text-white">Backend Systems</h4>
+<div class="flex gap-4 mt-2 font-code-snippet text-secondary/60 text-xs">
+<span>PYTHON</span>
+<span>NODE.JS</span>
+<span>FLASK</span>
+</div>
+</div>
+</div>
+<!-- Database Card -->
+<div class="col-span-2 glass-card p-gutter flex items-center gap-6 hover:border-primary-container/30 transition-all">
+<span class="material-symbols-outlined text-primary-container text-3xl">database</span>
+<div>
+<h4 class="font-headline-md text-sm uppercase tracking-widest text-white">Data Architecture</h4>
+<div class="flex gap-4 mt-2 font-code-snippet text-secondary/60 text-xs">
+<span>POSTGRESQL</span>
+<span>SQLITE</span>
+<span>REST APIs</span>
+</div>
+</div>
+</div>
+<!-- Small Skill Card -->
+<div class="glass-card p-6 flex flex-col items-center justify-center gap-3 hover:border-primary-container/30 transition-all">
+<span class="material-symbols-outlined text-secondary/50">html</span>
+<span class="font-code-snippet text-xs text-secondary/80">HTML5</span>
+</div>
+<div class="glass-card p-6 flex flex-col items-center justify-center gap-3 hover:border-primary-container/30 transition-all">
+<span class="material-symbols-outlined text-secondary/50">css</span>
+<span class="font-code-snippet text-xs text-secondary/80">CSS3</span>
+</div>
+<div class="glass-card p-6 flex flex-col items-center justify-center gap-3 hover:border-primary-container/30 transition-all">
+<span class="material-symbols-outlined text-secondary/50">cloud</span>
+<span class="font-code-snippet text-xs text-secondary/80">GIT/HUB</span>
+</div>
+<div class="glass-card p-6 flex flex-col items-center justify-center gap-3 hover:border-primary-container/30 transition-all">
+<span class="material-symbols-outlined text-secondary/50">integration_instructions</span>
+<span class="font-code-snippet text-xs text-secondary/80">JINJA2</span>
+</div>
+<div class="glass-card p-6 flex flex-col items-center justify-center gap-3 hover:border-primary-container/30 transition-all">
+<span class="material-symbols-outlined text-secondary/50">widgets</span>
+<span class="font-code-snippet text-xs text-secondary/80">BOOTSTRAP</span>
+</div>
+<div class="glass-card p-6 flex flex-col items-center justify-center gap-3 hover:border-primary-container/30 transition-all">
+<span class="material-symbols-outlined text-secondary/50">data_object</span>
+<span class="font-code-snippet text-xs text-secondary/80">JSON</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Contact Section -->
+<section class="py-section-gap relative overflow-hidden" id="contact">
+<div class="absolute top-0 right-0 w-1/2 h-full bg-[#00FF41]/5 blur-[120px] rounded-full pointer-events-none translate-x-1/2"></div>
+<div class="max-w-7xl mx-auto px-6 relative z-10">
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-section-gap items-end">
+<div class="max-w-2xl">
+<span class="font-mono-label text-primary-container uppercase mb-4 block">03 / CONTACT</span>
+<h2 class="font-headline-lg text-white mb-8 uppercase leading-tight">Let's build the<br/>future together.</h2>
+<div class="space-y-8 mt-12">
+<div class="group cursor-pointer">
+<p class="font-mono-label text-secondary/40 text-xs mb-1">EMAIL_ADDRESS</p>
+<p class="font-headline-md text-white group-hover:text-primary-container transition-colors">santiago.sanchez@example.com</p>
+</div>
+<div class="flex gap-8">
+<a class="flex items-center gap-2 group" href="#">
+<span class="material-symbols-outlined text-primary-container group-hover:scale-125 transition-transform">terminal</span>
+<span class="font-mono-label text-sm text-secondary group-hover:text-white">GITHUB</span>
+</a>
+<a class="flex items-center gap-2 group" href="#">
+<span class="material-symbols-outlined text-primary-container group-hover:scale-125 transition-transform">link</span>
+<span class="font-mono-label text-sm text-secondary group-hover:text-white">LINKEDIN</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Footer Shell -->
+<footer class="w-full py-20 border-t border-white/5 bg-[#0A0A0A]">
+<div class="max-w-7xl mx-auto px-8 flex flex-col md:flex-row justify-between items-center gap-8">
+<div class="text-lg font-bold text-white font-['Space_Grotesk']">SANTIAGO_SANCHEZ</div>
+<div class="font-['Space_Grotesk'] text-[10px] tracking-widest uppercase text-white/40">© 2024 SYSTEM_OPERATOR. ALL RIGHTS RESERVED.</div>
+<div class="flex gap-6">
+<a class="font-['Space_Grotesk'] text-[10px] tracking-widest uppercase text-white/40 hover:text-[#00FF41] transition-colors cursor-pointer" href="#">GITHUB</a>
+<a class="font-['Space_Grotesk'] text-[10px] tracking-widest uppercase text-white/40 hover:text-[#00FF41] transition-colors cursor-pointer" href="#">LINKEDIN</a>
+<a class="font-['Space_Grotesk'] text-[10px] tracking-widest uppercase text-white/40 hover:text-[#00FF41] transition-colors cursor-pointer" href="#">SOURCE</a>
+</div>
+</div>
+</footer>
+</body></html>

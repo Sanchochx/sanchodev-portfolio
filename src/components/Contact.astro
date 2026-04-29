@@ -1,0 +1,88 @@
+---
+import { Icon } from 'astro-icon/components';
+
+const sectionLabel = '03 / CONTACT';
+const heading = ["Let’s connect", 'for more info.'] as const;  
+
+// Los hrefs llevan `// TODO:` literal para que un href roto sea visible en el HTML
+// y obligar a completar los datos antes del deploy. Listado en README (US-DEPLOY-001).
+const emailHref = 'mailto:// TODO:';
+const emailDisplay = 'santiagosanchezmarquez@gmail.com';
+const githubHref = '// TODO:';
+const linkedinHref = '// TODO:';
+---
+
+<section
+  id="contact"
+  aria-labelledby="contact-heading"
+  class="py-section-gap"
+>
+  <div class="max-w-container-max mx-auto px-6">
+    <div class="max-w-2xl">
+      <span class="font-display text-mono-label text-primary-container uppercase block mb-4">
+        {sectionLabel}
+      </span>
+
+      <h2
+        id="contact-heading"
+        class="font-display text-headline-lg text-on-surface uppercase mb-8 leading-tight"
+      >
+        {heading[0]}<br />
+        {heading[1]}
+      </h2>
+
+      <div class="space-y-8 mt-12">
+          <p class="font-display text-mono-label text-secondary/40 mb-1">
+            EMAIL_ADDRESS
+          </p>
+          <p class="font-display text-headline-md text-on-surface group-hover:text-primary-container transition-colors break-all">
+            {emailDisplay}
+          </p>
+        </a>
+
+        <ul class="flex gap-8 list-none m-0 p-0">
+          <li>
+            <a
+              href={"https://github.com/Sanchochx"}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="flex items-center gap-2 group"
+              aria-label="Abrir perfil de GitHub en una pestaña nueva"
+            >
+              <Icon
+                name="material-symbols:terminal"
+                width={20}
+                height={20}
+                class="text-primary-container group-hover:scale-125 transition-transform"
+                aria-hidden="true"
+              />
+              <span class="font-display text-mono-label text-secondary group-hover:text-on-surface transition-colors">
+                GITHUB
+              </span>
+            </a>
+          </li>
+          <li>
+            <a
+              href={"https://www.linkedin.com/in/santiago-sánchez-márquez-821b742b1/"}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="flex items-center gap-2 group"
+              aria-label="Abrir perfil de LinkedIn en una pestaña nueva"
+            >
+              <Icon
+                name="material-symbols:link"
+                width={20}
+                height={20}
+                class="text-primary-container group-hover:scale-125 transition-transform"
+                aria-hidden="true"
+              />
+              <span class="font-display text-mono-label text-secondary group-hover:text-on-surface transition-colors">
+                LINKEDIN
+              </span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
