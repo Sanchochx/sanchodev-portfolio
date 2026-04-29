@@ -3,10 +3,13 @@ import tailwind from '@astrojs/tailwind';
 import sitemap from '@astrojs/sitemap';
 import icon from 'astro-icon';
 
+import cloudflare from "@astrojs/cloudflare";
+
 const SITE_URL = 'https://sanchodev-portfolio.pages.dev';
 
 export default defineConfig({
   site: SITE_URL,
+
   integrations: [
     tailwind({ applyBaseStyles: false }),
     sitemap(),
@@ -14,4 +17,6 @@ export default defineConfig({
     // Set declarado: material-symbols (vía @iconify-json/material-symbols).
     icon({ include: { 'material-symbols': ['*'] } }),
   ],
+
+  adapter: cloudflare()
 });
