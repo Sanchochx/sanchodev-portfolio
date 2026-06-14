@@ -1,0 +1,89 @@
+/*
+ * Punto único de entrada de estilos globales.
+ * - Fuentes self-hosted vía @fontsource.
+ * - Directivas de Tailwind y utilities de componentes (glassmorphism).
+ * - US-PAGES-001 importa este archivo desde el layout base.
+ */
+
+/* Space Grotesk — weights usados en DESIGN.md: 400 (code-snippet), 500 (mono-label), 600 (headline-lg/md), 700 (headline-xl). */
+@import '@fontsource/space-grotesk/400.css';
+@import '@fontsource/space-grotesk/500.css';
+@import '@fontsource/space-grotesk/600.css';
+@import '@fontsource/space-grotesk/700.css';
+
+/* Inter — weight 400 cubre body-lg y body-md; 500 reservado para énfasis en copy. */
+@import '@fontsource/inter/400.css';
+@import '@fontsource/inter/500.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  background-color: theme('colors.surface');
+}
+
+/*
+ * Glassmorphism — Level 2/3 de DESIGN.md ("Elevation & Depth").
+ * Superficies translúcidas con backdrop blur + borde sutil.
+ * Se usan como clase única (.glass) o combinadas con .glass-hover para interactividad.
+ */
+/*
+ * Scroll-reveal — elementos con [data-reveal] arrancan invisibles y se revelan
+ * al entrar al viewport via IntersectionObserver (script en BaseLayout).
+ * [data-delay="N"] añade N×100ms de retardo para stagger de grids.
+ */
+@layer utilities {
+  [data-reveal] {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.55s ease, transform 0.55s ease;
+  }
+  [data-reveal].revealed {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  [data-delay="1"] { transition-delay: 100ms; }
+  [data-delay="2"] { transition-delay: 200ms; }
+  [data-delay="3"] { transition-delay: 300ms; }
+  [data-delay="4"] { transition-delay: 400ms; }
+  [data-delay="5"] { transition-delay: 500ms; }
+
+  @media (prefers-reduced-motion: reduce) {
+    [data-reveal] {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+}
+
+@layer components {
+  .glass {
+    background-color: rgb(255 255 255 / 0.03);
+    border: 1px solid rgb(255 255 255 / 0.08);
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
+    border-radius: theme('borderRadius.lg');
+  }
+
+  /* Variante más opaca para nav/pop-overs — blur agresivo, mayor legibilidad sobre contenido. */
+  .glass-nav {
+    background-color: rgb(255 255 255 / 0.04);
+    border-bottom: 1px solid rgb(255 255 255 / 0.06);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    backdrop-filter: blur(24px) saturate(180%);
+  }
+
+  /* Opt-in para elementos interactivos: borde más visible + glow verde en hover (200ms). */
+  .glass-hover {
+    transition: border-color 200ms ease, box-shadow 200ms ease;
+  }
+
+  .glass-hover:hover,
+  .glass-hover:focus-visible {
+    border-color: rgb(255 255 255 / 0.18);
+    /* 0 255 65 = primary-container (#00ff41) en rgb — alpha 15% para el glow. */
+    box-shadow: 0 0 24px 0 rgb(0 255 65 / 0.15);
+  }
+}

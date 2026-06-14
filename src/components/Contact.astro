@@ -1,0 +1,99 @@
+---
+import { Icon } from 'astro-icon/components';
+
+const sectionLabel = '04 / CONTACT';
+const heading = ["Let’s connect", 'for more info.'] as const;
+const email = 'santiagosanchezmarquez@gmail.com';
+---
+
+<section
+  id="contact"
+  aria-labelledby="contact-heading"
+  class="py-section-gap"
+>
+  <div class="max-w-container-max mx-auto px-6">
+    <div class="max-w-2xl">
+      <span data-reveal class="font-display text-mono-label text-primary-container uppercase block mb-4">
+        {sectionLabel}
+      </span>
+
+      <h2
+        id="contact-heading"
+        data-reveal
+        data-delay="1"
+        class="font-display text-headline-lg text-on-surface uppercase mb-4 leading-tight"
+      >
+        {heading[0]}<br />
+        {heading[1]}
+      </h2>
+      <span data-reveal data-delay="2" class="block w-12 h-px bg-primary-container mb-8" aria-hidden="true"></span>
+
+      <div class="space-y-8 mt-12">
+        <a data-reveal data-delay="2" href={`mailto:${email}`} class="block group">
+          <p class="font-display text-mono-label text-secondary/40 mb-1">
+            EMAIL_ADDRESS
+          </p>
+          <p class="font-display text-headline-md text-on-surface group-hover:text-primary-container transition-colors break-all">
+            {email}
+          </p>
+        </a>
+
+        <a
+          data-reveal
+          data-delay="3"
+          href="/Resume_SantiagoSanchezMarquez.pdf"
+          download
+          class="inline-flex items-center gap-3 px-7 py-3.5 border border-white/20 text-on-surface font-display text-sm tracking-tighter hover:border-primary-container/60 hover:text-primary-container transition-all duration-200"
+        >
+          DOWNLOAD_RESUME
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+          </svg>
+        </a>
+
+        <ul data-reveal data-delay="4" class="flex gap-8 list-none m-0 p-0">
+          <li>
+            <a
+              href={"https://github.com/Sanchochx"}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="flex items-center gap-2 group"
+              aria-label="Abrir perfil de GitHub en una pestaña nueva"
+            >
+              <Icon
+                name="material-symbols:terminal"
+                width={20}
+                height={20}
+                class="text-primary-container group-hover:scale-125 transition-transform"
+                aria-hidden="true"
+              />
+              <span class="font-display text-mono-label text-secondary group-hover:text-on-surface transition-colors">
+                GITHUB
+              </span>
+            </a>
+          </li>
+          <li>
+            <a
+              href={"https://www.linkedin.com/in/santiago-sánchez-márquez-821b742b1/"}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="flex items-center gap-2 group"
+              aria-label="Abrir perfil de LinkedIn en una pestaña nueva"
+            >
+              <Icon
+                name="material-symbols:link"
+                width={20}
+                height={20}
+                class="text-primary-container group-hover:scale-125 transition-transform"
+                aria-hidden="true"
+              />
+              <span class="font-display text-mono-label text-secondary group-hover:text-on-surface transition-colors">
+                LINKEDIN
+              </span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>

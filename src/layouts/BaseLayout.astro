@@ -1,0 +1,71 @@
+---
+// BaseLayout — única fuente de verdad para `<html>`, `<head>` y assets globales.
+// Las fuentes self-hosted (`@fontsource/*`) y la utility `.glass` viven en global.css,
+// por lo que importarlo aquí cubre tipografías + Tailwind + glassmorphism en una línea.
+import '../styles/global.css';
+import ChatWidget from '../components/ChatWidget.astro';
+
+export interface Props {
+  title: string;
+  description: string;
+  ogImage?: string;
+  canonical?: string;
+}
+
+const { title, description, ogImage, canonical } = Astro.props;
+
+// `Astro.site` viene de astro.config.mjs (TODO: dominio final pendiente para US-DEPLOY-001).
+// Construye URLs absolutas para canonical, og:url y og:image (los crawlers exigen absolutas).
+const siteUrl = Astro.site ?? new URL('https://example.com');
+const canonicalUrl = new URL(canonical ?? Astro.url.pathname, siteUrl).toString();
+const ogImageUrl = new URL(ogImage ?? '/images/sanchodev_logo.png', siteUrl).toString();
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+
+    <link rel="icon" type="image/png" href="/images/sanchodev_logo.png" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
+
+    {/* Open Graph */}
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImageUrl} />
+
+    {/* Twitter Card */}
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+  </head>
+  <body class="text-on-surface font-sans">
+    <slot />
+    <ChatWidget />
+  </body>
+  <script>
+    (() => {
+      const els = document.querySelectorAll('[data-reveal]');
+      if (!els.length) return;
+      const obs = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting) {
+              e.target.classList.add('revealed');
+              obs.unobserve(e.target);
+            }
+          });
+        },
+        { threshold: 0.1 }
+      );
+      els.forEach((el) => obs.observe(el));
+    })();
+  </script>
+</html>

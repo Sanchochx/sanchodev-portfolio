@@ -1,0 +1,28 @@
+---
+const year = new Date().getFullYear();
+const fullName = 'Santiago Sánchez Márquez';
+const sourceHref = 'https://github.com/Sanchochx/sanchodev-portfolio';
+---
+
+<footer
+  role="contentinfo"
+  class="w-full py-20 mt-section-gap border-t border-on-surface/5"
+>
+  <div
+    class="max-w-container-max mx-auto px-8 flex flex-col md:flex-row justify-between items-center gap-8"
+  >
+    <p class="font-display text-mono-label uppercase text-on-surface/40 m-0">
+      © {year} {fullName}
+    </p>
+
+    <a
+      href={sourceHref}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="font-display text-mono-label uppercase text-on-surface/40 hover:text-primary-container transition-colors"
+      aria-label="Abrir repositorio fuente del portafolio en una pestaña nueva"
+    >
+      SOURCE
+    </a>
+  </div>
+</footer>

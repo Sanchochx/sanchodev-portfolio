@@ -1,0 +1,146 @@
+---
+import { Icon } from 'astro-icon/components';
+
+const sectionLabel = '02 / CORE TECH';
+const heading = 'Technical Expertise';
+
+type CategoryCard = {
+  icon: string;
+  title: string;
+  stack: readonly string[];
+  span: 'large' | 'medium';
+};
+
+const categoryCards: readonly CategoryCard[] = [
+  {
+    icon: 'material-symbols:web',
+    title: 'Frontend',
+    stack: ['ANGULAR', 'REACT', 'TYPESCRIPT', 'ASTRO', 'TAILWIND'],
+    span: 'large',
+  },
+  {
+    icon: 'material-symbols:terminal',
+    title: 'Backend Systems',
+    stack: ['PYTHON', 'FLASK', 'NODE.JS', 'EXPRESS'],
+    span: 'medium',
+  },
+  {
+    icon: 'material-symbols:database',
+    title: 'Data Architecture',
+    stack: ['POSTGRESQL', 'MYSQL', 'NoSQL', 'REST APIs', 'JWT'],
+    span: 'medium',
+  },
+] as const;
+
+const toolingCards = [
+  { icon: 'material-symbols:javascript', label: 'JAVASCRIPT' },
+  { icon: 'material-symbols:html', label: 'HTML5' },
+  { icon: 'material-symbols:css', label: 'CSS3' },
+  { icon: 'material-symbols:cloud', label: 'GIT' },
+  { icon: 'material-symbols:lan', label: 'OOP' },
+  { icon: 'material-symbols:flag', label: 'AGILE' },
+] as const;
+---
+
+<section
+  id="skills"
+  aria-labelledby="skills-heading"
+  class="py-section-gap"
+>
+  <div class="max-w-container-max mx-auto px-6">
+    <header class="mb-16">
+      <span data-reveal class="font-display text-mono-label text-primary-container uppercase block mb-4">
+        {sectionLabel}
+      </span>
+      <h2
+        id="skills-heading"
+        data-reveal
+        data-delay="1"
+        class="font-display text-headline-lg text-on-surface uppercase mb-4"
+      >
+        {heading}
+      </h2>
+      <span data-reveal data-delay="2" class="block w-12 h-px bg-primary-container" aria-hidden="true"></span>
+    </header>
+
+    <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-gutter">
+      {
+        categoryCards.map((card, i) => (
+          <article
+            data-reveal
+            data-delay={String(i + 1)}
+            class:list={[
+              'glass glass-hover rounded-lg flex transition-colors',
+              card.span === 'large'
+                ? 'col-span-2 row-span-2 p-card-padding flex-col'
+                : 'col-span-2 p-gutter flex-row items-center gap-6',
+            ]}
+          >
+            {card.span === 'large' ? (
+              <>
+                <div>
+                  <Icon
+                    name={card.icon}
+                    width={48}
+                    height={48}
+                    class="text-primary-container mb-6"
+                    aria-hidden="true"
+                  />
+                  <h3 class="font-display text-mono-label text-on-surface uppercase">
+                    {card.title}
+                  </h3>
+                </div>
+                <ul class="flex flex-wrap gap-x-3 gap-y-1 mt-2 list-none m-0 p-0 font-display text-code-snippet text-secondary/60">
+                  {card.stack.map((tag) => (
+                    <li>{tag}</li>
+                  ))}
+                </ul>
+              </>
+            ) : (
+              <>
+                <Icon
+                  name={card.icon}
+                  width={36}
+                  height={36}
+                  class="text-primary-container shrink-0"
+                  aria-hidden="true"
+                />
+                <div>
+                  <h3 class="font-display text-mono-label text-on-surface uppercase">
+                    {card.title}
+                  </h3>
+                  <ul class="flex flex-wrap gap-x-3 gap-y-1 mt-2 list-none m-0 p-0 font-display text-code-snippet text-secondary/60">
+                    {card.stack.map((tag) => (
+                      <li class="whitespace-nowrap">{tag}</li>
+                    ))}
+                  </ul>
+                </div>
+              </>
+            )}
+          </article>
+        ))
+      }
+
+      {
+        toolingCards.map(({ icon, label }, i) => (
+          <article
+            data-reveal
+            data-delay={String(Math.min(i + 1, 5))}
+            class="glass glass-hover rounded-lg p-6 flex flex-col items-center justify-center gap-3 transition-colors"
+          >
+            <Icon
+              name={icon}
+              width={28}
+              height={28}
+              class="text-on-surface/50"
+              aria-hidden="true"
+            />
+            <span class="font-display text-code-snippet text-on-surface/80">
+              {label}
+            </span>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
