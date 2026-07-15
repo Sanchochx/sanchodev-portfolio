@@ -4,13 +4,14 @@
 
 export const NAME = 'Santiago Sanchez';
 
-export const SUMMARY = `I am an IT Engineering student with a strong passion for software development and a clear goal: to apply my skills, grow professionally, and contribute to innovative IT projects.
+export const SUMMARY = `IT Engineer with a strong passion for software development and a clear goal: to apply my skills, grow professionally, and contribute to innovative IT projects.
 
 My technical expertise includes frontend development with Angular, React, TypeScript, and responsive design using Angular Material, combined with backend development using Node.js and Express. I work with both relational and non-relational databases, implement RESTful APIs, and apply object-oriented programming principles to create robust, maintainable code.
 
-I'm also proficient in Python and Flask, which I leverage for personal projects and AI-driven applications. I'm actively exploring agentic AI development, using AI agents as productivity multipliers in my development workflow while maintaining architectural decision-making and code quality oversight.
+I'm also proficient in Python and Flask, which I leverage for personal projects and AI-driven applications. I'm actively exploring agentic AI development, using AI agents as productivity multipliers in my development workflow while maintaining architectural decision-making and code quality oversight. 
 
-I've participated in systems engineering research projects, transforming theoretical concepts into practical, working solutions.
+I've participated in IT engineering research projects, transforming theoretical concepts into practical, working solutions. 
+
 Fluent in English and Spanish, I'm highly adaptable and committed to professional growth through teamwork, continuous learning, and delivering quality software.`;
 
 export const LINKEDIN = `## Contact
@@ -21,7 +22,7 @@ GitHub: https://github.com/Sanchochx
 Website: https://sanchodev.pythonanywhere.com
 
 ## Profile
-IT Engineering student (Graduating 2026) with hands-on experience building full-stack applications using Angular, React, Node.js, and Python. Strong background in RESTful APIs, relational and non-relational databases, and object-oriented programming. Experienced in developing secure, maintainable systems and AI-enhanced applications. Bilingual in English and Spanish, with a strong commitment to continuous learning and high-quality software development.
+IT Engineer with hands-on experience building full-stack applications using Angular, React, Node.js, and Python. Strong background in RESTful APIs, relational and non-relational databases, and object-oriented programming. Experienced in developing secure, maintainable systems and AI-enhanced applications. Bilingual in English and Spanish, with a strong commitment to continuous learning and high-quality software development.
 
 ## Technical Skills
 - Frontend: Angular, React, TypeScript, JavaScript, HTML, CSS
@@ -33,8 +34,14 @@ IT Engineering student (Graduating 2026) with hands-on experience building full-
 - Effective problem-solving and adaptability
 
 ## Work Experience
+
+### Freelance Full-Stack Developer
+Full-stack web developer specializing in Angular, React, Node.js, and Flask. 
+I design and build complete web solutions for independent clients, from requirements gathering to deployment. Focused on clean architecture, responsive design, and measurable business impact. 
+I leverage AI-assisted development workflows to accelerate delivery without sacrificing code quality.
+
 ### Full Stack Developer Intern — ESE Hospital Universitario San Rafael (Tunja, Colombia)
-Hybrid | October 2025 - December 2025
+Hybrid | October 2025 - May 2026
 - Developed modular management systems using Angular and Node.js for administrative operations
 - Implemented authentication and role-based access control for secure user management
 - Designed responsive interfaces with Angular Material and integrated RESTful APIs
@@ -43,7 +50,6 @@ Tech: Angular, TypeScript, RxJS, Node.js, Express, SQL / NoSQL, Git
 
 ## Education
 B.Sc. in IT Engineering — Universidad Santo Tomás
-Expected Graduation: 2026
 
 ## Certifications
 - 100 Days of Python (Udemy)
@@ -53,7 +59,7 @@ Expected Graduation: 2026
 - Spanish (Native)
 - English (Bilingual proficiency)
 
-## Projects
+## Projects (all completed)
 ### GESTRACK ERP — Business Management System
 Full-stack ERP web application designed to help businesses manage inventory, clients, and stock operations efficiently.
 - Developed inventory management module for product tracking, stock adjustments, and real-time updates using WebSockets
@@ -120,6 +126,8 @@ export const SYSTEM_PROMPT = `You are acting as ${NAME}. You are answering quest
 Detect the language of the user's message and reply in that same language. The user may write in English or Spanish — match their language naturally on every reply.
 
 If you don't know the answer to a question about ${NAME}, say so honestly and suggest the user contact ${NAME} directly via the contact section of the site.
+
+If asked what ${NAME} is currently working on / doing right now, answer based on the "Freelance Full-Stack Developer (Current)" role in the Work Experience section below. All items under "Projects" are finished, past work — never describe them as ongoing or current.
 
 ## Summary:
 ${SUMMARY}
