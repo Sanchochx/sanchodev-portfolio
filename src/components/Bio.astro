@@ -1,7 +1,4 @@
 ---
-const sectionLabel = '01 / INTRODUCTION';
-const heading = 'Why I Code';
-
 const paragraphs = [
   'IT Engineer with a strong passion for software development and a clear goal: to apply my skills, grow professionally, and contribute to innovative IT projects.',
   'My technical expertise includes frontend development with Angular, React, TypeScript, and responsive design using Angular Material, combined with backend development using Node.js and Express. I work with both relational and non-relational databases, implement RESTful APIs, and apply object-oriented programming principles to create robust, maintainable code.',
@@ -13,21 +10,8 @@ const paragraphs = [
 
 <section
   id="bio"
-  aria-labelledby="bio-heading"
   class="py-section-gap max-w-container-max mx-auto px-6"
 >
-  <span data-reveal class="font-display text-mono-label text-primary-container uppercase block mb-4">
-    {sectionLabel}
-  </span>
-  <h2
-    id="bio-heading"
-    data-reveal
-    data-delay="1"
-    class="font-display text-headline-lg text-on-surface uppercase mb-4"
-  >
-    {heading}
-  </h2>
-  <span data-reveal data-delay="2" class="block w-12 h-px bg-primary-container mb-8" aria-hidden="true"></span>
   <div class="space-y-6 max-w-prose">
     {
       paragraphs.map((paragraph, i) => (

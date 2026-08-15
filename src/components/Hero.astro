@@ -9,17 +9,9 @@ const secondaryRole = 'AI Software Engineer';
   aria-label="Presentación de Santiago Sánchez Márquez"
   class="min-h-screen flex flex-col justify-center items-center px-5 pt-section-gap pb-section-gap relative overflow-hidden"
 >
-  <div class="hero-bg-grid" aria-hidden="true"></div>
   <div class="hero-bg-glow" aria-hidden="true"></div>
 
   <div class="text-center max-w-container-max relative z-10">
-    <div class="hero-enter inline-flex items-center gap-2 mb-10 px-4 py-2 border border-white/10 rounded-full bg-white/[0.04] backdrop-blur-sm">
-      <span class="w-2 h-2 bg-primary-container rounded-full animate-pulse" aria-hidden="true"></span>
-      <span class="font-display text-[11px] tracking-widest text-primary-container/80 uppercase">
-        Available for opportunities
-      </span>
-    </div>
-
     <h1 class="hero-enter hero-enter-delay-1 font-display text-headline-xl text-on-surface uppercase mb-6">
       {fullName}
     </h1>
@@ -41,17 +33,6 @@ const secondaryRole = 'AI Software Engineer';
 </section>
 
 <style>
-  .hero-bg-grid {
-    position: absolute;
-    inset: 0;
-    background-image:
-      linear-gradient(rgb(255 255 255 / 0.025) 1px, transparent 1px),
-      linear-gradient(90deg, rgb(255 255 255 / 0.025) 1px, transparent 1px);
-    background-size: 64px 64px;
-    -webkit-mask-image: radial-gradient(ellipse 80% 70% at center, black 20%, transparent 80%);
-    mask-image: radial-gradient(ellipse 80% 70% at center, black 20%, transparent 80%);
-  }
-
   .hero-bg-glow {
     position: absolute;
     top: 50%;
