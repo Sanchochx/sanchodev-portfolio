@@ -77,23 +77,9 @@ export const projects: readonly Project[] = [
     href: 'https://github.com/Sanchochx/final_project_seguridad_dev',
   },
   {
-    title: 'WORLD CUP 2026 AI SIMULATOR',
-    description:
-      'Interactive World Cup simulator with 48 teams, full knockout bracket, and real-time AI-generated tactical match analysis.',
-    problem:
-      'There was no interactive way to simulate the 2026 World Cup with all 48 teams, the actual bracket, and a tactical analysis with an AI model for each match.',
-    techDecision:
-      'Web app that simulates group stage, ranks teams using real FIFA rules, and generates AI-powered match analysis in real time via OpenAI API (GPT-4o mini).',
-    tech: ['NEXT.JS', 'TYPESCRIPT', 'REACT', 'OPENAI API'],
-    image: '/images/projects/wc_simulator.png',
-    imageAlt:
-      'World cup 2026 AI simulator interface showing team rankings and match analysis.',
-    href: 'https://github.com/Sanchochx/world_cup_ai_simulator',
-  },
-  {
     title: 'LINPROG SOLVER',
     description:
-      'For the final project of the Optimization course, I developed a calculator that provides an intuitive interface for defining and solving linear programming problems.',
+      'I developed a calculator that provides an intuitive interface for defining and solving linear programming problems.',
     problem:
       'Solving linear programming problems manually is error-prone and time-consuming in academic and engineering contexts.',
     techDecision:
@@ -103,25 +89,5 @@ export const projects: readonly Project[] = [
     imageAlt:
       'Linear programming calculator showing constraints and an optimal solution plot.',
     href: 'https://github.com/Sanchochx/linear-programming-project',
-  },
-  {
-    title: '2D PLATFORMER AI-ASSISTED DEVELOPMENT',
-    description:
-      'A fully-featured 2D platformer game that demonstrates the power of human-AI collaboration through Claude Code and agile development methodologies.',
-    problem:
-      'Traditional 2D game development requires designing every asset and physics interaction manually, making iteration slow.',
-    techDecision:
-      'Used AI-assisted development via Claude Code for level design and user story mapping, cutting prototyping time significantly.',
-    tech: [
-      'PYTHON',
-      'PYGAME',
-      'AI-ASSISTED DEVELOPMENT',
-      'AGILE METHODOLOGIES',
-      'USER STORY MAPPING',
-    ],
-    image: '/images/projects/coffee_bros.jpg',
-    imageAlt:
-      'Coffee Bros 2D platformer gameplay scene with pixel-art characters.',
-    href: 'https://github.com/Sanchochx/coffee_bros',
   },
 ] as const;
