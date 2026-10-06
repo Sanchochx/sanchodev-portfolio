@@ -14,30 +14,36 @@ const categoryCards: readonly CategoryCard[] = [
   {
     icon: 'material-symbols:web',
     title: 'Frontend',
-    stack: ['ANGULAR', 'REACT', 'TYPESCRIPT', 'ASTRO', 'TAILWIND'],
+    stack: ['Angular', 'React', 'Typescript', 'Astro', 'Tailwind', 'Vite'],
     span: 'large',
   },
   {
     icon: 'material-symbols:terminal',
-    title: 'Backend Systems',
-    stack: ['PYTHON', 'FLASK', 'NODE.JS', 'EXPRESS'],
+    title: 'Backend',
+    stack: ['Python', 'Flask', 'Node.js', 'Express'],
+    span: 'medium',
+  },
+  {
+    icon: 'material-symbols:cloud',
+    title: 'Infrastructure & DevOps',
+    stack: ['Docker', 'DockerCompose', 'Linux'],
+    span: 'medium',
+  },
+  {
+    icon: 'material-symbols:psychology',
+    title: 'Artificial Intelligence',
+    stack: ['Agentic AI', 'Langchain', 'Langgraph', 'MCP Servers'],
     span: 'medium',
   },
   {
     icon: 'material-symbols:database',
-    title: 'Data Architecture',
-    stack: ['POSTGRESQL', 'MYSQL', 'NoSQL', 'REST APIs', 'JWT'],
+    title: 'Data & Tools',
+    stack: ['PostgreSQL', 'MySQL', 'NoSQL', 'Rest APIs', 'JWT', 'Git'],
     span: 'medium',
   },
 ] as const;
 
 const toolingCards = [
-  { icon: 'material-symbols:javascript', label: 'JAVASCRIPT' },
-  { icon: 'material-symbols:html', label: 'HTML5' },
-  { icon: 'material-symbols:css', label: 'CSS3' },
-  { icon: 'material-symbols:cloud', label: 'GIT' },
-  { icon: 'material-symbols:lan', label: 'OOP' },
-  { icon: 'material-symbols:flag', label: 'AGILE' },
 ] as const;
 ---
 

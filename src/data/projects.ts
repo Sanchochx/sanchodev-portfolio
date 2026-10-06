@@ -12,22 +12,23 @@ export type Project = {
 
 export const projects: readonly Project[] = [
   {
-    title: 'GESTRACK ERP',
+    title: 'GesTrack ERP',
     description:
-      'Full-stack web application designed to help businesses manage inventory, clients, and stock operations efficiently.',
+      'Cloud-Native Full-Stack application designed to efficiently manage inventory and clients, featuring a containerized architecture for standardized deployment and secure role-based access.',
     problem:
-      'Small businesses lack centralized tools for managing inventory, invoicing, and clients in one place.',
+      'Businesses need centralized management tools, while traditional setups create deployment bottlenecks and local environment inconsistencies ("it works on my machine" problem).',
     techDecision:
-      'Chose React 19 + Flask as a decoupled API so each layer can scale and be tested independently.',
+      'Built a decoupled architecture (Vite/React + Flask) and containerized all microservices using Docker Compose, establishing isolated internal networks and Linux volume mapping for hot-reloading.',
     tech: [
+      'DOCKER',
+      'DOCKER COMPOSE',
+      'LINUX',
       'PYTHON',
       'FLASK',
       'REACT 19',
-      'POSTGRESQL',
-      'SQLALCHEMY',
-      'REST APIS',
-      'JWT',
       'VITE',
+      'POSTGRESQL',
+      'JWT'
     ],
     image: '/images/projects/gestrack.jpg',
     imageAlt: 'GesTrack ERP dashboard showing inventory and client management.',
@@ -61,20 +62,6 @@ export const projects: readonly Project[] = [
     imageAlt:
       'Multimodel arena debate interface showing AI models competing in real-time.',
     href: 'https://github.com/Sanchochx/ai-debate-arena',
-  },
-  {
-    title: 'SECURE VOTING PROJECT',
-    description:
-      'Full-stack web application focused on secure user and vote management.',
-    problem:
-      'Digital voting systems are vulnerable to vote manipulation and lack meaningful auditability.',
-    techDecision:
-      'Implemented vote hashing and unique per-voter tokens to guarantee integrity without exposing voter identity.',
-    tech: ['PYTHON', 'FLASK', 'MYSQL', 'REST API', 'CSS', 'HTML'],
-    image: '/images/projects/secure_voting.jpg',
-    imageAlt:
-      'Secure voting interface with hashed ballots and per-voter token validation.',
-    href: 'https://github.com/Sanchochx/final_project_seguridad_dev',
   },
   {
     title: 'LINPROG SOLVER',
