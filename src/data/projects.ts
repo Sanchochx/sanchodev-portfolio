@@ -16,7 +16,7 @@ export const projects: readonly Project[] = [
     description:
       'Cloud-Native Full-Stack application designed to efficiently manage inventory and clients, featuring a containerized architecture for standardized deployment and secure role-based access.',
     problem:
-      'Businesses need centralized management tools, while traditional setups create deployment bottlenecks and local environment inconsistencies ("it works on my machine" problem).',
+      'Businesses need centralized management tools, while traditional setups create deployment bottlenecks and local environment inconsistencies.',
     techDecision:
       'Built a decoupled architecture (Vite/React + Flask) and containerized all microservices using Docker Compose, establishing isolated internal networks and Linux volume mapping for hot-reloading.',
     tech: [
