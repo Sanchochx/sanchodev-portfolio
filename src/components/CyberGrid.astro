@@ -1,0 +1,71 @@
+---
+// Fondo decorativo en CSS puro (sin JS): dos planos con cuadrícula en perspectiva que fugan al centro.
+---
+
+<div class="cyber-grid" aria-hidden="true">
+  <div class="plane plane-ceiling"></div>
+  <div class="plane plane-floor"></div>
+</div>
+
+<style>
+  .cyber-grid {
+    --cell: 60px;
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    overflow: hidden;
+    pointer-events: none;
+    perspective: 600px;
+    transform-style: preserve-3d;
+    background-color: theme('colors.surface');
+  }
+
+  .plane {
+    position: absolute;
+    left: -100%;
+    width: 300%;
+    height: 150vh;
+    background-image:
+      linear-gradient(theme('colors.primary-container / 35%') 1px, transparent 1px),
+      linear-gradient(90deg, theme('colors.primary-container / 35%') 1px, transparent 1px);
+    background-size: var(--cell) var(--cell);
+    backface-visibility: hidden;
+    will-change: background-position;
+  }
+
+  /* El horizonte (borde en el centro de la pantalla) se difumina para suavizar el punto de fuga. */
+  .plane-floor {
+    top: 50%;
+    transform-origin: top center;
+    transform: rotateX(75deg) translateZ(0);
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.2) 10%, #000 40%);
+    mask-image: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.2) 10%, #000 40%);
+    animation: grid-forward-floor 2s linear infinite;
+  }
+
+  .plane-ceiling {
+    bottom: 50%;
+    transform-origin: bottom center;
+    transform: rotateX(-75deg) translateZ(0);
+    -webkit-mask-image: linear-gradient(to top, transparent 0%, rgba(0,0,0,0.2) 10%, #000 40%);
+    mask-image: linear-gradient(to top, transparent 0%, rgba(0,0,0,0.2) 10%, #000 40%);
+    animation: grid-forward-ceiling 2s linear infinite;
+  }
+
+  /* Suelo: las líneas bajan hacia el espectador; techo: suben (sentido opuesto en su eje local). */
+  @keyframes grid-forward-floor {
+    from { background-position-y: 0; }
+    to { background-position-y: var(--cell); }
+  }
+
+  @keyframes grid-forward-ceiling {
+    from { background-position-y: var(--cell); }
+    to { background-position-y: 0; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .plane {
+      animation: none;
+    }
+  }
+</style>

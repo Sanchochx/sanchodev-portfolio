@@ -13,18 +13,50 @@ type ChatRequest = {
   history?: ChatMessage[];
 };
 
+const MAX_MESSAGE_LENGTH = 2000;
+const MAX_HISTORY_MESSAGES = 20;
+const MAX_HISTORY_CONTENT_LENGTH = 2000;
+const MAX_REPLY_TOKENS = 500;
+
+// Best-effort limiter: state is per serverless instance, so it curbs bursts
+// from one client but is not a hard global quota.
+const RATE_LIMIT_WINDOW_MS = 60_000;
+const RATE_LIMIT_MAX_REQUESTS = 10;
+const hits = new Map<string, number[]>();
+
+const isRateLimited = (key: string): boolean => {
+  const now = Date.now();
+  const recent = (hits.get(key) ?? []).filter((t) => now - t < RATE_LIMIT_WINDOW_MS);
+  if (recent.length >= RATE_LIMIT_MAX_REQUESTS) {
+    hits.set(key, recent);
+    return true;
+  }
+  recent.push(now);
+  hits.set(key, recent);
+  if (hits.size > 1000) {
+    for (const [k, times] of hits) {
+      if (times.every((t) => now - t >= RATE_LIMIT_WINDOW_MS)) hits.delete(k);
+    }
+  }
+  return false;
+};
+
 const json = (body: unknown, status = 200): Response =>
   new Response(JSON.stringify(body), {
     status,
     headers: { 'content-type': 'application/json; charset=utf-8' },
   });
 
-export const POST: APIRoute = async ({ request }) => {
+export const POST: APIRoute = async ({ request, clientAddress }) => {
   const OPENAI_API_KEY = process.env.OPENAI_API_KEY ?? import.meta.env.OPENAI_API_KEY;
 
   if (!OPENAI_API_KEY) {
     return json({ error: 'Server is not configured' }, 500);
   }
+
+  const clientKey =
+    request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || clientAddress || 'unknown';
+  if (isRateLimited(clientKey)) return json({ error: 'Too many requests' }, 429);
 
   let payload: ChatRequest;
   try {
@@ -37,7 +69,7 @@ export const POST: APIRoute = async ({ request }) => {
   const history = Array.isArray(payload.history) ? payload.history : [];
   if (!message) return json({ error: 'Message is required' }, 400);
 
-  if (message.length > 2000) return json({ error: 'Message too long' }, 400);
+  if (message.length > MAX_MESSAGE_LENGTH) return json({ error: 'Message too long' }, 400);
   const trimmedHistory = history
     .filter(
       (m) =>
@@ -45,7 +77,8 @@ export const POST: APIRoute = async ({ request }) => {
         (m.role === 'user' || m.role === 'assistant') &&
         typeof m.content === 'string'
     )
-    .slice(-20);
+    .slice(-MAX_HISTORY_MESSAGES)
+    .map((m) => ({ role: m.role, content: m.content.slice(0, MAX_HISTORY_CONTENT_LENGTH) }));
 
   const messages: ChatMessage[] = [
     { role: 'system', content: SYSTEM_PROMPT },
@@ -63,6 +96,7 @@ export const POST: APIRoute = async ({ request }) => {
       body: JSON.stringify({
         model: 'gpt-4o-mini',
         messages,
+        max_tokens: MAX_REPLY_TOKENS,
       }),
     });
 
