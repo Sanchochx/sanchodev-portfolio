@@ -2,7 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
-<BaseLayout title="RED LODGE // OS" description="RED LODGE: escritorio interactivo de Santiago Sánchez Márquez.">
+<BaseLayout title="Red Lodge" description="RED LODGE: escritorio interactivo de Santiago Sánchez Márquez.">
   <!-- Ocultamos el Navbar global y el Footer por defecto de esta página mediante CSS -->
   <style is:global>
     header, nav, footer, #chat-widget { display: none !important; }
@@ -52,19 +52,78 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         </span>
       </button>
 
+      <!-- Icono: 3D Pinball -->
+      <button id="pinball-icon" type="button" class="w-20 flex flex-col items-center justify-start group rounded-sm border border-transparent hover:bg-blue-500/20 hover:border-blue-400/30 focus-visible:border-blue-400/60 transition-colors p-1 cursor-pointer z-20">
+        <div class="relative w-9 h-9 mb-1">
+          <img src="/images/pinball_icon.png" alt="3D Pinball" width="36" height="36" class="w-full h-full object-contain drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]" onerror="this.onerror=null;this.src='/images/sanchodev_logo.png'" />
+          <div class="absolute -bottom-1 -left-1 w-3 h-3 bg-white border border-gray-400 flex items-center justify-center shadow-sm">
+            <svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="#0066cc" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M10 5l7 7-7 7" />
+              <path d="M17 12H3" />
+            </svg>
+          </div>
+        </div>
+        <span class="text-white text-[9px] text-center font-mono tracking-wider drop-shadow-[0_1px_3px_rgba(0,0,0,1)] px-1 leading-tight mt-1">
+          3D Pinball
+        </span>
+      </button>
+
+      <!-- Icono: Wolfenstein 3D -->
+      <button id="wolf-icon" type="button" class="w-20 flex flex-col items-center justify-start group rounded-sm border border-transparent hover:bg-blue-500/20 hover:border-blue-400/30 focus-visible:border-blue-400/60 transition-colors p-1 cursor-pointer z-20">
+        <div class="relative w-9 h-9 mb-1">
+          <img src="/images/wolf_icon.png" alt="Wolfenstein 3D" width="36" height="36" class="w-full h-full object-contain drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]" onerror="this.onerror=null;this.src='/images/sanchodev_logo.png'" />
+          <div class="absolute -bottom-1 -left-1 w-3 h-3 bg-white border border-gray-400 flex items-center justify-center shadow-sm">
+            <svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="#0066cc" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M10 5l7 7-7 7" />
+              <path d="M17 12H3" />
+            </svg>
+          </div>
+        </div>
+        <span class="text-white text-[9px] text-center font-mono tracking-wider drop-shadow-[0_1px_3px_rgba(0,0,0,1)] px-1 leading-tight mt-1">
+          WOLFENSTEIN 3D
+        </span>
+      </button>
+
     </div>
 
     <!-- Ventana de DOOM (oculta por defecto) -->
-    <div id="doom-window" class="hidden fixed inset-0 m-auto h-fit w-[min(800px,95vw,calc((100vh-4rem)*1.6))] bg-black border border-gray-600 rounded-sm shadow-2xl z-40 flex flex-col">
-      <div class="h-8 bg-black flex items-center justify-between px-2 select-none border-b border-gray-700">
-        <div class="flex items-center text-red-600 text-xs font-sans">
+    <div id="doom-window" class="hidden fixed inset-0 m-auto h-fit w-[min(800px,95vw,calc((100vh-4rem)*1.6))] bg-black border border-red-900 rounded-sm shadow-2xl z-40 flex flex-col">
+      <div class="h-8 bg-black flex items-center justify-between px-2 select-none border-b border-red-900">
+        <div class="flex items-center text-red-600 text-xs font-mono tracking-wider">
           <img src="/images/doom_icon.png" alt="" width="16" height="16" class="w-4 h-4 mr-2" onerror="this.style.display='none'" />
           js-dos - DOOM
         </div>
-        <button id="doom-close" type="button" aria-label="Cerrar DOOM" class="w-6 h-6 hover:bg-red-500 focus-visible:bg-red-500 text-white flex items-center justify-center text-xs">✕</button>
+        <button id="doom-close" type="button" aria-label="Cerrar DOOM" class="w-6 h-6 hover:bg-red-500 focus-visible:bg-red-500 text-red-600 hover:text-white flex items-center justify-center text-xs">✕</button>
       </div>
       <div class="w-full aspect-[16/10] bg-black relative" id="dos-container">
         <canvas id="jsdos" class="!w-full !h-full block object-contain"></canvas>
+      </div>
+    </div>
+
+    <!-- Ventana de Pinball (oculta por defecto) -->
+    <div id="pinball-window" class="hidden fixed inset-0 m-auto h-[min(720px,calc(100vh-4rem))] w-[min(960px,95vw)] bg-black border border-red-900 rounded-sm shadow-2xl z-40 flex flex-col">
+      <div class="h-8 shrink-0 bg-black flex items-center justify-between px-2 select-none border-b border-red-900">
+        <div class="flex items-center text-red-600 text-xs font-mono tracking-wider">
+          <img src="/images/pinball_icon.png" alt="" width="16" height="16" class="w-4 h-4 mr-2" onerror="this.style.display='none'" />
+          3D Pinball for Windows - Space Cadet
+        </div>
+        <button id="pinball-close" type="button" aria-label="Cerrar 3D Pinball" class="w-6 h-6 hover:bg-red-500 focus-visible:bg-red-500 text-red-600 hover:text-white flex items-center justify-center text-xs">✕</button>
+      </div>
+      <!-- El iframe se inyecta por JS para que no consuma recursos en segundo plano -->
+      <div class="flex-1 w-full bg-black relative" id="pinball-container"></div>
+    </div>
+
+    <!-- Ventana de Wolfenstein 3D (oculta por defecto) -->
+    <div id="wolf-window" class="hidden fixed inset-0 m-auto h-fit w-[min(800px,95vw,calc((100vh-4rem)*1.6))] bg-black border border-red-900 rounded-sm shadow-2xl z-40 flex flex-col">
+      <div class="h-8 bg-black flex items-center justify-between px-2 select-none border-b border-red-900">
+        <div class="flex items-center text-red-600 text-xs font-mono tracking-wider">
+          <img src="/images/wolf_icon.png" alt="" width="16" height="16" class="w-4 h-4 mr-2" onerror="this.style.display='none'" />
+          js-dos - Wolfenstein 3D
+        </div>
+        <button id="wolf-close" type="button" aria-label="Cerrar Wolfenstein 3D" class="w-6 h-6 hover:bg-red-500 focus-visible:bg-red-500 text-red-600 hover:text-white flex items-center justify-center text-xs">✕</button>
+      </div>
+      <div class="w-full aspect-[16/10] bg-black relative" id="wolf-container">
+        <canvas id="jsdos-wolf" class="!w-full !h-full block object-contain"></canvas>
       </div>
     </div>
 
@@ -127,6 +186,15 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     let dosInstance: DosCommandInterface | null = null;
     let booting = false;
 
+    // js-dos reescribe document.title al arrancar/cerrar; lo restauramos.
+    const pageTitle = document.title;
+    const titleEl = document.querySelector('title');
+    if (titleEl) {
+      new MutationObserver(() => {
+        if (document.title !== pageTitle) document.title = pageTitle;
+      }).observe(titleEl, { childList: true, characterData: true, subtree: true });
+    }
+
     function openDoom(): void {
       const win = document.getElementById('doom-window');
       const canvas = document.getElementById('jsdos') as HTMLCanvasElement | null;
@@ -162,5 +230,78 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     icon?.addEventListener('dblclick', openDoom);
     icon?.addEventListener('keydown', (e) => { if (e.key === 'Enter') openDoom(); });
     document.getElementById('doom-close')?.addEventListener('click', closeDoom);
+  </script>
+  <script>
+    function openPinball(): void {
+      const win = document.getElementById('pinball-window');
+      const container = document.getElementById('pinball-container');
+      if (!win || !container) return;
+      win.classList.remove('hidden');
+
+      if (container.querySelector('iframe')) return;
+      const frame = document.createElement('iframe');
+      frame.src = 'https://alula.github.io/SpaceCadetPinball/';
+      frame.title = '3D Pinball - Space Cadet';
+      frame.className = 'w-full h-full border-none';
+      container.appendChild(frame);
+    }
+
+    function closePinball(): void {
+      document.getElementById('pinball-window')?.classList.add('hidden');
+      // Quitar el iframe apaga el audio y libera memoria
+      document.getElementById('pinball-container')?.replaceChildren();
+    }
+
+    const pinballIcon = document.getElementById('pinball-icon');
+    pinballIcon?.addEventListener('dblclick', openPinball);
+    pinballIcon?.addEventListener('keydown', (e) => { if (e.key === 'Enter') openPinball(); });
+    document.getElementById('pinball-close')?.addEventListener('click', closePinball);
+  </script>
+  <script>
+    interface DosCommandInterface { exit(): Promise<void>; }
+    interface DosFs { extract(url: string): Promise<void>; }
+    type DosMain = (args: string[]) => Promise<DosCommandInterface>;
+    interface DosBoot { ready(cb: (fs: DosFs, main: DosMain) => void): void; }
+    type DosFactory = (canvas: HTMLCanvasElement, opts: { wdosboxUrl: string }) => DosBoot;
+
+    const WOLF_BUNDLE_URL = '/games/wolf3d.zip';
+    let wolfInstance: DosCommandInterface | null = null;
+    let wolfBooting = false;
+
+    function openWolf(): void {
+      const win = document.getElementById('wolf-window');
+      const canvas = document.getElementById('jsdos-wolf') as HTMLCanvasElement | null;
+      const Dos = (window as unknown as { Dos?: DosFactory }).Dos;
+      if (!win || !canvas) return;
+      win.classList.remove('hidden');
+
+      if (wolfInstance || wolfBooting || !Dos) return;
+      wolfBooting = true;
+      Dos(canvas, { wdosboxUrl: 'https://js-dos.com/6.22/current/wdosbox.js' }).ready((fs, main) => {
+        fs.extract(WOLF_BUNDLE_URL)
+          .then(() => main(['-c', 'WOLF3D.EXE']))
+          .then((ci) => {
+            // La ventana pudo cerrarse mientras cargaba
+            if (win.classList.contains('hidden')) void ci.exit();
+            else wolfInstance = ci;
+          })
+          .catch((err) => console.error('Wolfenstein 3D failed to start', err))
+          .finally(() => { wolfBooting = false; });
+      });
+    }
+
+    function closeWolf(): void {
+      document.getElementById('wolf-window')?.classList.add('hidden');
+      const container = document.getElementById('wolf-container');
+      if (!wolfInstance || !container) return;
+      void wolfInstance.exit();
+      wolfInstance = null;
+      container.innerHTML = '<canvas id="jsdos-wolf" class="!w-full !h-full block object-contain"></canvas>';
+    }
+
+    const wolfIcon = document.getElementById('wolf-icon');
+    wolfIcon?.addEventListener('dblclick', openWolf);
+    wolfIcon?.addEventListener('keydown', (e) => { if (e.key === 'Enter') openWolf(); });
+    document.getElementById('wolf-close')?.addEventListener('click', closeWolf);
   </script>
 </BaseLayout>
