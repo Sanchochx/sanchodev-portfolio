@@ -29,6 +29,15 @@ const ogImageUrl = new URL(ogImage ?? '/images/sanchodev_logo.png', siteUrl).toS
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
 
+    {/* Mismos valores que surface / on-surface de tailwind.config.mjs: pinta oscuro antes de que llegue el CSS externo. */}
+    <style is:inline>
+      html,
+      body {
+        background-color: #131313;
+        color: #e5e2e1;
+      }
+    </style>
+
     <link rel="icon" type="image/png" href="/images/sanchodev_logo.png" />
     <title>{title}</title>
     <meta name="description" content={description} />
