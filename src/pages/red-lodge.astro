@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import LetterboxdApp from '../components/LetterboxdApp.astro';
 ---
 
 <BaseLayout title="Red Lodge" description="RED LODGE: escritorio interactivo de Santiago Sánchez Márquez.">
@@ -122,6 +123,22 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         </div>
         <span class="text-white text-[9px] text-center font-mono tracking-wider drop-shadow-[0_1px_3px_rgba(0,0,0,1)] px-1 leading-tight mt-1">
           MS PAINT
+        </span>
+      </button>
+
+      <!-- Icono: Cine (Letterboxd/TMDB) -->
+      <button id="cine-icon" type="button" class="w-20 flex flex-col items-center justify-start group rounded-sm border border-transparent hover:bg-blue-500/20 hover:border-blue-400/30 focus-visible:border-blue-400/60 transition-colors p-1 cursor-pointer z-20">
+        <div class="relative w-9 h-9 mb-1">
+          <img src="/images/movies_icon.png" alt="Cinema" width="36" height="36" class="w-full h-full object-contain drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]" onerror="this.onerror=null;this.src='/images/sanchodev_logo.png'" />
+          <div class="absolute -bottom-1 -left-1 w-3 h-3 bg-white border border-gray-400 flex items-center justify-center shadow-sm">
+            <svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="#0066cc" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M10 5l7 7-7 7" />
+              <path d="M17 12H3" />
+            </svg>
+          </div>
+        </div>
+        <span class="text-white text-[9px] text-center font-mono tracking-wider drop-shadow-[0_1px_3px_rgba(0,0,0,1)] px-1 leading-tight mt-1">
+          Cinema
         </span>
       </button>
 
@@ -350,6 +367,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         </div>
       </div>
     </div>
+
+    <LetterboxdApp />
 
     <!-- Ventana de terminal (abierta por defecto, se puede cerrar y arrastrar) -->
     <div id="terminal-window" class="fixed top-6 right-6 max-h-[calc(100vh-7rem)] w-[min(460px,95vw)] bg-black border border-red-900 rounded-sm shadow-2xl z-30 flex flex-col font-mono">
@@ -728,6 +747,18 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     makeDraggable(document.getElementById('terminal-window'), document.getElementById('terminal-titlebar'));
     document.getElementById('terminal-close')?.addEventListener('click', () => {
       document.getElementById('terminal-window')?.classList.add('hidden');
+    });
+
+    // Cinema (Letterboxd/TMDB)
+    makeDraggable(document.getElementById('cine-window'), document.getElementById('cine-titlebar'));
+    function openCine(): void {
+      document.getElementById('cine-window')?.classList.remove('hidden');
+    }
+    const cineIcon = document.getElementById('cine-icon');
+    cineIcon?.addEventListener('dblclick', openCine);
+    cineIcon?.addEventListener('keydown', (e) => { if (e.key === 'Enter') openCine(); });
+    document.getElementById('cine-close')?.addEventListener('click', () => {
+      document.getElementById('cine-window')?.classList.add('hidden');
     });
 
     // MS Paint
