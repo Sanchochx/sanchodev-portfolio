@@ -249,23 +249,19 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     </div>
 
     <!-- Ventana de terminal (abierta por defecto, se puede cerrar y arrastrar) -->
-    <div id="terminal-window" class="fixed top-6 right-6 max-h-[calc(100vh-7rem)] w-[min(540px,95vw)] bg-black border border-red-900 rounded-sm shadow-2xl z-30 flex flex-col font-mono">
+    <div id="terminal-window" class="fixed top-6 right-6 max-h-[calc(100vh-7rem)] w-[min(460px,95vw)] bg-black border border-red-900 rounded-sm shadow-2xl z-30 flex flex-col font-mono">
       <div id="terminal-titlebar" class="h-8 shrink-0 bg-black flex items-center justify-between px-2 select-none border-b border-red-900 cursor-move touch-none">
         <div class="text-red-600 text-xs font-mono tracking-wider">sancho_dev - Terminal</div>
         <button id="terminal-close" type="button" aria-label="Cerrar Terminal" class="w-6 h-6 hover:bg-red-500 focus-visible:bg-red-500 text-red-600 hover:text-white flex items-center justify-center text-xs">✕</button>
       </div>
       <div class="overflow-auto p-3 selection:bg-green-800 selection:text-white">
-        <pre aria-label="SanchoDev ASCII art" class="rainbow-text text-[10px] sm:text-xs leading-tight whitespace-pre">+====================================+
-   _____                  __
-  / ___/____ _____  _____/ /_  ____
-  \__ \/ __ `/ __ \/ ___/ __ \/ __ \
- ___/ / /_/ / / / / /__/ / / / /_/ /
-/____/\__,_/_/ /_/\___/_/ /_/\____/
-    ____
-   / __ \___ _   __
-  / / / / _ \ | / /
- / /_/ /  __/ |/ /
-/_____/\___/|___/
+        <pre aria-label="SanchoDev ASCII art" class="rainbow-text text-[10px] sm:text-xs leading-tight whitespace-pre">+============================================================================+
+   _____                  __               ____
+  / ___/____ _____  _____/ /_  ____       / __ \___ _   __
+  \__ \/ __ `/ __ \/ ___/ __ \/ __ \     / / / / _ \ | / /
+ ___/ / /_/ / / / / /__/ / / / /_/ /    / /_/ /  __/ |/ /
+/____/\__,_/_/ /_/\___/_/ /_/\____/____/_____/\___/|___/
+                                 /_____/
 
                .-"""-.
              _/-=-.   \
@@ -286,7 +282,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
               /  /   \\ .-.
               \_/     \'-'/
                        `"`
-+====================================+
++============================================================================+
 
 &gt; <span class="motion-safe:animate-pulse">_</span></pre>
       </div>
