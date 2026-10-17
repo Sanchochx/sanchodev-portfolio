@@ -10,17 +10,17 @@ colors:
   surface-container-high: '#2a2a2a'
   surface-container-highest: '#353534'
   on-surface: '#e5e2e1'
-  on-surface-variant: '#b9ccb2'
+  on-surface-variant: '#ccb2b2'
   inverse-surface: '#e5e2e1'
   inverse-on-surface: '#313030'
-  outline: '#84967e'
-  outline-variant: '#3b4b37'
-  surface-tint: '#00e639'
-  primary: '#ebffe2'
-  on-primary: '#003907'
-  primary-container: '#00ff41'
-  on-primary-container: '#007117'
-  inverse-primary: '#006e16'
+  outline: '#967e7e'
+  outline-variant: '#4b3737'
+  surface-tint: '#e60000'
+  primary: '#ffe2e2'
+  on-primary: '#390000'
+  primary-container: '#ff0000'
+  on-primary-container: '#710000'
+  inverse-primary: '#6e0000'
   secondary: '#c6c6c7'
   on-secondary: '#2f3131'
   secondary-container: '#454747'
@@ -33,10 +33,10 @@ colors:
   on-error: '#690005'
   error-container: '#93000a'
   on-error-container: '#ffdad6'
-  primary-fixed: '#72ff70'
-  primary-fixed-dim: '#00e639'
-  on-primary-fixed: '#002203'
-  on-primary-fixed-variant: '#00530e'
+  primary-fixed: '#ff7070'
+  primary-fixed-dim: '#e60000'
+  on-primary-fixed: '#220000'
+  on-primary-fixed-variant: '#530000'
   secondary-fixed: '#e2e2e2'
   secondary-fixed-dim: '#c6c6c7'
   on-secondary-fixed: '#1a1c1c'
@@ -110,7 +110,7 @@ The style is a synthesis of **Minimalism** and **Glassmorphism**, set against a 
 
 ## Colors
 
-The palette is anchored by a deep charcoal-to-black foundation (`#0A0A0A`), providing a "void" that makes content feel luminous. The primary accent is the **Vibrant Neon Green** (`#00FF41`), used sparingly for high-impact signals: calls to action, active states, and critical technical details. 
+The palette is anchored by a deep charcoal-to-black foundation (`#0A0A0A`), providing a "void" that makes content feel luminous. The primary accent is the **Vibrant Neon Red** (`#ff0000`), used sparingly for high-impact signals: calls to action, active states, and critical technical details. 
 
 White (`#FFFFFF`) is reserved for high-priority typography to ensure maximum readability, while various shades of dark grey and semi-transparent layers are used for structural division. This restricted palette creates a focused, high-contrast environment that feels both high-tech and premium.
 
@@ -132,7 +132,7 @@ Depth is conveyed through **glassmorphism** and **tonal layering** rather than t
 
 - **Level 1 (Base):** The core background (`#0A0A0A`).
 - **Level 2 (Containers):** Semi-transparent surfaces (e.g., `rgba(255, 255, 255, 0.03)`) with a high-strength backdrop blur (20px+) and a very thin, low-opacity white border (0.5px) to define the edges.
-- **Level 3 (Pop-overs):** Slightly more opaque layers used for tooltips or navigation menus, featuring a subtle green-tinted glow on hover to indicate interactivity.
+- **Level 3 (Pop-overs):** Slightly more opaque layers used for tooltips or navigation menus, featuring a subtle red-tinted glow on hover to indicate interactivity.
 
 ## Shapes
 
@@ -143,16 +143,16 @@ Small tags and chips use the default `rounded`, while larger project cards use `
 ## Components
 
 ### Buttons
-Primary buttons are solid Neon Green (`#00FF41`) with black text for maximum contrast. Secondary buttons are "Ghost" style, featuring a thin white border that shifts to green on hover. All buttons should have a subtle transition effect (200ms) on background and border color.
+Primary buttons are solid Neon Red (`#ff0000`) with black text for maximum contrast. Secondary buttons are "Ghost" style, featuring a thin white border that shifts to red on hover. All buttons should have a subtle transition effect (200ms) on background and border color.
 
 ### Cards
-Cards for projects or skills utilize the glassmorphism effect described in the Elevation section. They should feature a 1px border with 5-10% opacity white. On hover, the border opacity increases and the accent green is introduced as a top-border or small icon highlight.
+Cards for projects or skills utilize the glassmorphism effect described in the Elevation section. They should feature a 1px border with 5-10% opacity white. On hover, the border opacity increases and the accent red is introduced as a top-border or small icon highlight.
 
 ### Chips & Tags
-Technical skill tags use a monospaced font style. They should have a dark background (`#1A1A1A`) and white or green text. They are small, low-profile, and serve as metadata without distracting from the main content.
+Technical skill tags use a monospaced font style. They should have a dark background (`#1A1A1A`) and white or red text. They are small, low-profile, and serve as metadata without distracting from the main content.
 
 ### Input Fields
-Inputs are minimalist: a bottom-border only or a very subtle dark background. The focus state must be unmistakable, utilizing a neon green border and a slight "glow" effect (box-shadow) to simulate a light-emitting display.
+Inputs are minimalist: a bottom-border only or a very subtle dark background. The focus state must be unmistakable, utilizing a neon red border and a slight "glow" effect (box-shadow) to simulate a light-emitting display.
 
 ### Navigation
 The navigation bar should be a "floating" glass element anchored to the top of the screen, utilizing a strong backdrop blur to remain readable over any background content. Link items use Space Grotesk in uppercase for a clear, structural feel.

@@ -112,7 +112,7 @@ html {
     backdrop-filter: blur(24px) saturate(180%);
   }
 
-  /* Opt-in para elementos interactivos: borde más visible + glow verde en hover (200ms). */
+  /* Opt-in para elementos interactivos: borde más visible + glow rojo en hover (200ms). */
   .glass-hover {
     transition: border-color 200ms ease, box-shadow 200ms ease;
   }
@@ -120,7 +120,7 @@ html {
   .glass-hover:hover,
   .glass-hover:focus-visible {
     border-color: rgb(255 255 255 / 0.18);
-    /* 0 255 65 = primary-container (#00ff41) en rgb — alpha 15% para el glow. */
-    box-shadow: 0 0 24px 0 rgb(0 255 65 / 0.15);
+    /* 255 0 0 = primary-container (#ff0000) en rgb — alpha 15% para el glow. */
+    box-shadow: 0 0 24px 0 rgb(255 0 0 / 0.15);
   }
 }
