@@ -9,7 +9,7 @@ const links = [
 <nav
   id="site-nav"
   aria-label="Navegación principal"
-  class="nav-intro glass-nav fixed top-6 left-1/2 w-[94%] md:w-[90%] max-w-container-max flex justify-between items-center px-4 md:px-8 py-4 z-50 shadow-[0_0_20px_rgba(0,0,0,0.5)] rounded-none"
+  class="glass-nav fixed top-6 left-1/2 -translate-x-1/2 w-[94%] md:w-[90%] max-w-container-max flex justify-between items-center px-4 md:px-8 py-4 z-50 shadow-[0_0_20px_rgba(0,0,0,0.5)] rounded-none"
 >
   <a
     href="#hero"
@@ -39,80 +39,3 @@ const links = [
     }
   </ul>
 </nav>
-
-<style>
-  /* translateX(-50%) mantiene el centrado horizontal mientras translateY oculta el nav. */
-  #site-nav {
-    transform: translateX(-50%) translateY(0);
-    transition: transform 280ms ease, opacity 200ms ease;
-  }
-  #site-nav.nav-hidden {
-    transform: translateX(-50%) translateY(-150%);
-    opacity: 0;
-    pointer-events: none;
-  }
-  /* Entrada Slide & Snap: misma curva que .reveal-base, a 3s como .reveal-slow, pero conservando el translateX(-50%) de centrado. */
-  #site-nav.nav-intro {
-    opacity: 0;
-    transform: translateX(-50%) translateY(30px);
-  }
-  #site-nav.nav-intro.nav-in {
-    opacity: 1;
-    transform: translateX(-50%) translateY(0);
-    transition: opacity 3s ease-out, transform 3s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  @media (prefers-reduced-motion: reduce) {
-    #site-nav {
-      transition: none;
-    }
-    #site-nav.nav-intro {
-      transform: translateX(-50%);
-    }
-    #site-nav.nav-intro.nav-in {
-      transition: opacity 0.3s ease-out;
-    }
-  }
-</style>
-
-<script>
-  // Threshold 8px evita jitter por bounce de trackpads. Bajo 80px el nav nunca se oculta.
-  (() => {
-    const nav = document.getElementById('site-nav');
-    if (!nav) return;
-
-    // Doble rAF: garantiza un frame pintado en estado inicial para que la transición se dispare.
-    // Al terminar se retiran las clases de intro y vuelve la transición normal de ocultar/mostrar.
-    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const onIntroEnd = (e: TransitionEvent) => {
-      if (e.target !== nav || e.propertyName !== (reduceMotion ? 'opacity' : 'transform')) return;
-      nav.classList.remove('nav-intro', 'nav-in');
-      nav.removeEventListener('transitionend', onIntroEnd);
-    };
-    nav.addEventListener('transitionend', onIntroEnd);
-    requestAnimationFrame(() => requestAnimationFrame(() => nav.classList.add('nav-in')));
-
-    let lastY = window.scrollY;
-    let ticking = false;
-
-    const update = () => {
-      const y = window.scrollY;
-      const diff = y - lastY;
-      if (y < 80) {
-        nav.classList.remove('nav-hidden');
-      } else if (diff > 8) {
-        nav.classList.add('nav-hidden');
-      } else if (diff < -8) {
-        nav.classList.remove('nav-hidden');
-      }
-      lastY = y;
-      ticking = false;
-    };
-
-    window.addEventListener('scroll', () => {
-      if (!ticking) {
-        requestAnimationFrame(update);
-        ticking = true;
-      }
-    }, { passive: true });
-  })();
-</script>
