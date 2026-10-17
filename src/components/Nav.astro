@@ -4,8 +4,6 @@ const links = [
   { href: '#projects', label: 'PROJECTS' },
   { href: '#contact', label: 'CONTACT' },
 ] as const;
-// El logo entra sin delay; los enlaces en cascada después de él.
-const linkDelays = ['delay-100', 'delay-200', 'delay-300'] as const;
 ---
 
 <nav
@@ -13,11 +11,7 @@ const linkDelays = ['delay-100', 'delay-200', 'delay-300'] as const;
   aria-label="Navegación principal"
   class="reveal-base reveal-slow glass-nav fixed top-6 inset-x-0 mx-auto w-[94%] md:w-[90%] max-w-container-max flex justify-between items-center px-4 md:px-8 py-4 z-50 shadow-[0_0_20px_rgba(0,0,0,0.5)] rounded-none"
 >
-  <a
-    href="#hero"
-    aria-label="Volver al inicio"
-    class="reveal-base reveal-slow"
-  >
+  <a href="#hero" aria-label="Volver al inicio">
     <img
       src="/images/sanchodev_logo.png"
       alt="Sancho Dev logo"
@@ -29,8 +23,8 @@ const linkDelays = ['delay-100', 'delay-200', 'delay-300'] as const;
 
   <ul class="flex gap-3 md:gap-8 items-center list-none m-0 p-0">
     {
-      links.map(({ href, label }, i) => (
-        <li class:list={['reveal-base', 'reveal-slow', linkDelays[i]]}>
+      links.map(({ href, label }) => (
+        <li>
           <a
             href={href}
             class="font-display text-[11px] md:text-sm uppercase tracking-wider md:tracking-widest font-medium text-on-surface/60 hover:text-primary-container transition-colors duration-200"

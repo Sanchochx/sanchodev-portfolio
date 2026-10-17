@@ -31,10 +31,12 @@ const ogImageUrl = new URL(ogImage ?? '/images/sanchodev_logo.png', siteUrl).toS
 
     {/* Mismos valores que surface / on-surface de tailwind.config.mjs: pinta oscuro antes de que llegue el CSS externo. */}
     <style is:inline>
-      html,
-      body {
+      html {
         background-color: #131313;
         color: #e5e2e1;
+      }
+      body {
+        background-color: transparent;
       }
     </style>
 
