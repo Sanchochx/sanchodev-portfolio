@@ -7,17 +7,17 @@ const email = 'santiagosanchezmarquez@gmail.com';
 
 <section
   id="contact"
-  class="py-section-gap"
+  class="pt-section-gap pb-20"
 >
   <div class="max-w-container-max mx-auto px-6">
     <div class="max-w-2xl">
-      <span data-reveal class="font-display text-mono-label text-on-surface uppercase block mb-4">
+      <span class="reveal-base font-display text-mono-label text-on-surface uppercase block mb-4">
         {sectionLabel}
       </span>
-      <span data-reveal data-delay="1" class="block w-12 h-px bg-primary-container mb-8" aria-hidden="true"></span>
+      <span class="reveal-base delay-100 block w-12 h-px bg-primary-container mb-8" aria-hidden="true"></span>
 
       <div class="space-y-8 mt-12">
-        <a data-reveal data-delay="2" href={`mailto:${email}`} class="block group">
+        <a href={`mailto:${email}`} class="reveal-base delay-200 block group">
           <p class="font-display text-mono-label text-secondary/40 mb-1">
             EMAIL_ADDRESS
           </p>
@@ -26,7 +26,7 @@ const email = 'santiagosanchezmarquez@gmail.com';
           </p>
         </a>
 
-        <ul data-reveal data-delay="3" class="flex gap-8 list-none m-0 p-0">
+        <ul class="reveal-base delay-300 flex gap-8 list-none m-0 p-0">
           <li>
             <a
               href={"https://github.com/Sanchochx"}

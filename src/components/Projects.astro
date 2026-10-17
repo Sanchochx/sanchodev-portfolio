@@ -3,6 +3,8 @@ import { Icon } from 'astro-icon/components';
 import { projects } from '../data/projects';
 
 const sectionLabel = '02 / MY PROJECTS';
+
+const revealDelays = ['delay-100', 'delay-200', 'delay-300', 'delay-400', 'delay-500'] as const;
 ---
 
 <section
@@ -11,19 +13,17 @@ const sectionLabel = '02 / MY PROJECTS';
 >
   <div class="max-w-container-max mx-auto px-6">
     <header class="mb-16">
-      <span data-reveal class="font-display text-mono-label text-on-surface uppercase block mb-4">
+      <span class="reveal-base font-display text-mono-label text-on-surface uppercase block mb-4">
         {sectionLabel}
       </span>
-      <span data-reveal data-delay="1" class="block w-12 h-px bg-primary-container mb-6" aria-hidden="true"></span>
+      <span class="reveal-base delay-100 block w-12 h-px bg-primary-container mb-6" aria-hidden="true"></span>
     </header>
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter">
       {
         projects.map((project, i) => (
           <article
-            data-reveal
-            data-delay={String((i % 3) + 1)}
-            class="glass glass-hover rounded-lg p-card-padding flex flex-col group"
+            class:list={['reveal-base', revealDelays[i % 3], 'glass glass-hover rounded-lg p-card-padding flex flex-col group']}
           >
             <div class="relative w-full aspect-video mb-6 overflow-hidden bg-surface-container rounded">
               {project.image ? (

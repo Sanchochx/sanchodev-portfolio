@@ -29,31 +29,47 @@ html {
  * Se usan como clase única (.glass) o combinadas con .glass-hover para interactividad.
  */
 /*
- * Scroll-reveal — elementos con [data-reveal] arrancan invisibles y se revelan
- * al entrar al viewport via IntersectionObserver (script en BaseLayout).
- * [data-delay="N"] añade N×100ms de retardo para stagger de grids.
+ * Slide & Snap — único sistema de reveal (carga y scroll): desliza 30px con curva expo-out, sin rebote.
+ * .reveal-base = estado inicial; .is-visible lo añade el IntersectionObserver del BaseLayout,
+ * que también retira estas clases al terminar para no pisar las transiciones de hover.
  */
 @layer utilities {
-  [data-reveal] {
+  .reveal-base {
     opacity: 0;
-    transform: translateY(28px);
-    transition: opacity 0.55s ease, transform 0.55s ease;
+    transform: translateY(30px);
+    will-change: transform, opacity;
   }
-  [data-reveal].revealed {
-    opacity: 1;
+
+  .reveal-base.is-visible {
     transform: translateY(0);
+    opacity: 1;
+    transition: opacity 1s ease-out, transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
   }
-  [data-delay="1"] { transition-delay: 100ms; }
-  [data-delay="2"] { transition-delay: 200ms; }
-  [data-delay="3"] { transition-delay: 300ms; }
-  [data-delay="4"] { transition-delay: 400ms; }
-  [data-delay="5"] { transition-delay: 500ms; }
+
+  /* Entrada lenta (3s) para título, subtítulo y chat. Solo longhand: el shorthand reiniciaría el delay. */
+  .reveal-base.is-visible.reveal-slow {
+    transition-duration: 3s;
+  }
+
+  /* Mayor especificidad que .is-visible: su shorthand `transition` reiniciaría el delay. */
+  .reveal-base.delay-100 { transition-delay: 100ms; }
+  .reveal-base.delay-200 { transition-delay: 200ms; }
+  .reveal-base.delay-300 { transition-delay: 300ms; }
+  .reveal-base.delay-400 { transition-delay: 400ms; }
+  .reveal-base.delay-500 { transition-delay: 500ms; }
+  .reveal-base.delay-600 { transition-delay: 600ms; }
 
   @media (prefers-reduced-motion: reduce) {
-    [data-reveal] {
-      opacity: 1;
+    .reveal-base {
       transform: none;
-      transition: none;
+    }
+    .reveal-base.is-visible,
+    .reveal-base.is-visible.reveal-slow {
+      transition: opacity 0.3s ease-out;
+    }
+    .reveal-base.delay-100, .reveal-base.delay-200, .reveal-base.delay-300,
+    .reveal-base.delay-400, .reveal-base.delay-500, .reveal-base.delay-600 {
+      transition-delay: 0ms;
     }
   }
 }

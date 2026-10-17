@@ -45,6 +45,8 @@ const categoryCards: readonly CategoryCard[] = [
 
 const toolingCards = [
 ] as const;
+
+const revealDelays = ['delay-100', 'delay-200', 'delay-300', 'delay-400', 'delay-500'] as const;
 ---
 
 <section
@@ -53,19 +55,19 @@ const toolingCards = [
 >
   <div class="max-w-container-max mx-auto px-6">
     <header class="mb-16">
-      <span data-reveal class="font-display text-mono-label text-on-surface uppercase block mb-4">
+      <span class="reveal-base font-display text-mono-label text-on-surface uppercase block mb-4">
         {sectionLabel}
       </span>
-      <span data-reveal data-delay="1" class="block w-12 h-px bg-primary-container" aria-hidden="true"></span>
+      <span class="reveal-base delay-100 block w-12 h-px bg-primary-container" aria-hidden="true"></span>
     </header>
 
     <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-gutter">
       {
         categoryCards.map((card, i) => (
           <article
-            data-reveal
-            data-delay={String(i + 1)}
             class:list={[
+              'reveal-base',
+              revealDelays[Math.min(i, 4)],
               'glass glass-hover rounded-lg flex transition-colors',
               card.span === 'large'
                 ? 'col-span-2 row-span-2 p-card-padding flex-col'
@@ -120,9 +122,7 @@ const toolingCards = [
       {
         toolingCards.map(({ icon, label }, i) => (
           <article
-            data-reveal
-            data-delay={String(Math.min(i + 1, 5))}
-            class="glass glass-hover rounded-lg p-6 flex flex-col items-center justify-center gap-3 transition-colors"
+            class:list={['reveal-base', revealDelays[Math.min(i, 4)], 'glass glass-hover rounded-lg p-6 flex flex-col items-center justify-center gap-3 transition-colors']}
           >
             <Icon
               name={icon}

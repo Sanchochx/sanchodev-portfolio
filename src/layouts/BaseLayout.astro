@@ -51,23 +51,37 @@ const ogImageUrl = new URL(ogImage ?? '/images/sanchodev_logo.png', siteUrl).toS
     <CyberGrid />
     <slot />
     <ChatWidget />
-  </body>
-  <script>
-    (() => {
-      const els = document.querySelectorAll('[data-reveal]');
-      if (!els.length) return;
-      const obs = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((e) => {
-            if (e.isIntersecting) {
-              e.target.classList.add('revealed');
+    <script>
+      (() => {
+        const els = document.querySelectorAll('.reveal-base');
+        if (!els.length) return;
+
+        // Al terminar se quitan las clases reveal: su delay y transición pisarían el hover de los componentes.
+        const cleanup = (el: Element): void => {
+          const done = (e: Event): void => {
+            if (e.target !== el) return;
+            el.classList.remove('reveal-base', 'is-visible');
+            [...el.classList]
+              .filter((c) => /^delay-\d+$/.test(c))
+              .forEach((c) => el.classList.remove(c));
+            el.removeEventListener('transitionend', done);
+          };
+          el.addEventListener('transitionend', done);
+        };
+
+        const obs = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((e) => {
+              if (!e.isIntersecting) return;
+              cleanup(e.target);
+              e.target.classList.add('is-visible');
               obs.unobserve(e.target);
-            }
-          });
-        },
-        { threshold: 0.1 }
-      );
-      els.forEach((el) => obs.observe(el));
-    })();
-  </script>
+            });
+          },
+          { threshold: 0.1 }
+        );
+        els.forEach((el) => obs.observe(el));
+      })();
+    </script>
+  </body>
 </html>

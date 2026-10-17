@@ -6,6 +6,8 @@ const paragraphs = [
   'Ive participated in IT engineering research projects, transforming theoretical concepts into practical, working solutions.',
   'Im Fluent in English and Spanish, Im highly adaptable and committed to professional growth through teamwork, continuous learning, and delivering quality software.',
 ] as const;
+
+const revealDelays = ['delay-100', 'delay-200', 'delay-300', 'delay-400', 'delay-500'] as const;
 ---
 
 <section
@@ -16,9 +18,7 @@ const paragraphs = [
     {
       paragraphs.map((paragraph, i) => (
         <p
-          data-reveal
-          data-delay={String(Math.min(i + 2, 5))}
-          class="font-sans text-body-lg text-secondary"
+          class:list={['reveal-base', revealDelays[Math.min(i, 4)], 'font-sans text-body-lg text-secondary']}
         >
           {paragraph}
         </p>

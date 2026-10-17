@@ -12,11 +12,11 @@ const secondaryRole = 'AI, DevOps & Cloud-Native';
   <div class="hero-bg-glow" aria-hidden="true"></div>
 
   <div class="text-center max-w-container-max relative z-10">
-    <h1 class="hero-enter hero-enter-delay-1 font-display text-headline-xl text-on-surface uppercase mb-6">
+    <h1 class="reveal-base reveal-slow font-display text-headline-xl text-on-surface uppercase mb-6">
       {fullName}
     </h1>
 
-    <div class="hero-enter hero-enter-delay-2 flex flex-col md:flex-row items-center justify-center gap-4 mb-12">
+    <div class="reveal-base reveal-slow delay-200 flex flex-col md:flex-row items-center justify-center gap-4 mb-12">
       <span class="font-sans text-body-lg text-on-surface/60">
         {primaryRole}
       </span>
@@ -27,8 +27,10 @@ const secondaryRole = 'AI, DevOps & Cloud-Native';
     </div>
   </div>
 
-  <div class="hero-enter hero-enter-delay-3 absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2" aria-hidden="true">
-    <div class="scroll-line w-px h-10 bg-gradient-to-b from-primary-container/50 to-transparent"></div>
+  <div class="absolute bottom-10 left-1/2 -translate-x-1/2" aria-hidden="true">
+    <div class="reveal-base reveal-slow delay-400 flex flex-col items-center gap-2">
+      <div class="scroll-line w-px h-10 bg-gradient-to-b from-primary-container/50 to-transparent"></div>
+    </div>
   </div>
 </section>
 
@@ -48,26 +50,6 @@ const secondaryRole = 'AI, DevOps & Cloud-Native';
   @keyframes hero-pulse {
     0%, 100% { opacity: 0.6; transform: translate(-50%, -55%) scale(1); }
     50%       { opacity: 1;   transform: translate(-50%, -55%) scale(1.12); }
-  }
-
-  @keyframes hero-fade-in {
-    from { opacity: 0; transform: translateY(20px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-
-  .hero-enter {
-    animation: hero-fade-in 0.65s ease forwards;
-    opacity: 0;
-  }
-  .hero-enter-delay-1 { animation-delay: 150ms; }
-  .hero-enter-delay-2 { animation-delay: 300ms; }
-  .hero-enter-delay-3 { animation-delay: 480ms; }
-
-  @media (prefers-reduced-motion: reduce) {
-    .hero-enter {
-      animation: none;
-      opacity: 1;
-    }
   }
 
   .scroll-line {

@@ -12,3 +12,4 @@ Las historias de usuario viven en `context/user_stories/epic_XX_<nombre>/`.
 ### Épica 03 | UI - Mejoras de Interfaz
 
 - [x] US-UI-001: Implementar fondo animado Cyber-Grid 3D (Suelo y Techo) → [`context/user_stories/epic_03_ui/US-UI-001_fondo_cyber_grid.md`](context/user_stories/epic_03_ui/US-UI-001_fondo_cyber_grid.md)
+- [x] US-UI-002: Implementar animaciones Cyber Blur Reveal (Entrada y Scroll) → [`context/user_stories/epic_03_ui/US-UI-002_animaciones_reveal.md`](context/user_stories/epic_03_ui/US-UI-002_animaciones_reveal.md)
