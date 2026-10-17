@@ -57,8 +57,7 @@ html {
   .reveal-base.delay-300 { transition-delay: 300ms; }
   .reveal-base.delay-400 { transition-delay: 400ms; }
   .reveal-base.delay-500 { transition-delay: 500ms; }
-  .reveal-base.delay-600 { transition-delay: 600ms; }
-
+  
   @media (prefers-reduced-motion: reduce) {
     .reveal-base {
       transform: none;
@@ -68,7 +67,7 @@ html {
       transition: opacity 0.3s ease-out;
     }
     .reveal-base.delay-100, .reveal-base.delay-200, .reveal-base.delay-300,
-    .reveal-base.delay-400, .reveal-base.delay-500, .reveal-base.delay-600 {
+    .reveal-base.delay-400, .reveal-base.delay-500 {
       transition-delay: 0ms;
     }
   }
@@ -87,7 +86,6 @@ html {
 }
 
 .anim-delay-200 { animation-delay: 200ms; }
-.anim-delay-400 { animation-delay: 400ms; }
 .anim-delay-600 { animation-delay: 600ms; }
 
 @media (prefers-reduced-motion: reduce) {
