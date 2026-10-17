@@ -9,12 +9,14 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     body { overflow: hidden; } /* Evita el scroll en el escritorio */
   </style>
 
+  <script is:inline src="https://js-dos.com/6.22/current/js-dos.js"></script>
+
   <main class="h-screen w-full relative z-10 flex flex-col">
     <!-- Área del escritorio -->
     <div class="flex-1 relative w-full h-full p-4 flex flex-col flex-wrap content-start gap-2">
 
       <!-- Icono: My Portfolio (Acceso Directo) -->
-      <a href="/" class="w-fit flex flex-col items-center justify-start group rounded-sm border border-transparent hover:bg-blue-500/20 hover:border-blue-400/30 transition-colors p-1 cursor-pointer z-20">
+      <a href="/" class="w-20 flex flex-col items-center justify-start group rounded-sm border border-transparent hover:bg-blue-500/20 hover:border-blue-400/30 transition-colors p-1 cursor-pointer z-20">
         <div class="relative w-9 h-9 mb-1">
           <!-- Icono principal -->
           <img src="/images/sanchodev_logo.png" alt="My Portfolio" class="w-full h-full object-contain drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]" />
@@ -34,6 +36,36 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         </span>
       </a>
 
+      <!-- Icono: DOOM -->
+      <button id="doom-icon" type="button" class="w-20 flex flex-col items-center justify-start group rounded-sm border border-transparent hover:bg-blue-500/20 hover:border-blue-400/30 focus-visible:border-blue-400/60 transition-colors p-1 cursor-pointer z-20">
+        <div class="relative w-9 h-9 mb-1">
+          <img src="/images/doom_icon.png" alt="DOOM" width="36" height="36" class="w-full h-full object-contain drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]" onerror="this.onerror=null;this.src='/images/sanchodev_logo.png'" />
+          <div class="absolute -bottom-1 -left-1 w-3 h-3 bg-white border border-gray-400 flex items-center justify-center shadow-sm">
+            <svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="#0066cc" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M10 5l7 7-7 7" />
+              <path d="M17 12H3" />
+            </svg>
+          </div>
+        </div>
+        <span class="text-white text-[9px] text-center font-mono tracking-wider drop-shadow-[0_1px_3px_rgba(0,0,0,1)] px-1 leading-tight mt-1">
+          DOOM
+        </span>
+      </button>
+
+    </div>
+
+    <!-- Ventana de DOOM (oculta por defecto) -->
+    <div id="doom-window" class="hidden fixed inset-0 m-auto h-fit w-[min(800px,95vw,calc((100vh-4rem)*1.6))] bg-black border border-gray-600 rounded-sm shadow-2xl z-40 flex flex-col">
+      <div class="h-8 bg-black flex items-center justify-between px-2 select-none border-b border-gray-700">
+        <div class="flex items-center text-red-600 text-xs font-sans">
+          <img src="/images/doom_icon.png" alt="" width="16" height="16" class="w-4 h-4 mr-2" onerror="this.style.display='none'" />
+          js-dos - DOOM
+        </div>
+        <button id="doom-close" type="button" aria-label="Cerrar DOOM" class="w-6 h-6 hover:bg-red-500 focus-visible:bg-red-500 text-white flex items-center justify-center text-xs">✕</button>
+      </div>
+      <div class="w-full aspect-[16/10] bg-black relative" id="dos-container">
+        <canvas id="jsdos" class="!w-full !h-full block object-contain"></canvas>
+      </div>
     </div>
 
     <!-- Barra de Tareas (Taskbar) -->
@@ -84,5 +116,51 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
     setInterval(updateClock, 1000);
     updateClock();
+  </script>
+  <script>
+    interface DosCommandInterface { exit(): Promise<void>; }
+    interface DosFs { extract(url: string): Promise<void>; }
+    type DosMain = (args: string[]) => Promise<DosCommandInterface>;
+    interface DosBoot { ready(cb: (fs: DosFs, main: DosMain) => void): void; }
+    type DosFactory = (canvas: HTMLCanvasElement, opts: { wdosboxUrl: string }) => DosBoot;
+
+    let dosInstance: DosCommandInterface | null = null;
+    let booting = false;
+
+    function openDoom(): void {
+      const win = document.getElementById('doom-window');
+      const canvas = document.getElementById('jsdos') as HTMLCanvasElement | null;
+      const Dos = (window as unknown as { Dos?: DosFactory }).Dos;
+      if (!win || !canvas) return;
+      win.classList.remove('hidden');
+
+      if (dosInstance || booting || !Dos) return;
+      booting = true;
+      Dos(canvas, { wdosboxUrl: 'https://js-dos.com/6.22/current/wdosbox.js' }).ready((fs, main) => {
+        fs.extract('https://js-dos.com/cdn/upload/DOOM-@evilution.zip')
+          .then(() => main(['-c', 'cd DOOM', '-c', 'DOOM.EXE']))
+          .then((ci) => {
+            // La ventana pudo cerrarse mientras cargaba
+            if (win.classList.contains('hidden')) void ci.exit();
+            else dosInstance = ci;
+          })
+          .catch((err) => console.error('DOOM failed to start', err))
+          .finally(() => { booting = false; });
+      });
+    }
+
+    function closeDoom(): void {
+      document.getElementById('doom-window')?.classList.add('hidden');
+      const container = document.getElementById('dos-container');
+      if (!dosInstance || !container) return;
+      void dosInstance.exit();
+      dosInstance = null;
+      container.innerHTML = '<canvas id="jsdos" class="!w-full !h-full block object-contain"></canvas>';
+    }
+
+    const icon = document.getElementById('doom-icon');
+    icon?.addEventListener('dblclick', openDoom);
+    icon?.addEventListener('keydown', (e) => { if (e.key === 'Enter') openDoom(); });
+    document.getElementById('doom-close')?.addEventListener('click', closeDoom);
   </script>
 </BaseLayout>
