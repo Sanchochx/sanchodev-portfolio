@@ -18,15 +18,12 @@ const email = 'santiagosanchezmarquez@gmail.com';
 
       <div class="space-y-8 mt-12">
         <a href={`mailto:${email}`} class="reveal-base delay-200 block group">
-          <p class="font-display text-mono-label text-secondary/40 mb-1">
-            EMAIL_ADDRESS
-          </p>
-          <p class="font-display text-headline-sm text-on-surface group-hover:text-primary-container transition-colors break-all">
+          <p class="font-display text-headline-sm text-[clamp(0.8rem,3.8vw,1.15rem)] font-semibold text-on-surface group-hover:text-primary-container transition-colors [overflow-wrap:anywhere]">
             {email}
           </p>
         </a>
 
-        <ul class="reveal-base delay-300 flex gap-8 list-none m-0 p-0">
+        <ul class="reveal-base delay-300 flex flex-wrap gap-x-8 gap-y-4 list-none m-0 p-0">
           <li>
             <a
               href={"https://github.com/Sanchochx"}
