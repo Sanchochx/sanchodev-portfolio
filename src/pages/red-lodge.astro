@@ -7,11 +7,68 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   <style is:global>
     header, nav, footer, #chat-widget { display: none !important; }
     body { overflow: hidden; } /* Evita el scroll en el escritorio */
+
+    @keyframes psychedelic-rainbow {
+      0% { filter: hue-rotate(0deg) saturate(200%); }
+      50% { filter: hue-rotate(180deg) saturate(300%) brightness(1.2); }
+      100% { filter: hue-rotate(360deg) saturate(200%); }
+    }
+
+    @keyframes psychedelic-glow {
+      0% { text-shadow: 0 0 10px #ff0000, 0 0 20px #ff00ff; }
+      33% { text-shadow: 0 0 10px #00ff00, 0 0 20px #00ffff; }
+      66% { text-shadow: 0 0 10px #0000ff, 0 0 20px #ff00ff; }
+      100% { text-shadow: 0 0 10px #ff0000, 0 0 20px #ff00ff; }
+    }
+
+    @keyframes rainbow-hue {
+      from { filter: hue-rotate(0deg); }
+      to { filter: hue-rotate(360deg); }
+    }
+
+    /* Texto con degradado arcoíris; el filtro rota el tono para que cambie de color */
+    .rainbow-text,
+    .rainbow-text * {
+      color: transparent !important;
+    }
+    .rainbow-text {
+      background-image: linear-gradient(90deg, #ff0040, #ff8000, #ffe600, #00e060, #00c8ff, #8000ff, #ff0040);
+      -webkit-background-clip: text;
+      background-clip: text;
+    }
+
+    /* Solo se animan si el usuario no pidió reducir movimiento */
+    @media (prefers-reduced-motion: no-preference) {
+      .rainbow-text { animation: rainbow-hue 0.6s linear infinite; }
+      .psychedelic-container { animation: psychedelic-rainbow 4s linear infinite; }
+      .psychedelic-text { animation: psychedelic-glow 3s ease-in-out infinite; }
+    }
   </style>
 
   <script is:inline src="https://js-dos.com/6.22/current/js-dos.js"></script>
 
   <main class="h-screen w-full relative z-10 flex flex-col">
+    <!-- Pantalla de BIOS / Boot Screen -->
+    <div id="bios-screen" class="absolute inset-0 bg-black z-[60] flex flex-col justify-between p-6 font-mono text-cyan-400 text-xs md:text-sm select-none overflow-hidden psychedelic-container">
+      <!-- Scanlines retro y capa de distorsión cromática -->
+      <div class="absolute inset-0 pointer-events-none bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(255,0,255,0.1)_50%)] bg-[length:100%_4px] z-10" aria-hidden="true"></div>
+
+      <!-- Los logs se anclan abajo; lo que desborda por arriba queda recortado -->
+      <div class="relative z-20 h-full overflow-hidden flex flex-col justify-end">
+        <div class="space-y-1 psychedelic-text">
+          <p class="text-pink-500 font-bold">CYBER-PSYCHEDELIC BIOS v9.99 (c) 2026 Mainframe Matrix</p>
+          <p class="text-purple-400">QUANTUM CORE: HYPER-DIMENSIONAL NEURAL ARRAY @ 9.00THz</p>
+          <p id="bios-memory" class="text-green-400">VIRTUAL MEMORY MATRIX : 0K</p>
+          <p class="text-yellow-400">AUTO-DETECTING NEURAL SLAVE: ACID_WASM_ENGINE_v7</p>
+          <p class="text-cyan-400">HUE SHIFT MATRIX: ACTIVE // RAINBOW OVERLOAD</p>
+        </div>
+        <div id="dynamic-boot-logs" class="space-y-1 mt-1 text-emerald-300"></div>
+      </div>
+
+      <div class="relative z-20 pt-4 border-t border-purple-500/40 text-[10px] md:text-xs text-pink-400 flex justify-between uppercase tracking-widest font-bold">
+        <span id="boot-status" class="motion-safe:animate-pulse">STATUS: WARPING REALITY...</span>      </div>
+    </div>
+
     <!-- Área del escritorio -->
     <div class="flex-1 relative w-full h-full p-4 flex flex-col flex-wrap content-start gap-2">
 
@@ -84,6 +141,22 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         </span>
       </button>
 
+      <!-- Icono: Bloc de notas -->
+      <button id="notepad-icon" type="button" class="w-20 flex flex-col items-center justify-start group rounded-sm border border-transparent hover:bg-blue-500/20 hover:border-blue-400/30 focus-visible:border-blue-400/60 transition-colors p-1 cursor-pointer z-20">
+        <div class="relative w-9 h-9 mb-1">
+          <img src="/images/notepad_icon.png" alt="Notepad" width="36" height="36" class="w-full h-full object-contain drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]" onerror="this.onerror=null;this.src='/images/sanchodev_logo.png'" />
+          <div class="absolute -bottom-1 -left-1 w-3 h-3 bg-white border border-gray-400 flex items-center justify-center shadow-sm">
+            <svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="#0066cc" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M10 5l7 7-7 7" />
+              <path d="M17 12H3" />
+            </svg>
+          </div>
+        </div>
+        <span class="text-white text-[9px] text-center font-mono tracking-wider drop-shadow-[0_1px_3px_rgba(0,0,0,1)] px-1 leading-tight mt-1">
+          About Me
+        </span>
+      </button>
+
     </div>
 
     <!-- Ventana de DOOM (oculta por defecto) -->
@@ -127,6 +200,94 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       </div>
     </div>
 
+    <!-- Ventana de Bloc de notas (oculta por defecto) -->
+    <div id="notepad-window" class="hidden fixed inset-0 m-auto h-[min(480px,calc(100vh-4rem))] w-[min(760px,95vw)] bg-black border border-red-900 rounded-sm shadow-2xl z-40 flex flex-col font-mono">
+      <div id="notepad-titlebar" class="h-8 shrink-0 bg-black flex items-center justify-between px-2 select-none border-b border-red-900 cursor-move touch-none">
+        <div class="flex items-center text-red-600 text-xs font-mono tracking-wider">
+          <img src="/images/notepad_icon.png" alt="" width="16" height="16" class="w-4 h-4 mr-2" onerror="this.style.display='none'" />
+          About Me - Notepad
+        </div>
+        <button id="notepad-close" type="button" aria-label="Cerrar Bloc de notas" class="w-6 h-6 hover:bg-red-500 focus-visible:bg-red-500 text-red-600 hover:text-white flex items-center justify-center text-xs">✕</button>
+      </div>
+      <div class="shrink-0 bg-black text-gray-300 text-[11px] px-2 py-1 flex space-x-4 border-b border-red-900/50 select-none" aria-hidden="true">
+        <span class="px-1">File</span>
+        <span class="px-1">Edit</span>
+        <span class="px-1">Format</span>
+        <span class="px-1">View</span>
+        <span class="px-1">Help</span>
+      </div>
+      <div class="flex-1 bg-black text-gray-300 p-4 text-xs md:text-sm overflow-y-auto selection:bg-green-800 selection:text-white leading-relaxed font-sans">
+        <div class="flex flex-col sm:flex-row gap-4 sm:gap-6">
+          <div class="sm:w-[68%] text-justify break-words space-y-4">
+            <p>I'm SanchoDev. I'm a software engineer I love computers, technology, building and maintaining software. From a young age, I've been on the internet and playing videogames. That curiosity naturally evolved into a passion for software development. Right now, I'm on a self-taught journey to specialize as a Cloud and DevOps engineer.</p>
+            <p>This is my personal corner of the internet—a space where I'll keep adding stuff that represent who I am and I like. I also do videogame and movie reviews, which you can find on this Desktop. Feel free to use this portfolio as inspiration for your own work.</p>
+            <p>If you'd like to connect or collaborate, just email me at <a href="mailto:santiagosanchezmarquez@gmail.com" class="text-green-400 underline hover:text-green-300 focus-visible:outline focus-visible:outline-1 focus-visible:outline-green-400">santiagosanchezmarquez@gmail.com</a>. I value my privacy, but since I'm looking for a job I need to share just a bit unfortunately.</p>
+            <section aria-labelledby="sw-hw-title" class="rainbow-text text-left pt-4">
+              <h2 id="sw-hw-title" class="font-mono text-xs tracking-wider text-gray-500 mb-3">=== SOFTWARE &amp; HARDWARE ===</h2>
+              <p class="font-semibold text-gray-200 mb-1">Personal Laptop (Acer Nitro V15)</p>
+              <dl class="grid grid-cols-1 sm:grid-cols-[auto_1fr] gap-x-4 gap-y-1 mb-3">
+                <dt class="font-bold text-gray-200">Processor:</dt>
+                <dd class="mb-2 sm:mb-0">13th Gen Intel(R) Core(TM) i7-13620H (2.40 GHz)</dd>
+                <dt class="font-bold text-gray-200">Installed RAM:</dt>
+                <dd class="mb-2 sm:mb-0">16.0 GB (15.7 GB usable)</dd>
+                <dt class="font-bold text-gray-200">Graphics card:</dt>
+                <dd class="mb-2 sm:mb-0">NVIDIA GeForce RTX 4050 Laptop GPU (6 GB) / Intel(R) UHD Graphics (128 MB)</dd>
+              </dl>
+              <dl class="grid grid-cols-1 sm:grid-cols-[auto_1fr] gap-x-4 gap-y-1 mb-3">
+                <dt class="font-bold text-gray-200">Work Device:</dt>
+                <dd>Currently a Virtual Box with Ubuntu, but in the future a Lenovo T480. <span class="font-mono text-xs italic text-gray-500">// Only og developers know that jam ;)</span></dd>
+              </dl>
+            </section>
+          </div>
+          <!-- En móvil la imagen queda arriba del texto -->
+          <figure class="order-first sm:order-last sm:w-[32%] shrink-0 self-start mx-auto w-48 sm:mx-0 border border-gray-600 shadow-lg">
+            <img src="/images/avatar.jpeg" alt="Santiago Sánchez Márquez" width="240" height="240" class="w-full aspect-square object-cover block" />          </figure>
+        </div>
+
+        <p class="text-gray-500 mt-6 text-xs font-mono">[ End of file - Read Only Mode ]</p>
+      </div>
+    </div>
+
+    <!-- Ventana de terminal (abierta por defecto, se puede cerrar y arrastrar) -->
+    <div id="terminal-window" class="fixed top-6 right-6 max-h-[calc(100vh-7rem)] w-[min(540px,95vw)] bg-black border border-red-900 rounded-sm shadow-2xl z-30 flex flex-col font-mono">
+      <div id="terminal-titlebar" class="h-8 shrink-0 bg-black flex items-center justify-between px-2 select-none border-b border-red-900 cursor-move touch-none">
+        <div class="text-red-600 text-xs font-mono tracking-wider">sancho_dev - Terminal</div>
+        <button id="terminal-close" type="button" aria-label="Cerrar Terminal" class="w-6 h-6 hover:bg-red-500 focus-visible:bg-red-500 text-red-600 hover:text-white flex items-center justify-center text-xs">✕</button>
+      </div>
+      <div class="overflow-auto p-3 selection:bg-green-800 selection:text-white">
+        <pre aria-label="SanchoDev ASCII art" class="rainbow-text text-[10px] sm:text-xs leading-tight whitespace-pre">+============================================================================+
+   _____                  __               ____
+  / ___/____ _____  _____/ /_  ____       / __ \___ _   __
+  \__ \/ __ `/ __ \/ ___/ __ \/ __ \     / / / / _ \ | / /
+ ___/ / /_/ / / / / /__/ / / / /_/ /    / /_/ /  __/ |/ /
+/____/\__,_/_/ /_/\___/_/ /_/\____/____/_____/\___/|___/
+                                 /_____/
+
+               .-"""-.
+             _/-=-.   \
+            (_|a a/   |_
+             / "  \   ,_)
+        _    \`=' /__/
+       / \_  .;--'  `-.
+       \___)//      ,  \
+        \ \/;        \  \
+         \_.|         | |
+          .-\ '     _/_/
+        .'  _;.    (_  \
+       /  .'   `\   \\_/
+      |_ /       |  |\\
+     /  _)       /  / ||
+    /  /       _/  /  //
+    \_/       ( `-/  ||
+              /  /   \\ .-.
+              \_/     \'-'/
+                       `"`
++============================================================================+
+
+&gt; <span class="motion-safe:animate-pulse">_</span></pre>
+      </div>
+    </div>
+
     <!-- Barra de Tareas (Taskbar) -->
     <div class="absolute bottom-0 left-0 w-full h-12 bg-black/80 backdrop-blur-md border-t border-red-900/50 flex items-center justify-between px-2 select-none z-50">
 
@@ -148,12 +309,110 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
       <!-- Lado Derecho: Reloj del Sistema -->
       <div class="flex items-center h-full text-gray-300 font-mono text-sm">
-        <div id="os-clock" class="hover:bg-white/10 h-full px-4 flex items-center cursor-default transition-colors whitespace-pre border-l border-red-900/30">
+        <div id="os-clock" class="rainbow-text h-full px-4 flex items-center cursor-default transition-colors whitespace-pre border-l border-red-900/30">
           --:--
         </div>
       </div>
     </div>
   </main>
+
+  <!-- Secuencia de arranque: BIOS -> escritorio -->
+  <script>
+    const MEMORY_TOTAL_K = 131072;
+    const BIOS_DURATION_MS = 3200;
+    const LOG_INTERVAL_MS = 120;
+    const FADE_MS = 400;
+    const LOG_COLORS: string[] = ['text-pink-400', 'text-yellow-300', 'text-cyan-300', 'text-purple-400', 'text-green-300'];
+
+    const biosScreen = document.getElementById('bios-screen');
+    const logContainer = document.getElementById('dynamic-boot-logs');
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function setText(id: string, text: string): void {
+      const el = document.getElementById(id);
+      if (el) el.textContent = text;
+    }
+
+    function hex(value: number, digits: number): string {
+      return value.toString(16).toUpperCase().padStart(digits, '0');
+    }
+
+    function randomHex(digits: number): string {
+      return hex(Math.floor(Math.random() * 16 ** digits), digits);
+    }
+
+    // Los timestamps crecen con el índice para que el log parezca un dmesg real
+    const bootSteps: string[] = [
+      'Linux version 6.8.0-red-lodge (sancho@mainframe) #1 SMP PREEMPT',
+      'Command_Line: BOOT_IMAGE=/boot/vmlinuz-red root=/dev/nvme0n1p2 ro quiet',
+      'BIOS-provided physical RAM map:',
+      'BIOS-e820: [mem 0x0000000000000000-0x000000000009FBFF] usable',
+      'BIOS-e820: [mem 0x0000000000100000-0x00000000BFFDFFFF] usable',
+      'BIOS-e820: [mem 0x00000000FEC00000-0x00000000FEC00FFF] reserved',
+      'x86/fpu: Supporting FPU state: 0x500, descriptors: 4, datamask: 0x7',
+      'ACPI: RSDP 0x00000000000F6A40 000024 (v02 RLODGE)',
+      'ACPI: XSDT 0x00000000BFFE1830 00004C (v01 RLODGE RLTABLE)',
+      'ACPI: FACP 0x00000000BFFE16D0 000114 (v06 RLODGE RLTABLE)',
+      'Zone ranges: DMA [mem 0x1000-0xFFFFFF] DMA32 [mem 0x1000000-0xFFFFFFFF]',
+      'percpu: Embedded 62 pages/cpu s217088 r8192 d28672 u262144',
+      'zswap: loaded pool lzo-optimized compressor',
+      'NET: Registered PF_INET protocol family',
+      'PCI: MMCONFIG at [mem 0xE0000000-0xEFFFFFFF] reserved as E820 entry',
+      'nvme nvme0: pci function 0000:01:00.0',
+      'EXT4-fs (nvme0n1p2): mounted filesystem with ordered data mode',
+      'systemd[1]: Detected architecture x86-64.',
+      'Initializing WebAssembly Virtual Machine Sandbox...',
+      'wasm: heap base @ 0x__HEX__ stack guard @ 0x__HEX__',
+      'Loading module: [ DOOM_ENGINE_V7 ] ... [SUCCESS]',
+      'Loading module: [ SPACE_CADET_PINBALL_WASM ] ... [SUCCESS]',
+      'Loading module: [ WOLFENSTEIN_3D_RAYCASTER ] ... [SUCCESS]',
+      'Mounting virtual file systems and opening RED_LODGE desktop environment...',
+      'SYSTEM READY. LAUNCHING DESKTOP INTERFACE...',
+    ];
+
+    function appendLog(index: number): void {
+      if (!logContainer) return;
+      const seconds = ((index / bootSteps.length) * (BIOS_DURATION_MS / 1000 - 0.4)).toFixed(6).padStart(9, ' ');
+      const text = bootSteps[index].replace(/__HEX__/g, () => randomHex(16));
+      const line = document.createElement('p');
+      line.className = `${LOG_COLORS[index % LOG_COLORS.length]} whitespace-nowrap`;
+      line.textContent = `[${seconds}] ${text}`;
+      logContainer.appendChild(line);
+    }
+
+    if (biosScreen) {
+      // Conteo de memoria
+      const start = performance.now();
+      const memTimer = window.setInterval(() => {
+        const progress = Math.min((performance.now() - start) / (BIOS_DURATION_MS * 0.5), 1);
+        const done = progress === 1;
+        setText('bios-memory', 'VIRTUAL MEMORY MATRIX : ' + Math.round(MEMORY_TOTAL_K * progress) + 'K' + (done ? ' UNBOUND [OK]' : ''));
+        if (done) window.clearInterval(memTimer);
+      }, 40);
+
+      // Logs progresivos; con reduced-motion se vuelcan de una vez
+      let logIndex = 0;
+      if (reducedMotion) {
+        for (; logIndex < bootSteps.length; logIndex++) appendLog(logIndex);
+      } else {
+        const logTimer = window.setInterval(() => {
+          if (logIndex >= bootSteps.length) {
+            window.clearInterval(logTimer);
+            return;
+          }
+          appendLog(logIndex++);
+        }, LOG_INTERVAL_MS);
+      }
+
+      window.setTimeout(() => setText('boot-status', 'STATUS: REALITY WARPED'), BIOS_DURATION_MS - 600);
+
+      window.setTimeout(() => {
+        biosScreen.style.transition = reducedMotion ? 'none' : `opacity ${FADE_MS}ms ease-in-out`;
+        biosScreen.style.opacity = '0';
+        window.setTimeout(() => { biosScreen.style.display = 'none'; }, reducedMotion ? 0 : FADE_MS);
+      }, BIOS_DURATION_MS);
+    }
+  </script>
 
   <!-- Script para actualizar el reloj en tiempo real -->
   <script>
@@ -240,7 +499,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
       if (container.querySelector('iframe')) return;
       const frame = document.createElement('iframe');
-      frame.src = 'https://alula.github.io/SpaceCadetPinball/';
+      frame.src = 'https://pinball.alula.me/';
       frame.title = '3D Pinball - Space Cadet';
       frame.className = 'w-full h-full border-none';
       container.appendChild(frame);
@@ -303,5 +562,59 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     wolfIcon?.addEventListener('dblclick', openWolf);
     wolfIcon?.addEventListener('keydown', (e) => { if (e.key === 'Enter') openWolf(); });
     document.getElementById('wolf-close')?.addEventListener('click', closeWolf);
+  </script>
+  <script>
+    function openNotepad(): void {
+      document.getElementById('notepad-window')?.classList.remove('hidden');
+    }
+
+    function closeNotepad(): void {
+      document.getElementById('notepad-window')?.classList.add('hidden');
+    }
+
+    const notepadIcon = document.getElementById('notepad-icon');
+    notepadIcon?.addEventListener('dblclick', openNotepad);
+    notepadIcon?.addEventListener('keydown', (e) => { if (e.key === 'Enter') openNotepad(); });
+    document.getElementById('notepad-close')?.addEventListener('click', closeNotepad);
+
+    function makeDraggable(win: HTMLElement | null, bar: HTMLElement | null): void {
+      if (!win || !bar) return;
+      let offsetX = 0;
+      let offsetY = 0;
+
+      const move = (e: PointerEvent): void => {
+        const maxX = Math.max(0, window.innerWidth - win.offsetWidth);
+        const maxY = Math.max(0, window.innerHeight - win.offsetHeight);
+        win.style.left = `${Math.min(Math.max(0, e.clientX - offsetX), maxX)}px`;
+        win.style.top = `${Math.min(Math.max(0, e.clientY - offsetY), maxY)}px`;
+      };
+
+      bar.addEventListener('pointerdown', (e) => {
+        if (e.button !== 0 || (e.target as HTMLElement).closest('button')) return;
+        // Pasa del posicionamiento por CSS a posición explícita al primer arrastre
+        const rect = win.getBoundingClientRect();
+        win.style.inset = 'auto';
+        win.style.margin = '0';
+        win.style.left = `${rect.left}px`;
+        win.style.top = `${rect.top}px`;
+        offsetX = e.clientX - rect.left;
+        offsetY = e.clientY - rect.top;
+        bar.setPointerCapture(e.pointerId);
+        bar.addEventListener('pointermove', move);
+      });
+
+      const stop = (e: PointerEvent): void => {
+        bar.removeEventListener('pointermove', move);
+        if (bar.hasPointerCapture(e.pointerId)) bar.releasePointerCapture(e.pointerId);
+      };
+      bar.addEventListener('pointerup', stop);
+      bar.addEventListener('pointercancel', stop);
+    }
+
+    makeDraggable(document.getElementById('notepad-window'), document.getElementById('notepad-titlebar'));
+    makeDraggable(document.getElementById('terminal-window'), document.getElementById('terminal-titlebar'));
+    document.getElementById('terminal-close')?.addEventListener('click', () => {
+      document.getElementById('terminal-window')?.classList.add('hidden');
+    });
   </script>
 </BaseLayout>

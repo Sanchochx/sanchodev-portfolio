@@ -50,7 +50,7 @@ Portafolio construido con Astro en modo servidor (SSR) y desplegado en Vercel. I
 
 ```
 src/
-├── components/     # Nav, Hero, SkillsBento, Projects, Contact, Footer, ChatWidget
+├── components/     # Nav, Hero, SkillsBento, Projects, Contact, Footer, ChatWidget, CyberGrid
 ├── data/
 │   ├── projects.ts # Proyectos mostrados en la sección Projects
 │   └── me.ts       # Contexto y system prompt del chatbot
@@ -58,10 +58,10 @@ src/
 │   └── BaseLayout.astro  # <head>, SEO, OG, Twitter Card, ChatWidget
 ├── pages/
 │   ├── index.astro       # Orquesta las secciones
+│   ├── 404.astro         # Página de error personalizada
 │   └── api/chat.ts       # Endpoint POST del chatbot
-├── content/config.ts     # Schema de la collection `projects` (sin entradas todavía)
 └── styles/global.css     # Fuentes, directivas Tailwind, utilidades .glass
-public/                   # Imágenes de proyectos, logo y CV (PDF)
+public/                   # Imágenes (proyectos, 404), logo y CV (PDF)
 DESIGN.md                 # Sistema de diseño
 ```
 
