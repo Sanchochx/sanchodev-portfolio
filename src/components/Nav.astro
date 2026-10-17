@@ -40,3 +40,17 @@ const links = [
     }
   </ul>
 </nav>
+
+<script>
+  // Scroll to the section without leaving "#id" in the URL.
+  document.querySelectorAll<HTMLAnchorElement>('#site-nav a[href^="#"]').forEach((link) => {
+    link.addEventListener('click', (event) => {
+      const target = document.querySelector(link.getAttribute('href') ?? '');
+      if (!target) return;
+      event.preventDefault();
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth' });
+      history.replaceState(null, '', window.location.pathname + window.location.search);
+    });
+  });
+</script>
