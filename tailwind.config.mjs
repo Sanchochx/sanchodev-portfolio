@@ -62,6 +62,7 @@ export default {
         'headline-xl': ['64px', { lineHeight: '1.1', letterSpacing: '-0.04em', fontWeight: '700' }],
         'headline-lg': ['48px', { lineHeight: '1.2', letterSpacing: '-0.02em', fontWeight: '600' }],
         'headline-md': ['32px', { lineHeight: '1.3', fontWeight: '600' }],
+        'headline-sm': ['24px', { lineHeight: '1.3', fontWeight: '600' }],
         'body-lg': ['18px', { lineHeight: '1.6', fontWeight: '400' }],
         'body-md': ['16px', { lineHeight: '1.6', fontWeight: '400' }],
         'mono-label': ['14px', { lineHeight: '1.5', letterSpacing: '0.1em', fontWeight: '500' }],
