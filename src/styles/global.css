@@ -74,6 +74,29 @@ html {
   }
 }
 
+/* Entrada en carga con CSS puro: no depende del IntersectionObserver, así no hay carrera con la hidratación. */
+@keyframes slide-up-fade {
+  0% { opacity: 0; transform: translateY(30px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+.animate-on-load {
+  opacity: 0;
+  animation: slide-up-fade 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: transform, opacity;
+}
+
+.anim-delay-200 { animation-delay: 200ms; }
+.anim-delay-400 { animation-delay: 400ms; }
+.anim-delay-600 { animation-delay: 600ms; }
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-on-load {
+    animation: none;
+    opacity: 1;
+  }
+}
+
 @layer components {
   .glass {
     background-color: rgb(255 255 255 / 0.03);
