@@ -1,0 +1,88 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="RED LODGE // OS" description="RED LODGE: escritorio interactivo de Santiago Sánchez Márquez.">
+  <!-- Ocultamos el Navbar global y el Footer por defecto de esta página mediante CSS -->
+  <style is:global>
+    header, nav, footer, #chat-widget { display: none !important; }
+    body { overflow: hidden; } /* Evita el scroll en el escritorio */
+  </style>
+
+  <main class="h-screen w-full relative z-10 flex flex-col">
+    <!-- Área del escritorio -->
+    <div class="flex-1 relative w-full h-full p-4 flex flex-col flex-wrap content-start gap-2">
+
+      <!-- Icono: My Portfolio (Acceso Directo) -->
+      <a href="/" class="w-24 flex flex-col items-center justify-start group rounded-sm border border-transparent hover:bg-blue-500/20 hover:border-blue-400/30 transition-colors p-2 cursor-pointer z-20">
+        <div class="relative w-12 h-12 mb-2">
+          <!-- Icono principal -->
+          <img src="/images/sanchodev_logo.png" alt="My Portfolio" class="w-full h-full object-contain drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]" />
+
+          <!-- Flechita de acceso directo (estilo clásico) -->
+          <div class="absolute -bottom-1 -left-1 w-4 h-4 bg-white border border-gray-400 flex items-center justify-center shadow-sm">
+            <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#0066cc" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M10 5l7 7-7 7" />
+              <path d="M17 12H3" />
+            </svg>
+          </div>
+        </div>
+
+        <!-- Texto del icono -->
+        <span class="text-white text-xs text-center font-sans tracking-wide drop-shadow-[0_1px_3px_rgba(0,0,0,1)] px-1 group-hover:bg-blue-600/80 rounded-sm leading-tight">
+          My Portfolio
+        </span>
+      </a>
+
+    </div>
+
+    <!-- Barra de Tareas (Taskbar) -->
+    <div class="absolute bottom-0 left-0 w-full h-12 bg-black/80 backdrop-blur-md border-t border-red-900/50 flex items-center justify-between px-2 select-none z-50">
+
+      <!-- Lado Izquierdo: Botón de Inicio (Logo) y Buscar -->
+      <div class="flex items-center h-full">
+        <button class="h-full px-4 flex items-center justify-center hover:bg-red-900/30 transition-colors rounded-sm group">
+          <!-- Logo de Sancho Dev con filtro rojo -->
+          <img
+            src="/images/sanchodev_logo.png"
+            alt="Sancho OS"
+            width="24"
+            height="24"
+            class="h-6 w-auto object-contain transition-transform group-hover:scale-110"
+            style="filter: invert(15%) sepia(95%) saturate(7487%) hue-rotate(356deg) brightness(103%) contrast(116%);"
+            onerror="this.style.display='none'"
+          />
+        </button>
+      </div>
+
+      <!-- Lado Derecho: Reloj del Sistema -->
+      <div class="flex items-center h-full text-gray-300 font-mono text-sm">
+        <div id="os-clock" class="hover:bg-white/10 h-full px-4 flex items-center cursor-default transition-colors whitespace-pre border-l border-red-900/30">
+          --:--
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Script para actualizar el reloj en tiempo real -->
+  <script>
+    function updateClock(): void {
+      const clockElement = document.getElementById('os-clock');
+      if (clockElement) {
+        const now = new Date();
+        const hours = now.getHours();
+        const minutes = now.getMinutes();
+        const ampm = hours >= 12 ? 'PM' : 'AM';
+        const hours12 = hours % 12 || 12;
+        const minutesStr = minutes < 10 ? '0' + minutes : String(minutes);
+
+        const date = now.toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' });
+
+        clockElement.textContent = hours12 + ':' + minutesStr + ' ' + ampm + '  ' + date;
+      }
+    }
+
+    setInterval(updateClock, 1000);
+    updateClock();
+  </script>
+</BaseLayout>

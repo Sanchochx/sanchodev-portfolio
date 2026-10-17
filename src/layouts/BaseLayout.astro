@@ -11,9 +11,10 @@ export interface Props {
   description: string;
   ogImage?: string;
   canonical?: string;
+  showChat?: boolean;
 }
 
-const { title, description, ogImage, canonical } = Astro.props;
+const { title, description, ogImage, canonical, showChat = true } = Astro.props;
 
 // `Astro.site` viene de astro.config.mjs (TODO: dominio final pendiente para US-DEPLOY-001).
 // Construye URLs absolutas para canonical, og:url y og:image (los crawlers exigen absolutas).
@@ -61,7 +62,7 @@ const ogImageUrl = new URL(ogImage ?? '/images/sanchodev_logo.png', siteUrl).toS
   <body class="text-on-surface font-sans">
     <CyberGrid />
     <slot />
-    <ChatWidget />
+    {showChat && <ChatWidget />}
     <script>
       (() => {
         const els = document.querySelectorAll('.reveal-base');

@@ -3,6 +3,7 @@ const links = [
   { href: '#skills', label: 'SKILLS' },
   { href: '#projects', label: 'PROJECTS' },
   { href: '#contact', label: 'CONTACT' },
+  { href: '/red-lodge', label: 'RED LODGE', accent: true },
 ] as const;
 ---
 
@@ -23,13 +24,16 @@ const links = [
 
   <ul class="flex gap-3 md:gap-8 items-center list-none m-0 p-0">
     {
-      links.map(({ href, label }) => (
+      links.map((link) => (
         <li>
           <a
-            href={href}
-            class="font-display text-[11px] md:text-sm uppercase tracking-wider md:tracking-widest font-medium text-on-surface/60 hover:text-primary-container transition-colors duration-200"
+            href={link.href}
+            class:list={[
+              'font-display text-[11px] md:text-sm uppercase tracking-wider md:tracking-widest font-medium transition-colors duration-200',
+              'accent' in link ? 'text-red-500 hover:text-red-400' : 'text-on-surface/60 hover:text-primary-container',
+            ]}
           >
-            {label}
+            {link.label}
           </a>
         </li>
       ))
