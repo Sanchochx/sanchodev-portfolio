@@ -93,6 +93,38 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         </span>
       </a>
 
+      <!-- Icono: Bloc de notas -->
+      <button id="notepad-icon" type="button" class="w-20 flex flex-col items-center justify-start group rounded-sm border border-transparent hover:bg-blue-500/20 hover:border-blue-400/30 focus-visible:border-blue-400/60 transition-colors p-1 cursor-pointer z-20">
+        <div class="relative w-9 h-9 mb-1">
+          <img src="/images/notepad_icon.png" alt="Notepad" width="36" height="36" class="w-full h-full object-contain drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]" onerror="this.onerror=null;this.src='/images/sanchodev_logo.png'" />
+          <div class="absolute -bottom-1 -left-1 w-3 h-3 bg-white border border-gray-400 flex items-center justify-center shadow-sm">
+            <svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="#0066cc" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M10 5l7 7-7 7" />
+              <path d="M17 12H3" />
+            </svg>
+          </div>
+        </div>
+        <span class="text-white text-[9px] text-center font-mono tracking-wider drop-shadow-[0_1px_3px_rgba(0,0,0,1)] px-1 leading-tight mt-1">
+          About Me
+        </span>
+      </button>
+
+      <!-- Icono: MS Paint -->
+      <button id="paint-icon" type="button" class="w-20 flex flex-col items-center justify-start group rounded-sm border border-transparent hover:bg-blue-500/20 hover:border-blue-400/30 focus-visible:border-blue-400/60 transition-colors p-1 cursor-pointer z-20">
+        <div class="relative w-9 h-9 mb-1">
+          <img src="/images/paint_icon.png" alt="MS Paint" width="36" height="36" class="w-full h-full object-contain drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]" onerror="this.onerror=null;this.src='/images/sanchodev_logo.png'" />
+          <div class="absolute -bottom-1 -left-1 w-3 h-3 bg-white border border-gray-400 flex items-center justify-center shadow-sm">
+            <svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="#0066cc" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M10 5l7 7-7 7" />
+              <path d="M17 12H3" />
+            </svg>
+          </div>
+        </div>
+        <span class="text-white text-[9px] text-center font-mono tracking-wider drop-shadow-[0_1px_3px_rgba(0,0,0,1)] px-1 leading-tight mt-1">
+          MS PAINT
+        </span>
+      </button>
+
       <!-- Icono: DOOM -->
       <button id="doom-icon" type="button" class="w-20 flex flex-col items-center justify-start group rounded-sm border border-transparent hover:bg-blue-500/20 hover:border-blue-400/30 focus-visible:border-blue-400/60 transition-colors p-1 cursor-pointer z-20">
         <div class="relative w-9 h-9 mb-1">
@@ -138,22 +170,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         </div>
         <span class="text-white text-[9px] text-center font-mono tracking-wider drop-shadow-[0_1px_3px_rgba(0,0,0,1)] px-1 leading-tight mt-1">
           WOLFENSTEIN 3D
-        </span>
-      </button>
-
-      <!-- Icono: Bloc de notas -->
-      <button id="notepad-icon" type="button" class="w-20 flex flex-col items-center justify-start group rounded-sm border border-transparent hover:bg-blue-500/20 hover:border-blue-400/30 focus-visible:border-blue-400/60 transition-colors p-1 cursor-pointer z-20">
-        <div class="relative w-9 h-9 mb-1">
-          <img src="/images/notepad_icon.png" alt="Notepad" width="36" height="36" class="w-full h-full object-contain drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]" onerror="this.onerror=null;this.src='/images/sanchodev_logo.png'" />
-          <div class="absolute -bottom-1 -left-1 w-3 h-3 bg-white border border-gray-400 flex items-center justify-center shadow-sm">
-            <svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="#0066cc" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M10 5l7 7-7 7" />
-              <path d="M17 12H3" />
-            </svg>
-          </div>
-        </div>
-        <span class="text-white text-[9px] text-center font-mono tracking-wider drop-shadow-[0_1px_3px_rgba(0,0,0,1)] px-1 leading-tight mt-1">
-          About Me
         </span>
       </button>
 
@@ -245,6 +261,93 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         </div>
 
         <p class="text-gray-500 mt-6 text-xs font-mono">[ End of file - Read Only Mode ]</p>
+      </div>
+    </div>
+
+    <!-- Ventana de MS Paint, estilo Windows 95 (oculta por defecto) -->
+    <div id="paint-window" class="hidden fixed inset-0 m-auto h-fit w-[min(660px,95vw)] bg-[#c0c0c0] border-2 border-t-white border-l-white border-b-black border-r-black shadow-2xl z-40 flex flex-col font-sans select-none text-black">
+      <div id="paint-titlebar" class="h-7 shrink-0 bg-gradient-to-r from-[#000080] to-[#1084d0] flex items-center justify-between px-2 cursor-move touch-none">
+        <div class="flex items-center text-white text-xs font-bold tracking-wide">
+          <img src="/images/paint_icon.png" alt="" width="16" height="16" class="w-4 h-4 mr-2" onerror="this.style.display='none'" />
+          Paint
+        </div>
+        <div class="flex space-x-1">
+          <button type="button" aria-label="Minimize" class="w-5 h-5 bg-[#c0c0c0] border-t border-l border-white border-b-2 border-r-2 border-black text-black flex items-center justify-center text-xs font-bold active:border-t-2 active:border-l-2 active:border-b-white active:border-r-white">_</button>
+          <button type="button" aria-label="Maximize" class="w-5 h-5 bg-[#c0c0c0] border-t border-l border-white border-b-2 border-r-2 border-black text-black flex items-center justify-center text-xs font-bold active:border-t-2 active:border-l-2 active:border-b-white active:border-r-white">□</button>
+          <button id="paint-close" type="button" aria-label="Close Paint" class="w-5 h-5 bg-[#c0c0c0] border-t border-l border-white border-b-2 border-r-2 border-black text-black flex items-center justify-center text-xs font-bold active:border-t-2 active:border-l-2 active:border-b-white active:border-r-white">✕</button>
+        </div>
+      </div>
+
+      <div class="bg-[#c0c0c0] text-black text-xs px-2 py-0.5 flex space-x-3 border-b border-[#808080]">
+        <div class="relative" id="paint-file-menu">
+          <button id="paint-file-btn" type="button" aria-haspopup="true" aria-expanded="false" class="px-1 hover:bg-[#000080] hover:text-white focus-visible:bg-[#000080] focus-visible:text-white aria-expanded:bg-[#000080] aria-expanded:text-white"><u>F</u>ile</button>
+          <div id="paint-file-dropdown" role="menu" class="hidden absolute left-0 top-full z-50 min-w-[9rem] bg-[#c0c0c0] border-2 border-t-white border-l-white border-b-black border-r-black py-0.5 shadow-md">
+            <button id="paint-save" type="button" role="menuitem" class="w-full text-left px-6 py-0.5 hover:bg-[#000080] hover:text-white focus-visible:bg-[#000080] focus-visible:text-white">Save Image</button>
+          </div>
+        </div>
+        <button id="paint-clear" type="button" class="hover:bg-[#000080] hover:text-white focus-visible:bg-[#000080] focus-visible:text-white px-1"><u>C</u>lear</button>
+      </div>
+
+      <div class="flex p-2 bg-[#c0c0c0] gap-2">
+        <div class="w-16 shrink-0 grid grid-cols-2 gap-1 bg-[#c0c0c0] p-1 border-t border-l border-[#808080] border-b border-r border-white h-fit">
+          <button type="button" data-tool="eraser" id="paint-tool-eraser" title="Eraser" aria-label="Eraser" class="paint-tool p-1.5 flex items-center justify-center text-xs">⬜</button>
+          <button type="button" data-tool="fill" id="paint-tool-fill" title="Fill with color" aria-label="Fill with color" class="paint-tool p-1.5 flex items-center justify-center text-xs">🪣</button>
+          <button type="button" data-tool="picker" id="paint-tool-picker" title="Color picker" aria-label="Color picker" class="paint-tool p-1.5 flex items-center justify-center text-xs">💉</button>
+          <button type="button" data-tool="pencil" id="paint-tool-pencil" title="Pencil" aria-label="Pencil" class="paint-tool p-1.5 flex items-center justify-center text-xs">✏️</button>
+          <button type="button" data-tool="brush" id="paint-tool-brush" title="Brush" aria-label="Brush" class="paint-tool p-1.5 flex items-center justify-center text-xs">🖌️</button>
+        </div>
+
+        <div class="flex-1 min-w-0 bg-white border-2 border-t-[#808080] border-l-[#808080] border-b-white border-r-white relative overflow-hidden h-[340px] max-h-[50vh]" id="paint-canvas-wrap">
+          <canvas id="paint-canvas" class="w-full h-full cursor-crosshair touch-none"></canvas>
+        </div>
+      </div>
+
+      <div class="px-3 pb-1 flex items-center gap-2 bg-[#c0c0c0]">
+        <select id="paint-size" aria-label="Line width" class="bg-white text-black text-xs border border-[#808080] p-0.5">
+          <option value="1">1px</option>
+          <option value="3" selected>3px</option>
+          <option value="6">6px</option>
+          <option value="12">12px</option>
+        </select>
+      </div>
+
+      <div class="bg-[#c0c0c0] p-2 border-t border-[#808080] flex items-center gap-3">
+        <div class="relative w-8 h-8 shrink-0 border border-white border-b-black border-r-black bg-[#808080]" aria-hidden="true">
+          <div id="paint-active-color" class="absolute bottom-1 right-1 w-5 h-5 bg-black border border-black z-10"></div>
+          <div class="absolute top-1 left-1 w-5 h-5 bg-white border border-black"></div>
+        </div>
+
+        <div id="paint-palette" class="grid grid-cols-[repeat(14,1rem)] gap-0.5 bg-[#808080] p-1 border border-white border-b-[#404040] border-r-[#404040]">
+          <button type="button" data-color="#000000" aria-label="#000000" style="background:#000000" class="w-4 h-4 border border-[#808080]"></button>
+          <button type="button" data-color="#808080" aria-label="#808080" style="background:#808080" class="w-4 h-4 border border-[#808080]"></button>
+          <button type="button" data-color="#800000" aria-label="#800000" style="background:#800000" class="w-4 h-4 border border-[#808080]"></button>
+          <button type="button" data-color="#808000" aria-label="#808000" style="background:#808000" class="w-4 h-4 border border-[#808080]"></button>
+          <button type="button" data-color="#008000" aria-label="#008000" style="background:#008000" class="w-4 h-4 border border-[#808080]"></button>
+          <button type="button" data-color="#008080" aria-label="#008080" style="background:#008080" class="w-4 h-4 border border-[#808080]"></button>
+          <button type="button" data-color="#000080" aria-label="#000080" style="background:#000080" class="w-4 h-4 border border-[#808080]"></button>
+          <button type="button" data-color="#800080" aria-label="#800080" style="background:#800080" class="w-4 h-4 border border-[#808080]"></button>
+          <button type="button" data-color="#808040" aria-label="#808040" style="background:#808040" class="w-4 h-4 border border-[#808080]"></button>
+          <button type="button" data-color="#004040" aria-label="#004040" style="background:#004040" class="w-4 h-4 border border-[#808080]"></button>
+          <button type="button" data-color="#0080ff" aria-label="#0080ff" style="background:#0080ff" class="w-4 h-4 border border-[#808080]"></button>
+          <button type="button" data-color="#004080" aria-label="#004080" style="background:#004080" class="w-4 h-4 border border-[#808080]"></button>
+          <button type="button" data-color="#8000ff" aria-label="#8000ff" style="background:#8000ff" class="w-4 h-4 border border-[#808080]"></button>
+          <button type="button" data-color="#804000" aria-label="#804000" style="background:#804000" class="w-4 h-4 border border-[#808080]"></button>
+
+          <button type="button" data-color="#ffffff" aria-label="#ffffff" style="background:#ffffff" class="w-4 h-4 border border-[#808080]"></button>
+          <button type="button" data-color="#c0c0c0" aria-label="#c0c0c0" style="background:#c0c0c0" class="w-4 h-4 border border-[#808080]"></button>
+          <button type="button" data-color="#ff0000" aria-label="#ff0000" style="background:#ff0000" class="w-4 h-4 border border-[#808080]"></button>
+          <button type="button" data-color="#ffff00" aria-label="#ffff00" style="background:#ffff00" class="w-4 h-4 border border-[#808080]"></button>
+          <button type="button" data-color="#00ff00" aria-label="#00ff00" style="background:#00ff00" class="w-4 h-4 border border-[#808080]"></button>
+          <button type="button" data-color="#00ffff" aria-label="#00ffff" style="background:#00ffff" class="w-4 h-4 border border-[#808080]"></button>
+          <button type="button" data-color="#0000ff" aria-label="#0000ff" style="background:#0000ff" class="w-4 h-4 border border-[#808080]"></button>
+          <button type="button" data-color="#ff00ff" aria-label="#ff00ff" style="background:#ff00ff" class="w-4 h-4 border border-[#808080]"></button>
+          <button type="button" data-color="#ffff80" aria-label="#ffff80" style="background:#ffff80" class="w-4 h-4 border border-[#808080]"></button>
+          <button type="button" data-color="#00ff80" aria-label="#00ff80" style="background:#00ff80" class="w-4 h-4 border border-[#808080]"></button>
+          <button type="button" data-color="#80ffff" aria-label="#80ffff" style="background:#80ffff" class="w-4 h-4 border border-[#808080]"></button>
+          <button type="button" data-color="#8080ff" aria-label="#8080ff" style="background:#8080ff" class="w-4 h-4 border border-[#808080]"></button>
+          <button type="button" data-color="#ff0080" aria-label="#ff0080" style="background:#ff0080" class="w-4 h-4 border border-[#808080]"></button>
+          <button type="button" data-color="#ff8040" aria-label="#ff8040" style="background:#ff8040" class="w-4 h-4 border border-[#808080]"></button>
+        </div>
       </div>
     </div>
 
@@ -615,6 +718,208 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     makeDraggable(document.getElementById('terminal-window'), document.getElementById('terminal-titlebar'));
     document.getElementById('terminal-close')?.addEventListener('click', () => {
       document.getElementById('terminal-window')?.classList.add('hidden');
+    });
+
+    // MS Paint
+    makeDraggable(document.getElementById('paint-window'), document.getElementById('paint-titlebar'));
+
+    type PaintTool = 'brush' | 'pencil' | 'eraser' | 'fill' | 'picker';
+    const PAINT_TOOLS: PaintTool[] = ['brush', 'pencil', 'eraser', 'fill', 'picker'];
+
+    let paintCanvas: HTMLCanvasElement | null = null;
+    let paintCtx: CanvasRenderingContext2D | null = null;
+    let paintColor = '#000000';
+    let paintTool: PaintTool = 'brush';
+    let isDrawing = false;
+
+    function clearPaint(): void {
+      if (!paintCtx || !paintCanvas) return;
+      paintCtx.fillStyle = '#ffffff';
+      paintCtx.fillRect(0, 0, paintCanvas.width, paintCanvas.height);
+    }
+
+    function paintPoint(e: PointerEvent): { x: number; y: number } {
+      const rect = paintCanvas!.getBoundingClientRect();
+      return { x: e.clientX - rect.left, y: e.clientY - rect.top };
+    }
+
+    function hexToRgb(hex: string): [number, number, number] {
+      const n = parseInt(hex.slice(1), 16);
+      return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+    }
+
+    function rgbToHex(r: number, g: number, b: number): string {
+      return `#${[r, g, b].map((v) => v.toString(16).padStart(2, '0')).join('')}`;
+    }
+
+    function updatePaintToolUI(): void {
+      PAINT_TOOLS.forEach((t) => {
+        const btn = document.getElementById(`paint-tool-${t}`);
+        if (!btn) return;
+        const active = t === paintTool;
+        btn.setAttribute('aria-pressed', String(active));
+        btn.className = active
+          ? 'paint-tool p-1.5 bg-[#000080] text-white border border-black flex items-center justify-center text-xs'
+          : 'paint-tool p-1.5 bg-[#c0c0c0] text-black border border-transparent hover:border-black active:border-t-black active:border-l-black flex items-center justify-center text-xs';
+      });
+    }
+
+    function setPaintTool(tool: PaintTool): void {
+      paintTool = tool;
+      updatePaintToolUI();
+    }
+
+    function setPaintColor(color: string): void {
+      paintColor = color;
+      const active = document.getElementById('paint-active-color');
+      if (active) active.style.backgroundColor = color;
+    }
+
+    function applyPaintStyle(): void {
+      if (!paintCtx) return;
+      const size = document.getElementById('paint-size') as HTMLSelectElement | null;
+      const width = size ? parseInt(size.value, 10) : 3;
+      paintCtx.lineWidth = paintTool === 'pencil' ? 1 : width;
+      paintCtx.lineCap = 'round';
+      paintCtx.lineJoin = 'round';
+      paintCtx.strokeStyle = paintTool === 'eraser' ? '#ffffff' : paintColor;
+    }
+
+    // Relleno por inundación: sustituye la región contigua del color clicado
+    function floodFill(startX: number, startY: number): void {
+      if (!paintCtx || !paintCanvas) return;
+      const w = paintCanvas.width;
+      const h = paintCanvas.height;
+      const x0 = Math.floor(startX);
+      const y0 = Math.floor(startY);
+      if (x0 < 0 || y0 < 0 || x0 >= w || y0 >= h) return;
+
+      const img = paintCtx.getImageData(0, 0, w, h);
+      const data = img.data;
+      const idx = (y0 * w + x0) * 4;
+      const target: [number, number, number] = [data[idx], data[idx + 1], data[idx + 2]];
+      const fill = hexToRgb(paintColor);
+      if (target[0] === fill[0] && target[1] === fill[1] && target[2] === fill[2]) return;
+
+      const matches = (i: number): boolean =>
+        data[i] === target[0] && data[i + 1] === target[1] && data[i + 2] === target[2];
+
+      const stack: number[] = [x0, y0];
+      while (stack.length) {
+        const y = stack.pop()!;
+        let x = stack.pop()!;
+        while (x >= 0 && matches((y * w + x) * 4)) x--;
+        x++;
+        let spanUp = false;
+        let spanDown = false;
+        while (x < w && matches((y * w + x) * 4)) {
+          const i = (y * w + x) * 4;
+          data[i] = fill[0];
+          data[i + 1] = fill[1];
+          data[i + 2] = fill[2];
+          data[i + 3] = 255;
+          if (y > 0) {
+            const up = matches(((y - 1) * w + x) * 4);
+            if (up && !spanUp) { stack.push(x, y - 1); spanUp = true; }
+            else if (!up) spanUp = false;
+          }
+          if (y < h - 1) {
+            const down = matches(((y + 1) * w + x) * 4);
+            if (down && !spanDown) { stack.push(x, y + 1); spanDown = true; }
+            else if (!down) spanDown = false;
+          }
+          x++;
+        }
+      }
+      paintCtx.putImageData(img, 0, 0);
+    }
+
+    function pickColor(x: number, y: number): void {
+      if (!paintCtx) return;
+      const [r, g, b] = paintCtx.getImageData(Math.floor(x), Math.floor(y), 1, 1).data;
+      setPaintColor(rgbToHex(r, g, b));
+      setPaintTool('brush');
+    }
+
+    function initPaintCanvas(): void {
+      paintCanvas = document.getElementById('paint-canvas') as HTMLCanvasElement | null;
+      const wrap = document.getElementById('paint-canvas-wrap');
+      if (!paintCanvas || !wrap) return;
+      paintCtx = paintCanvas.getContext('2d', { willReadFrequently: true });
+      paintCanvas.width = wrap.clientWidth;
+      paintCanvas.height = wrap.clientHeight;
+      clearPaint();
+
+      paintCanvas.addEventListener('pointerdown', (e) => {
+        if (!paintCtx || !paintCanvas || e.button !== 0) return;
+        const { x, y } = paintPoint(e);
+        if (paintTool === 'fill') { floodFill(x, y); return; }
+        if (paintTool === 'picker') { pickColor(x, y); return; }
+        isDrawing = true;
+        paintCanvas.setPointerCapture(e.pointerId);
+        applyPaintStyle();
+        paintCtx.beginPath();
+        paintCtx.moveTo(x, y);
+        // Un clic sin arrastre deja un punto
+        paintCtx.lineTo(x + 0.01, y);
+        paintCtx.stroke();
+      });
+      paintCanvas.addEventListener('pointermove', (e) => {
+        if (!isDrawing || !paintCtx) return;
+        const { x, y } = paintPoint(e);
+        paintCtx.lineTo(x, y);
+        paintCtx.stroke();
+      });
+      const stopDrawing = (): void => { isDrawing = false; };
+      paintCanvas.addEventListener('pointerup', stopDrawing);
+      paintCanvas.addEventListener('pointercancel', stopDrawing);
+    }
+
+    function openPaint(): void {
+      document.getElementById('paint-window')?.classList.remove('hidden');
+      if (!paintCanvas) {
+        initPaintCanvas();
+        updatePaintToolUI();
+      }
+    }
+
+    const paintIcon = document.getElementById('paint-icon');
+    paintIcon?.addEventListener('dblclick', openPaint);
+    paintIcon?.addEventListener('keydown', (e) => { if (e.key === 'Enter') openPaint(); });
+    document.getElementById('paint-close')?.addEventListener('click', () => {
+      document.getElementById('paint-window')?.classList.add('hidden');
+    });
+    document.getElementById('paint-clear')?.addEventListener('click', clearPaint);
+
+    const fileBtn = document.getElementById('paint-file-btn');
+    const fileDropdown = document.getElementById('paint-file-dropdown');
+    function toggleFileMenu(open: boolean): void {
+      fileDropdown?.classList.toggle('hidden', !open);
+      fileBtn?.setAttribute('aria-expanded', String(open));
+    }
+    fileBtn?.addEventListener('click', () => toggleFileMenu(fileDropdown?.classList.contains('hidden') ?? false));
+    document.addEventListener('pointerdown', (e) => {
+      if (!(e.target as HTMLElement).closest('#paint-file-menu')) toggleFileMenu(false);
+    });
+    document.getElementById('paint-window')?.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') toggleFileMenu(false);
+    });
+    document.getElementById('paint-save')?.addEventListener('click', () => {
+      toggleFileMenu(false);
+      if (!paintCanvas) return;
+      const link = document.createElement('a');
+      link.download = 'paint.jpg';
+      link.href = paintCanvas.toDataURL('image/jpeg', 0.92);
+      link.click();
+    });
+    document.querySelectorAll<HTMLElement>('.paint-tool').forEach((btn) => {
+      btn.addEventListener('click', () => setPaintTool(btn.dataset.tool as PaintTool));
+    });
+    document.getElementById('paint-palette')?.addEventListener('click', (e) => {
+      const color = (e.target as HTMLElement).closest<HTMLElement>('[data-color]')?.dataset.color;
+      if (!color) return;
+      setPaintColor(color);
+      if (paintTool === 'eraser' || paintTool === 'picker') setPaintTool('brush');
     });
   </script>
 </BaseLayout>
