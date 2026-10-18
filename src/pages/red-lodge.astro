@@ -10,19 +10,6 @@ import GamesApp from '../components/GamesApp.astro';
     header, nav, footer, #chat-widget { display: none !important; }
     body { overflow: hidden; } /* Evita el scroll en el escritorio */
 
-    @keyframes psychedelic-rainbow {
-      0% { filter: hue-rotate(0deg) saturate(200%); }
-      50% { filter: hue-rotate(180deg) saturate(300%) brightness(1.2); }
-      100% { filter: hue-rotate(360deg) saturate(200%); }
-    }
-
-    @keyframes psychedelic-glow {
-      0% { text-shadow: 0 0 10px #ff0000, 0 0 20px #ff00ff; }
-      33% { text-shadow: 0 0 10px #00ff00, 0 0 20px #00ffff; }
-      66% { text-shadow: 0 0 10px #0000ff, 0 0 20px #ff00ff; }
-      100% { text-shadow: 0 0 10px #ff0000, 0 0 20px #ff00ff; }
-    }
-
     @keyframes rainbow-hue {
       from { filter: hue-rotate(0deg); }
       to { filter: hue-rotate(360deg); }
@@ -39,36 +26,30 @@ import GamesApp from '../components/GamesApp.astro';
       background-clip: text;
     }
 
+    /* Rayo catódico del encendido CRT */
+    @keyframes crt-beam-on {
+      0% { transform: scale(0.01, 0.002); opacity: 1; }
+      30% { transform: scale(1, 0.002); opacity: 1; }
+      60% { transform: scale(1, 1); opacity: 1; }
+      100% { transform: scale(1, 1); opacity: 0; }
+    }
+
+    .animate-crt-beam {
+      animation: crt-beam-on 0.7s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+    }
+
     /* Solo se animan si el usuario no pidió reducir movimiento */
     @media (prefers-reduced-motion: no-preference) {
       .rainbow-text { animation: rainbow-hue 0.6s linear infinite; }
-      .psychedelic-container { animation: psychedelic-rainbow 4s linear infinite; }
-      .psychedelic-text { animation: psychedelic-glow 3s ease-in-out infinite; }
     }
   </style>
 
-  <script is:inline src="https://js-dos.com/6.22/current/js-dos.js"></script>
+  <script is:inline async src="https://js-dos.com/6.22/current/js-dos.js"></script>
 
   <main class="h-screen w-full relative z-10 flex flex-col">
-    <!-- Pantalla de BIOS / Boot Screen -->
-    <div id="bios-screen" class="absolute inset-0 bg-black z-[60] flex flex-col justify-between p-6 font-mono text-cyan-400 text-xs md:text-sm select-none overflow-hidden psychedelic-container">
-      <!-- Scanlines retro y capa de distorsión cromática -->
-      <div class="absolute inset-0 pointer-events-none bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(255,0,255,0.1)_50%)] bg-[length:100%_4px] z-10" aria-hidden="true"></div>
-
-      <!-- Los logs se anclan abajo; lo que desborda por arriba queda recortado -->
-      <div class="relative z-20 h-full overflow-hidden flex flex-col justify-end">
-        <div class="space-y-1 psychedelic-text">
-          <p class="text-pink-500 font-bold">CYBER-PSYCHEDELIC BIOS v9.99 (c) 2026 Mainframe Matrix</p>
-          <p class="text-purple-400">QUANTUM CORE: HYPER-DIMENSIONAL NEURAL ARRAY @ 9.00THz</p>
-          <p id="bios-memory" class="text-green-400">VIRTUAL MEMORY MATRIX : 0K</p>
-          <p class="text-yellow-400">AUTO-DETECTING NEURAL SLAVE: ACID_WASM_ENGINE_v7</p>
-          <p class="text-cyan-400">HUE SHIFT MATRIX: ACTIVE // RAINBOW OVERLOAD</p>
-        </div>
-        <div id="dynamic-boot-logs" class="space-y-1 mt-1 text-emerald-300"></div>
-      </div>
-
-      <div class="relative z-20 pt-4 border-t border-purple-500/40 text-[10px] md:text-xs text-pink-400 flex justify-between uppercase tracking-widest font-bold">
-        <span id="boot-status" class="motion-safe:animate-pulse">STATUS: WARPING REALITY...</span>      </div>
+    <!-- Animación de Encendido CRT -->
+    <div id="crt-overlay" class="fixed inset-0 z-[100] bg-black pointer-events-auto flex items-center justify-center" aria-hidden="true">
+      <div id="crt-beam" class="w-full h-full bg-white opacity-0 origin-center drop-shadow-[0_0_20px_rgba(255,255,255,1)]"></div>
     </div>
 
     <!-- Área del escritorio -->
@@ -456,102 +437,30 @@ import GamesApp from '../components/GamesApp.astro';
     </div>
   </main>
 
-  <!-- Secuencia de arranque: BIOS -> escritorio -->
+  <!-- Encendido CRT -> escritorio -->
   <script>
-    const MEMORY_TOTAL_K = 131072;
-    const BIOS_DURATION_MS = 3200;
-    const LOG_INTERVAL_MS = 120;
-    const FADE_MS = 400;
-    const LOG_COLORS: string[] = ['text-pink-400', 'text-yellow-300', 'text-cyan-300', 'text-purple-400', 'text-green-300'];
+    document.addEventListener('DOMContentLoaded', () => {
+      const overlay = document.getElementById('crt-overlay');
+      const beam = document.getElementById('crt-beam');
+      if (!overlay || !beam) return;
 
-    const biosScreen = document.getElementById('bios-screen');
-    const logContainer = document.getElementById('dynamic-boot-logs');
-    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-    function setText(id: string, text: string): void {
-      const el = document.getElementById(id);
-      if (el) el.textContent = text;
-    }
-
-    function hex(value: number, digits: number): string {
-      return value.toString(16).toUpperCase().padStart(digits, '0');
-    }
-
-    function randomHex(digits: number): string {
-      return hex(Math.floor(Math.random() * 16 ** digits), digits);
-    }
-
-    // Los timestamps crecen con el índice para que el log parezca un dmesg real
-    const bootSteps: string[] = [
-      'Linux version 6.8.0-red-lodge (sancho@mainframe) #1 SMP PREEMPT',
-      'Command_Line: BOOT_IMAGE=/boot/vmlinuz-red root=/dev/nvme0n1p2 ro quiet',
-      'BIOS-provided physical RAM map:',
-      'BIOS-e820: [mem 0x0000000000000000-0x000000000009FBFF] usable',
-      'BIOS-e820: [mem 0x0000000000100000-0x00000000BFFDFFFF] usable',
-      'BIOS-e820: [mem 0x00000000FEC00000-0x00000000FEC00FFF] reserved',
-      'x86/fpu: Supporting FPU state: 0x500, descriptors: 4, datamask: 0x7',
-      'ACPI: RSDP 0x00000000000F6A40 000024 (v02 RLODGE)',
-      'ACPI: XSDT 0x00000000BFFE1830 00004C (v01 RLODGE RLTABLE)',
-      'ACPI: FACP 0x00000000BFFE16D0 000114 (v06 RLODGE RLTABLE)',
-      'Zone ranges: DMA [mem 0x1000-0xFFFFFF] DMA32 [mem 0x1000000-0xFFFFFFFF]',
-      'percpu: Embedded 62 pages/cpu s217088 r8192 d28672 u262144',
-      'zswap: loaded pool lzo-optimized compressor',
-      'NET: Registered PF_INET protocol family',
-      'PCI: MMCONFIG at [mem 0xE0000000-0xEFFFFFFF] reserved as E820 entry',
-      'nvme nvme0: pci function 0000:01:00.0',
-      'EXT4-fs (nvme0n1p2): mounted filesystem with ordered data mode',
-      'systemd[1]: Detected architecture x86-64.',
-      'Initializing WebAssembly Virtual Machine Sandbox...',
-      'wasm: heap base @ 0x__HEX__ stack guard @ 0x__HEX__',
-      'Loading module: [ DOOM_ENGINE_V7 ] ... [SUCCESS]',
-      'Loading module: [ SPACE_CADET_PINBALL_WASM ] ... [SUCCESS]',
-      'Loading module: [ WOLFENSTEIN_3D_RAYCASTER ] ... [SUCCESS]',
-      'Mounting virtual file systems and opening RED_LODGE desktop environment...',
-      'SYSTEM READY. LAUNCHING DESKTOP INTERFACE...',
-    ];
-
-    function appendLog(index: number): void {
-      if (!logContainer) return;
-      const seconds = ((index / bootSteps.length) * (BIOS_DURATION_MS / 1000 - 0.4)).toFixed(6).padStart(9, ' ');
-      const text = bootSteps[index].replace(/__HEX__/g, () => randomHex(16));
-      const line = document.createElement('p');
-      line.className = `${LOG_COLORS[index % LOG_COLORS.length]} whitespace-nowrap`;
-      line.textContent = `[${seconds}] ${text}`;
-      logContainer.appendChild(line);
-    }
-
-    if (biosScreen) {
-      // Conteo de memoria
-      const start = performance.now();
-      const memTimer = window.setInterval(() => {
-        const progress = Math.min((performance.now() - start) / (BIOS_DURATION_MS * 0.5), 1);
-        const done = progress === 1;
-        setText('bios-memory', 'VIRTUAL MEMORY MATRIX : ' + Math.round(MEMORY_TOTAL_K * progress) + 'K' + (done ? ' UNBOUND [OK]' : ''));
-        if (done) window.clearInterval(memTimer);
-      }, 40);
-
-      // Logs progresivos; con reduced-motion se vuelcan de una vez
-      let logIndex = 0;
-      if (reducedMotion) {
-        for (; logIndex < bootSteps.length; logIndex++) appendLog(logIndex);
-      } else {
-        const logTimer = window.setInterval(() => {
-          if (logIndex >= bootSteps.length) {
-            window.clearInterval(logTimer);
-            return;
-          }
-          appendLog(logIndex++);
-        }, LOG_INTERVAL_MS);
+      // Con reduced-motion se descubre el escritorio sin animación
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        overlay.style.display = 'none';
+        return;
       }
 
-      window.setTimeout(() => setText('boot-status', 'STATUS: REALITY WARPED'), BIOS_DURATION_MS - 600);
-
+      // Pequeña pausa negra inicial para crear expectación
       window.setTimeout(() => {
-        biosScreen.style.transition = reducedMotion ? 'none' : `opacity ${FADE_MS}ms ease-in-out`;
-        biosScreen.style.opacity = '0';
-        window.setTimeout(() => { biosScreen.style.display = 'none'; }, reducedMotion ? 0 : FADE_MS);
-      }, BIOS_DURATION_MS);
-    }
+        beam.classList.add('animate-crt-beam');
+
+        // Al 60% de la animación el rayo ya llena la pantalla: se quita el negro para revelar el escritorio
+        window.setTimeout(() => overlay.classList.remove('bg-black'), 350);
+
+        // Se retira del flujo para que los iconos del escritorio sean clickeables
+        window.setTimeout(() => { overlay.style.display = 'none'; }, 800);
+      }, 250);
+    });
   </script>
 
   <!-- Script para actualizar el reloj en tiempo real -->
