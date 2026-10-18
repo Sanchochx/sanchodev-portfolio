@@ -1,61 +1,61 @@
 ---
 interface LocalGame {
   id: string;
-  title: string;
-  year: string;
 }
 
 // El `id` debe coincidir EXACTAMENTE con el nombre de las imágenes (sin extensión):
-//  - lomo (repisa):     public/images/videogame_covers/<id>.png
-//  - portada completa:  public/images/videogame_covers/cover_half/<id>.jpg (.png o .webp)
-// Si falta el lomo se muestra el título en texto.
+//  - portada completa:  public/images/videogame_covers/<id>.jpg (.png o .webp)
+//  - lomo (repisa):     public/images/videogame_covers/<id>-spine.png (.jpg o .webp)
 const localGames: LocalGame[] = [
-  { id: 'the-last-of-us-part-2', title: 'THE LAST OF US PART II', year: '2020' },
-  { id: 'metal-gear-solid-2-sons-of-liberty', title: 'METAL GEAR SOLID 2', year: '2001' },
-  { id: 'yakuza-0', title: 'YAKUZA 0', year: '2015' },
-  { id: 'half-life', title: 'HALF-LIFE', year: '1998' },
-  { id: 'the-elder-scrolls-v-skyrim', title: 'SKYRIM', year: '2011' },
-  { id: 'gears-of-war-3', title: 'GEARS OF WAR 3', year: '2011' },
-  { id: 'doom-eternal', title: 'DOOM ETERNAL', year: '2020' },
-  { id: 'silent-hill-2', title: 'SILENT HILL 2', year: '2001' },
-  { id: 'wolfenstein-2-the-new-colossus', title: 'WOLFENSTEIN II', year: '2017' },
-  { id: 'manhunt', title: 'MANHUNT', year: '2003' },
-  { id: 'outlast', title: 'OUTLAST', year: '2013' },
-  { id: 'the-last-of-us', title: 'THE LAST OF US', year: '2013' },
-  { id: 'world-of-warcraft-cataclysm', title: 'WOW: CATACLYSM', year: '2010' },
-  { id: 'resident-evil-7-biohazard', title: 'RESIDENT EVIL 7', year: '2017' },
-  { id: 'dota-2', title: 'DOTA 2', year: '2013' },
-  { id: 'portal-2', title: 'PORTAL 2', year: '2011' },
-  { id: 'super-mario-64-1996', title: 'SUPER MARIO 64', year: '1996' },
-  { id: 'team-fortress-2', title: 'TEAM FORTRESS 2', year: '2007' },
-  { id: 'project-zomboid', title: 'PROJECT ZOMBOID', year: '2013' },
-  { id: 'outlast-2', title: 'OUTLAST 2', year: '2017' },
-  { id: 'yakuza-kiwami', title: 'YAKUZA KIWAMI', year: '2016' },
-  { id: 'wolfenstein-the-new-order', title: 'WOLFENSTEIN: NEW ORDER', year: '2014' },
-  { id: 'gears-of-war', title: 'GEARS OF WAR', year: '2006' },
-  { id: 'gears-of-war-2', title: 'GEARS OF WAR 2', year: '2008' },
-  { id: 'left-4-dead-2', title: 'LEFT 4 DEAD 2', year: '2009' },
-  { id: 'max-payne', title: 'MAX PAYNE', year: '2001' },
-  { id: 'max-payne-2-the-fall-of-max-payne', title: 'MAX PAYNE 2', year: '2003' },
-  { id: 'mario-kart-ds', title: 'MARIO KART DS', year: '2005' },
-  { id: 'fallout-4', title: 'FALLOUT 4', year: '2015' },
-  { id: 'doom-2', title: 'DOOM II', year: '1994' },
-  { id: 'half-life-2', title: 'HALF-LIFE 2', year: '2004' },
-  { id: 'new-super-mario-bros', title: 'NEW SUPER MARIO BROS.', year: '2006' },
-  { id: 'world-of-warcraft-wrath-of-the-lich-king', title: 'WOW: WRATH OF THE LICH KING', year: '2008' },
-  { id: 'wolfenstein-3d', title: 'WOLFENSTEIN 3D', year: '1992' },
-  { id: 'grand-theft-auto-san-andreas', title: 'GTA: SAN ANDREAS', year: '2004' },
-  { id: 'jojos-bizarre-adventure-all-star-battle-r', title: 'JOJO ALL-STAR BATTLE R', year: '2022' },
-  { id: 'slender-the-arrival', title: 'SLENDER: THE ARRIVAL', year: '2013' },
-  { id: 'counter-strike', title: 'COUNTER-STRIKE', year: '2000' },
+  { id: 'the-last-of-us-part-2' },
+  { id: 'metal-gear-solid-2-sons-of-liberty' },
+  { id: 'yakuza-0' },
+  { id: 'half-life' },
+  { id: 'the-elder-scrolls-v-skyrim' },
+  { id: 'gears-of-war-3' },
+  { id: 'doom-eternal' },
+  { id: 'silent-hill-2' },
+  { id: 'wolfenstein-2-the-new-colossus' },
+  { id: 'manhunt' },
+  { id: 'the-last-of-us' },
+  { id: 'resident-evil-7-biohazard' },
+  { id: 'portal-2' },
+  { id: 'super-mario-64-1996' },
+  { id: 'team-fortress-2' },
+  { id: 'yakuza-kiwami' },
+  { id: 'wolfenstein-the-new-order' },
+  { id: 'gears-of-war' },
+  { id: 'gears-of-war-2' },
+  { id: 'left-4-dead-2' },
+  { id: 'max-payne' },
+  { id: 'max-payne-2-the-fall-of-max-payne' },
+  { id: 'mario-kart-ds' },
+  { id: 'fallout-4' },
+  { id: 'fallout-new-vegas' },
+  { id: 'doom-2' },
+  { id: 'half-life-2' },
+  { id: 'new-super-mario-bros' },
+  { id: 'world-of-warcraft-wrath-of-the-lich-king' },
+  { id: 'wolfenstein-3d' },
+  { id: 'grand-theft-auto-san-andreas' },
+  { id: 'jojos-bizarre-adventure-all-star-battle-r' },
+  { id: 'slender-the-arrival' },
 ];
+
+// Reparte los juegos en dos filas, una debajo de la otra
+const ROW_COUNT = 2;
+const perRow = Math.ceil(localGames.length / ROW_COUNT);
+const rows: LocalGame[][] = Array.from({ length: ROW_COUNT }, (_, i) => localGames.slice(i * perRow, (i + 1) * perRow));
+
+// Nombre legible a partir del id, solo para accesibilidad (aria-label / alt)
+const readableName = (id: string): string => id.replace(/-/g, ' ');
 
 // Tonos distintos para que los lomos parezcan cajas diferentes
 const spineColors: string[] = ['bg-[#2a2a2a]', 'bg-[#333333]', 'bg-[#222222]', 'bg-[#1f1f1f]', 'bg-[#2b1a1a]'];
 ---
 
 <!-- Ventana de Videogames (oculta por defecto) -->
-<div id="games-window" class="hidden fixed inset-0 m-auto h-[min(500px,calc(100vh-4rem))] w-[min(700px,95vw)] bg-black border border-red-900 rounded-sm shadow-2xl z-40 flex flex-col font-mono overflow-hidden">
+<div id="games-window" class="hidden fixed inset-0 m-auto h-[min(540px,calc(100vh-4rem))] w-[min(520px,95vw)] bg-black border border-red-900 rounded-sm shadow-2xl z-40 flex flex-col font-mono overflow-hidden">
   <div id="games-titlebar" class="h-8 shrink-0 bg-black flex items-center justify-between px-2 select-none border-b border-red-900 cursor-move touch-none">
     <div class="flex items-center text-red-600 text-xs font-mono tracking-wider">
       <img src="/images/videogame_icon.png" alt="" width="16" height="16" class="w-4 h-4 mr-2" onerror="this.style.display='none'" />
@@ -66,24 +66,29 @@ const spineColors: string[] = ['bg-[#2a2a2a]', 'bg-[#333333]', 'bg-[#222222]', '
 
   <div class="flex-1 relative overflow-hidden bg-black text-gray-300 selection:bg-green-800 selection:text-white">
     <!-- Vista 1: la repisa -->
-    <div id="shelf-view" class="w-full h-full p-6 overflow-y-auto transition-opacity duration-300">
-      <h2 class="text-base font-bold border-b border-red-900 pb-2 mb-2 font-mono rainbow-text">My videogame library</h2>
+    <div id="shelf-view" class="custom-scrollbar w-full h-full px-6 pt-6 pb-8 overflow-y-auto transition-opacity duration-300">
+      <h2 class="text-base font-bold border-b border-red-900 pb-2 mb-2 font-mono rainbow-text text-center whitespace-nowrap">My videogame library</h2>
 
-      <div class="flex flex-wrap content-start gap-1 px-2 pt-4 border-b-[12px] border-red-950 bg-gradient-to-b from-black to-neutral-900 min-h-[220px] shadow-[inset_0_-10px_20px_rgba(0,0,0,0.8)]">
-        {localGames.map((game, index) => (
-          <button
-            type="button"
-            data-game-id={game.id}
-            data-game-title={game.title}
-            data-game-year={game.year}
-            aria-label={`${game.title} (${game.year})`}
-            class={`game-spine relative w-12 h-40 ${spineColors[index % spineColors.length]} border-x border-t border-white/10 cursor-pointer hover:-translate-y-4 focus-visible:-translate-y-4 hover:bg-red-950 focus-visible:bg-red-950 motion-reduce:hover:translate-y-0 motion-reduce:focus-visible:translate-y-0 transition-transform duration-200 flex items-center justify-center`}
-          >
-            <span class="spine-text text-[10px] text-gray-300 font-mono font-bold whitespace-nowrap tracking-widest pointer-events-none overflow-hidden text-ellipsis max-h-36">
-              {game.title}
-            </span>
-            <img src={`/images/videogame_covers/${game.id}.png`} alt="" loading="lazy" class="spine-art absolute inset-0 w-full h-full object-fill opacity-0 pointer-events-none" />
-          </button>
+      <!-- Cada fila de lomos va centrada y apoyada sobre su propio estante -->
+      <div class="flex flex-col gap-10 pt-6">
+        {rows.map((row, rowIndex) => (
+          <div>
+            <div class="flex flex-wrap justify-center content-start gap-x-1 px-2">
+              {row.map((game, i) => (
+                <button
+                  type="button"
+                  data-game-id={game.id}
+                  data-game-label={readableName(game.id)}
+                  aria-label={readableName(game.id)}
+                  class={`game-spine relative w-12 h-40 ${spineColors[(rowIndex * perRow + i) % spineColors.length]} border-x border-t border-white/10 cursor-pointer hover:-translate-y-4 focus-visible:-translate-y-4 hover:bg-red-950 focus-visible:bg-red-950 motion-reduce:hover:translate-y-0 motion-reduce:focus-visible:translate-y-0 transition-transform duration-200 flex items-center justify-center`}
+                >
+                  <img src={`/images/videogame_covers/${game.id}-spine.png`} alt="" loading="lazy" class="spine-art absolute inset-0 w-full h-full object-fill opacity-0 pointer-events-none" />
+                </button>
+              ))}
+            </div>
+            <!-- Estante: tabla con borde superior y sombra debajo -->
+            <div class="h-2 bg-gradient-to-b from-red-950 to-black border-t border-red-900/60 shadow-[0_10px_10px_rgba(0,0,0,0.8)]" aria-hidden="true"></div>
+          </div>
         ))}
       </div>
     </div>
@@ -94,40 +99,40 @@ const spineColors: string[] = ['bg-[#2a2a2a]', 'bg-[#333333]', 'bg-[#222222]', '
         Back to library
       </button>
 
-      <div class="showcase-stage relative w-56 h-72 mt-6">
+      <div class="showcase-stage relative h-[calc(100%-4.5rem)] max-h-[26rem] aspect-[7/9] mt-8">
         <div id="game-3d-box" class="w-full h-full">
           <!-- La imagen es la carátula desplegada (contra + lomo + frente): object-right muestra el frente y object-left la parte de atrás -->
           <button id="game-flip" type="button" aria-label="Flip the box to see the other side" class="game-flip block relative w-full h-full cursor-pointer">
             <div class="flip-face absolute inset-0 border border-red-600/60 rounded-sm overflow-hidden bg-black">
-              <img id="showcase-cover" src="" alt="" width="224" height="288" class="w-full h-full object-cover object-right" />
+              <img id="showcase-cover" src="" alt="" width="280" height="360" class="w-full h-full object-cover object-right" />
             </div>
             <div class="flip-face flip-back absolute inset-0 border border-red-600/60 rounded-sm overflow-hidden bg-black">
-              <img id="showcase-back" src="" alt="" width="224" height="288" class="w-full h-full object-cover object-left" />
+              <img id="showcase-back" src="" alt="" width="280" height="360" class="w-full h-full object-cover object-left" />
             </div>
           </button>
         </div>
       </div>
 
-      <div id="showcase-info" class="mt-6 text-center font-mono opacity-0 transition-opacity duration-500">
-        <h2 id="showcase-title" class="text-xl font-bold text-white tracking-widest uppercase px-4"></h2>
-        <p class="text-yellow-500 text-sm mt-1">EST. <span id="showcase-year"></span></p>
-      </div>
     </div>
   </div>
 </div>
 
 <style>
-  /* Rota el texto para que se lea de abajo hacia arriba, como en un lomo */
-  .spine-text {
-    writing-mode: vertical-rl;
-    text-orientation: mixed;
-    transform: rotate(180deg);
-  }
-
   /* Con arte de lomo, el fondo gris y el borde sobran */
   .game-spine.has-art {
     background: none;
     border-color: transparent;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: #0a0a0a;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #7f1d1d;
+    border-radius: 4px;
   }
 
   .showcase-stage {
@@ -162,24 +167,23 @@ const spineColors: string[] = ['bg-[#2a2a2a]', 'bg-[#333333]', 'bg-[#222222]', '
     }
   }
 
-  /* La caja se voltea hacia el espectador: de lado (-90°) a de frente (0°) */
+  /* La carátula entra girando sobre su eje Y y va frenando hasta quedar quieta de frente */
   @keyframes spin-in {
     0% {
-      transform: translateZ(-500px) rotateY(-90deg) scale(0.5);
+      transform: rotateY(-1080deg) scale(0.4);
       opacity: 0;
     }
-    50% {
-      transform: translateZ(100px) rotateY(15deg) scale(1.1);
+    15% {
       opacity: 1;
     }
     100% {
-      transform: translateZ(0) rotateY(0deg) scale(1);
+      transform: rotateY(0deg) scale(1);
       opacity: 1;
     }
   }
 
   .animate-spin-in {
-    animation: spin-in 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+    animation: spin-in 1.4s cubic-bezier(0.1, 0.7, 0.2, 1) forwards;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -194,13 +198,13 @@ const spineColors: string[] = ['bg-[#2a2a2a]', 'bg-[#333333]', 'bg-[#222222]', '
   const shelfView = document.getElementById('shelf-view');
   const showcaseView = document.getElementById('showcase-view');
   const box = document.getElementById('game-3d-box');
-  const info = document.getElementById('showcase-info');
   const cover = document.getElementById('showcase-cover') as HTMLImageElement | null;
   const backCover = document.getElementById('showcase-back') as HTMLImageElement | null;
   const flip = document.getElementById('game-flip');
 
   const COVER_EXTENSIONS = ['jpg', 'png', 'webp'];
-  const COVER_DIR = '/images/videogame_covers/cover_half';
+  const SPINE_EXTENSIONS = ['png', 'jpg', 'webp'];
+  const COVER_DIR = '/images/videogame_covers';
   const FALLBACK_COVER = '/images/sanchodev_logo.png';
   let fadeTimer: number | undefined;
 
@@ -230,12 +234,19 @@ const spineColors: string[] = ['bg-[#2a2a2a]', 'bg-[#333333]', 'bg-[#222222]', '
     spine.style.width = `${Math.max(14, Math.round((spine.offsetHeight * art.naturalWidth) / art.naturalHeight))}px`;
     spine.classList.add('has-art');
     art.style.opacity = '1';
-    spine.querySelector('.spine-text')?.classList.add('hidden');
   };
 
   document.querySelectorAll<HTMLButtonElement>('.game-spine').forEach((spine) => {
     const art = spine.querySelector<HTMLImageElement>('.spine-art');
     if (!art) return;
+    // Prueba -spine.png, luego .jpg y .webp; si no hay ninguno, el lomo queda vacío
+    let attempt = 0;
+    art.addEventListener('error', () => {
+      attempt += 1;
+      if (attempt < SPINE_EXTENSIONS.length) {
+        art.src = `${COVER_DIR}/${spine.dataset.gameId}-spine.${SPINE_EXTENSIONS[attempt]}`;
+      }
+    });
     if (art.complete) applySpineArt(spine, art);
     art.addEventListener('load', () => applySpineArt(spine, art));
   });
@@ -245,7 +256,6 @@ const spineColors: string[] = ['bg-[#2a2a2a]', 'bg-[#333333]', 'bg-[#222222]', '
   const showShelf = (): void => {
     window.clearTimeout(fadeTimer);
     flip?.classList.remove('is-flipped');
-    if (info) info.style.opacity = '0';
     showcaseView?.classList.add('hidden');
     showcaseView?.classList.remove('flex');
     shelfView?.classList.remove('hidden');
@@ -255,16 +265,12 @@ const spineColors: string[] = ['bg-[#2a2a2a]', 'bg-[#333333]', 'bg-[#222222]', '
     }, 50);
   };
 
-  const revealGame = (id: string, title: string, year: string): void => {
+  const revealGame = (id: string, label: string): void => {
     flip?.classList.remove('is-flipped');
     loadCover(id);
-    if (cover) cover.alt = title;
-    if (backCover) backCover.alt = `${title} (back)`;
+    if (cover) cover.alt = label;
+    if (backCover) backCover.alt = `${label} (back)`;
     // textContent: nunca innerHTML con datos que se inyectan dinámicamente
-    const titleEl = document.getElementById('showcase-title');
-    const yearEl = document.getElementById('showcase-year');
-    if (titleEl) titleEl.textContent = title;
-    if (yearEl) yearEl.textContent = year;
 
     if (shelfView) shelfView.style.opacity = '0';
     fadeTimer = window.setTimeout(() => {
@@ -277,15 +283,14 @@ const spineColors: string[] = ['bg-[#2a2a2a]', 'bg-[#333333]', 'bg-[#222222]', '
       void box?.offsetWidth;
       box?.classList.add('animate-spin-in');
 
-      if (info) info.style.opacity = '1';
       document.getElementById('games-back')?.focus();
     }, 300);
   };
 
   document.querySelectorAll<HTMLButtonElement>('.game-spine').forEach((spine) => {
     spine.addEventListener('click', () => {
-      const { gameId = '', gameTitle = '', gameYear = '' } = spine.dataset;
-      revealGame(gameId, gameTitle, gameYear);
+      const { gameId = '', gameLabel = '' } = spine.dataset;
+      revealGame(gameId, gameLabel);
     });
   });
 
