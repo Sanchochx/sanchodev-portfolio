@@ -143,7 +143,7 @@ import GamesApp from '../components/GamesApp.astro';
         </span>
       </button>
 
-      <!-- Icono: Videogames (RAWG) -->
+      <!-- Icono: Videogames -->
       <button id="games-icon" type="button" class="w-20 flex flex-col items-center justify-start group rounded-sm border border-transparent hover:bg-blue-500/20 hover:border-blue-400/30 focus-visible:border-blue-400/60 transition-colors p-1 cursor-pointer z-20">
         <div class="relative w-9 h-9 mb-1">
           <img src="/images/videogame_icon.png" alt="Videogames" width="36" height="36" class="w-full h-full object-contain drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]" onerror="this.onerror=null;this.src='/images/sanchodev_logo.png'" />
@@ -779,7 +779,7 @@ import GamesApp from '../components/GamesApp.astro';
       document.getElementById('cine-window')?.classList.add('hidden');
     });
 
-    // Videogames (RAWG)
+    // Videogames
     makeDraggable(document.getElementById('games-window'), document.getElementById('games-titlebar'));
     function openGames(): void {
       document.getElementById('games-window')?.classList.remove('hidden');

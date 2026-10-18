@@ -1,74 +1,60 @@
 ---
-interface RawgGame {
-  name: string;
-  released: string | null;
-  background_image: string | null;
-  detail?: string;
+interface LocalGame {
+  id: string;
+  title: string;
+  year: string;
 }
 
-// Slugs o IDs de RAWG; añade tantos como quieras
-const favoriteGamesList: string[] = [
-  'the-last-of-us-part-2',
-  'metal-gear-solid-2-sons-of-liberty',
-  'yakuza-0',
-  'half-life',
-  'the-elder-scrolls-v-skyrim',
-  'gears-of-war-3',
-  'doom-eternal',
-  'silent-hill-2',
-  'wolfenstein-2-the-new-colossus',
-  'manhunt',
-  'outlast',
-  'the-last-of-us',
-  'world-of-warcraft-cataclysm',
-  'resident-evil-7-biohazard',
-  'dota-2',
-  'portal-2',
-  'super-mario-64-1996',
-  'team-fortress-2',
-  'project-zomboid',
-  'outlast-2',
-  'yakuza-kiwami',
-  'wolfenstein-the-new-order',
-  'gears-of-war',
-  'gears-of-war-2',
-  'left-4-dead-2',
-  'max-payne',
-  'max-payne-2-the-fall-of-max-payne',
-  'mario-kart-ds',
-  'fallout-4',
-  'doom-2',
-  'doom-ii',
-  'half-life-2',
-  'new-super-mario-bros',
-  'world-of-warcraft-wrath-of-the-lich-king',
-  'wolfenstein-3d',
-  'grand-theft-auto-san-andreas',
-  'jojos-bizarre-adventure-all-star-battle-r',
-  'slender-the-arrival',
-  'counter-strike',
+// El `id` debe coincidir EXACTAMENTE con el nombre de las imágenes (sin extensión):
+//  - lomo (repisa):     public/images/videogame_covers/<id>.png
+//  - portada completa:  public/images/videogame_covers/cover_half/<id>.jpg (.png o .webp)
+// Si falta el lomo se muestra el título en texto.
+const localGames: LocalGame[] = [
+  { id: 'the-last-of-us-part-2', title: 'THE LAST OF US PART II', year: '2020' },
+  { id: 'metal-gear-solid-2-sons-of-liberty', title: 'METAL GEAR SOLID 2', year: '2001' },
+  { id: 'yakuza-0', title: 'YAKUZA 0', year: '2015' },
+  { id: 'half-life', title: 'HALF-LIFE', year: '1998' },
+  { id: 'the-elder-scrolls-v-skyrim', title: 'SKYRIM', year: '2011' },
+  { id: 'gears-of-war-3', title: 'GEARS OF WAR 3', year: '2011' },
+  { id: 'doom-eternal', title: 'DOOM ETERNAL', year: '2020' },
+  { id: 'silent-hill-2', title: 'SILENT HILL 2', year: '2001' },
+  { id: 'wolfenstein-2-the-new-colossus', title: 'WOLFENSTEIN II', year: '2017' },
+  { id: 'manhunt', title: 'MANHUNT', year: '2003' },
+  { id: 'outlast', title: 'OUTLAST', year: '2013' },
+  { id: 'the-last-of-us', title: 'THE LAST OF US', year: '2013' },
+  { id: 'world-of-warcraft-cataclysm', title: 'WOW: CATACLYSM', year: '2010' },
+  { id: 'resident-evil-7-biohazard', title: 'RESIDENT EVIL 7', year: '2017' },
+  { id: 'dota-2', title: 'DOTA 2', year: '2013' },
+  { id: 'portal-2', title: 'PORTAL 2', year: '2011' },
+  { id: 'super-mario-64-1996', title: 'SUPER MARIO 64', year: '1996' },
+  { id: 'team-fortress-2', title: 'TEAM FORTRESS 2', year: '2007' },
+  { id: 'project-zomboid', title: 'PROJECT ZOMBOID', year: '2013' },
+  { id: 'outlast-2', title: 'OUTLAST 2', year: '2017' },
+  { id: 'yakuza-kiwami', title: 'YAKUZA KIWAMI', year: '2016' },
+  { id: 'wolfenstein-the-new-order', title: 'WOLFENSTEIN: NEW ORDER', year: '2014' },
+  { id: 'gears-of-war', title: 'GEARS OF WAR', year: '2006' },
+  { id: 'gears-of-war-2', title: 'GEARS OF WAR 2', year: '2008' },
+  { id: 'left-4-dead-2', title: 'LEFT 4 DEAD 2', year: '2009' },
+  { id: 'max-payne', title: 'MAX PAYNE', year: '2001' },
+  { id: 'max-payne-2-the-fall-of-max-payne', title: 'MAX PAYNE 2', year: '2003' },
+  { id: 'mario-kart-ds', title: 'MARIO KART DS', year: '2005' },
+  { id: 'fallout-4', title: 'FALLOUT 4', year: '2015' },
+  { id: 'doom-2', title: 'DOOM II', year: '1994' },
+  { id: 'half-life-2', title: 'HALF-LIFE 2', year: '2004' },
+  { id: 'new-super-mario-bros', title: 'NEW SUPER MARIO BROS.', year: '2006' },
+  { id: 'world-of-warcraft-wrath-of-the-lich-king', title: 'WOW: WRATH OF THE LICH KING', year: '2008' },
+  { id: 'wolfenstein-3d', title: 'WOLFENSTEIN 3D', year: '1992' },
+  { id: 'grand-theft-auto-san-andreas', title: 'GTA: SAN ANDREAS', year: '2004' },
+  { id: 'jojos-bizarre-adventure-all-star-battle-r', title: 'JOJO ALL-STAR BATTLE R', year: '2022' },
+  { id: 'slender-the-arrival', title: 'SLENDER: THE ARRIVAL', year: '2013' },
+  { id: 'counter-strike', title: 'COUNTER-STRIKE', year: '2000' },
 ];
 
-const rawgApiKey: string | undefined = import.meta.env.RAWG_API_KEY;
-
-let favoriteGames: RawgGame[] = [];
-
-if (rawgApiKey) {
-  try {
-    const responses = await Promise.all(
-      favoriteGamesList.map(async (gameId): Promise<RawgGame | null> => {
-        const res = await fetch(`https://api.rawg.io/api/games/${gameId}?key=${rawgApiKey}`);
-        return res.ok ? ((await res.json()) as RawgGame) : null;
-      })
-    );
-    favoriteGames = responses.filter((g): g is RawgGame => g !== null && !g.detail);
-  } catch (e) {
-    console.error('Error fetching RAWG API:', e);
-  }
-}
+// Tonos distintos para que los lomos parezcan cajas diferentes
+const spineColors: string[] = ['bg-[#2a2a2a]', 'bg-[#333333]', 'bg-[#222222]', 'bg-[#1f1f1f]', 'bg-[#2b1a1a]'];
 ---
 
-<!-- Ventana de Juegos (oculta por defecto) -->
+<!-- Ventana de Videogames (oculta por defecto) -->
 <div id="games-window" class="hidden fixed inset-0 m-auto h-[min(500px,calc(100vh-4rem))] w-[min(700px,95vw)] bg-black border border-red-900 rounded-sm shadow-2xl z-40 flex flex-col font-mono overflow-hidden">
   <div id="games-titlebar" class="h-8 shrink-0 bg-black flex items-center justify-between px-2 select-none border-b border-red-900 cursor-move touch-none">
     <div class="flex items-center text-red-600 text-xs font-mono tracking-wider">
@@ -78,26 +64,237 @@ if (rawgApiKey) {
     <button id="games-close" type="button" aria-label="Close Videogames" class="w-6 h-6 hover:bg-red-500 focus-visible:bg-red-500 text-red-600 hover:text-white flex items-center justify-center text-xs">✕</button>
   </div>
 
-  <div class="flex-1 overflow-y-auto p-6 bg-black text-gray-300 selection:bg-green-800 selection:text-white">
-    <section aria-labelledby="games-favorites-title">
-      <h2 id="games-favorites-title" class="text-base font-bold border-b border-red-900 pb-2 mb-4 font-mono rainbow-text">FAVS</h2>
-      {favoriteGames.length > 0 ? (
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
-          {favoriteGames.map((game) => (
-            <div class="flex flex-col items-center group">
-              {game.background_image ? (
-                <img src={game.background_image} alt={game.name} width="200" height="300" loading="lazy" class="w-full h-auto aspect-[2/3] object-cover rounded-sm shadow-lg border border-red-900/50 group-hover:border-red-600 transition-colors" />
-              ) : (
-                <div class="w-full aspect-[2/3] bg-black flex items-center justify-center border border-red-900/50 text-xs text-center p-2">{game.name}</div>
-              )}
-              <span class="text-xs text-center mt-2 font-semibold truncate w-full text-gray-300">{game.name}</span>
-              <span class="text-[10px] text-yellow-500">{game.released ? game.released.split('-')[0] : 'TBA'}</span>
+  <div class="flex-1 relative overflow-hidden bg-black text-gray-300 selection:bg-green-800 selection:text-white">
+    <!-- Vista 1: la repisa -->
+    <div id="shelf-view" class="w-full h-full p-6 overflow-y-auto transition-opacity duration-300">
+      <h2 class="text-base font-bold border-b border-red-900 pb-2 mb-2 font-mono rainbow-text">My videogame library</h2>
+
+      <div class="flex flex-wrap content-start gap-1 px-2 pt-4 border-b-[12px] border-red-950 bg-gradient-to-b from-black to-neutral-900 min-h-[220px] shadow-[inset_0_-10px_20px_rgba(0,0,0,0.8)]">
+        {localGames.map((game, index) => (
+          <button
+            type="button"
+            data-game-id={game.id}
+            data-game-title={game.title}
+            data-game-year={game.year}
+            aria-label={`${game.title} (${game.year})`}
+            class={`game-spine relative w-12 h-40 ${spineColors[index % spineColors.length]} border-x border-t border-white/10 cursor-pointer hover:-translate-y-4 focus-visible:-translate-y-4 hover:bg-red-950 focus-visible:bg-red-950 motion-reduce:hover:translate-y-0 motion-reduce:focus-visible:translate-y-0 transition-transform duration-200 flex items-center justify-center`}
+          >
+            <span class="spine-text text-[10px] text-gray-300 font-mono font-bold whitespace-nowrap tracking-widest pointer-events-none overflow-hidden text-ellipsis max-h-36">
+              {game.title}
+            </span>
+            <img src={`/images/videogame_covers/${game.id}.png`} alt="" loading="lazy" class="spine-art absolute inset-0 w-full h-full object-fill opacity-0 pointer-events-none" />
+          </button>
+        ))}
+      </div>
+    </div>
+
+    <!-- Vista 2: showcase 3D (oculta por defecto) -->
+    <div id="showcase-view" class="absolute inset-0 hidden flex-col items-center justify-center bg-black/90 z-20">
+      <button id="games-back" type="button" class="absolute top-4 left-4 text-red-600 font-mono text-xs hover:text-white hover:bg-red-500 focus-visible:text-white focus-visible:bg-red-500 px-3 py-1 border border-red-900 transition-colors z-30">
+        Back to library
+      </button>
+
+      <div class="showcase-stage relative w-56 h-72 mt-6">
+        <div id="game-3d-box" class="w-full h-full">
+          <!-- La imagen es la carátula desplegada (contra + lomo + frente): object-right muestra el frente y object-left la parte de atrás -->
+          <button id="game-flip" type="button" aria-label="Flip the box to see the other side" class="game-flip block relative w-full h-full cursor-pointer">
+            <div class="flip-face absolute inset-0 border border-red-600/60 rounded-sm overflow-hidden bg-black">
+              <img id="showcase-cover" src="" alt="" width="224" height="288" class="w-full h-full object-cover object-right" />
             </div>
-          ))}
+            <div class="flip-face flip-back absolute inset-0 border border-red-600/60 rounded-sm overflow-hidden bg-black">
+              <img id="showcase-back" src="" alt="" width="224" height="288" class="w-full h-full object-cover object-left" />
+            </div>
+          </button>
         </div>
-      ) : (
-        <p class="text-xs text-red-400 font-mono">Error: RAWG_API_KEY missing or invalid.</p>
-      )}
-    </section>
+      </div>
+
+      <div id="showcase-info" class="mt-6 text-center font-mono opacity-0 transition-opacity duration-500">
+        <h2 id="showcase-title" class="text-xl font-bold text-white tracking-widest uppercase px-4"></h2>
+        <p class="text-yellow-500 text-sm mt-1">EST. <span id="showcase-year"></span></p>
+      </div>
+    </div>
   </div>
 </div>
+
+<style>
+  /* Rota el texto para que se lea de abajo hacia arriba, como en un lomo */
+  .spine-text {
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    transform: rotate(180deg);
+  }
+
+  /* Con arte de lomo, el fondo gris y el borde sobran */
+  .game-spine.has-art {
+    background: none;
+    border-color: transparent;
+  }
+
+  .showcase-stage {
+    perspective: 1200px;
+  }
+
+  #game-3d-box {
+    transform-style: preserve-3d;
+  }
+
+  /* Giro de la caja al hacer clic: frente (0°) <-> parte de atrás (180°) */
+  .game-flip {
+    transform-style: preserve-3d;
+    transition: transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  .game-flip.is-flipped {
+    transform: rotateY(180deg);
+  }
+
+  .flip-face {
+    backface-visibility: hidden;
+  }
+
+  .flip-back {
+    transform: rotateY(180deg);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .game-flip {
+      transition: none;
+    }
+  }
+
+  /* La caja se voltea hacia el espectador: de lado (-90°) a de frente (0°) */
+  @keyframes spin-in {
+    0% {
+      transform: translateZ(-500px) rotateY(-90deg) scale(0.5);
+      opacity: 0;
+    }
+    50% {
+      transform: translateZ(100px) rotateY(15deg) scale(1.1);
+      opacity: 1;
+    }
+    100% {
+      transform: translateZ(0) rotateY(0deg) scale(1);
+      opacity: 1;
+    }
+  }
+
+  .animate-spin-in {
+    animation: spin-in 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .animate-spin-in {
+      animation: none;
+    }
+  }
+</style>
+
+<script>
+  const gamesWindow = document.getElementById('games-window');
+  const shelfView = document.getElementById('shelf-view');
+  const showcaseView = document.getElementById('showcase-view');
+  const box = document.getElementById('game-3d-box');
+  const info = document.getElementById('showcase-info');
+  const cover = document.getElementById('showcase-cover') as HTMLImageElement | null;
+  const backCover = document.getElementById('showcase-back') as HTMLImageElement | null;
+  const flip = document.getElementById('game-flip');
+
+  const COVER_EXTENSIONS = ['jpg', 'png', 'webp'];
+  const COVER_DIR = '/images/videogame_covers/cover_half';
+  const FALLBACK_COVER = '/images/sanchodev_logo.png';
+  let fadeTimer: number | undefined;
+
+  // Prueba .jpg, luego .png y .webp; si no existe ninguna, usa el logo
+  const loadCover = (id: string): void => {
+    if (!cover) return;
+    let attempt = 0;
+    cover.onerror = () => {
+      attempt += 1;
+      if (attempt < COVER_EXTENSIONS.length) {
+        cover.src = `${COVER_DIR}/${id}.${COVER_EXTENSIONS[attempt]}`;
+      } else {
+        cover.onerror = null;
+        cover.src = FALLBACK_COVER;
+      }
+    };
+    // La parte de atrás reutiliza la misma imagen, ya resuelta la extensión
+    cover.onload = () => {
+      if (backCover) backCover.src = cover.src;
+    };
+    cover.src = `${COVER_DIR}/${id}.${COVER_EXTENSIONS[0]}`;
+  };
+
+  // Cuando carga la imagen del lomo, sustituye al texto y ajusta el ancho a su proporción
+  const applySpineArt = (spine: HTMLButtonElement, art: HTMLImageElement): void => {
+    if (!art.naturalWidth || !art.naturalHeight) return;
+    spine.style.width = `${Math.max(14, Math.round((spine.offsetHeight * art.naturalWidth) / art.naturalHeight))}px`;
+    spine.classList.add('has-art');
+    art.style.opacity = '1';
+    spine.querySelector('.spine-text')?.classList.add('hidden');
+  };
+
+  document.querySelectorAll<HTMLButtonElement>('.game-spine').forEach((spine) => {
+    const art = spine.querySelector<HTMLImageElement>('.spine-art');
+    if (!art) return;
+    if (art.complete) applySpineArt(spine, art);
+    art.addEventListener('load', () => applySpineArt(spine, art));
+  });
+
+  flip?.addEventListener('click', () => flip.classList.toggle('is-flipped'));
+
+  const showShelf = (): void => {
+    window.clearTimeout(fadeTimer);
+    flip?.classList.remove('is-flipped');
+    if (info) info.style.opacity = '0';
+    showcaseView?.classList.add('hidden');
+    showcaseView?.classList.remove('flex');
+    shelfView?.classList.remove('hidden');
+    // Pequeño retardo para que el fade-in se vea fluido
+    window.setTimeout(() => {
+      if (shelfView) shelfView.style.opacity = '1';
+    }, 50);
+  };
+
+  const revealGame = (id: string, title: string, year: string): void => {
+    flip?.classList.remove('is-flipped');
+    loadCover(id);
+    if (cover) cover.alt = title;
+    if (backCover) backCover.alt = `${title} (back)`;
+    // textContent: nunca innerHTML con datos que se inyectan dinámicamente
+    const titleEl = document.getElementById('showcase-title');
+    const yearEl = document.getElementById('showcase-year');
+    if (titleEl) titleEl.textContent = title;
+    if (yearEl) yearEl.textContent = year;
+
+    if (shelfView) shelfView.style.opacity = '0';
+    fadeTimer = window.setTimeout(() => {
+      shelfView?.classList.add('hidden');
+      showcaseView?.classList.remove('hidden');
+      showcaseView?.classList.add('flex');
+
+      // Reinicia la animación 3D
+      box?.classList.remove('animate-spin-in');
+      void box?.offsetWidth;
+      box?.classList.add('animate-spin-in');
+
+      if (info) info.style.opacity = '1';
+      document.getElementById('games-back')?.focus();
+    }, 300);
+  };
+
+  document.querySelectorAll<HTMLButtonElement>('.game-spine').forEach((spine) => {
+    spine.addEventListener('click', () => {
+      const { gameId = '', gameTitle = '', gameYear = '' } = spine.dataset;
+      revealGame(gameId, gameTitle, gameYear);
+    });
+  });
+
+  document.getElementById('games-back')?.addEventListener('click', showShelf);
+  // Al cerrar la ventana se vuelve a la repisa
+  document.getElementById('games-close')?.addEventListener('click', showShelf);
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !gamesWindow?.classList.contains('hidden') && !showcaseView?.classList.contains('hidden')) {
+      showShelf();
+    }
+  });
+</script>
