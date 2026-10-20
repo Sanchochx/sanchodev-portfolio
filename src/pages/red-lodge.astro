@@ -2,6 +2,9 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import LetterboxdApp from '../components/LetterboxdApp.astro';
 import GamesApp from '../components/GamesApp.astro';
+
+// Letterboxd/TMDB se consultan al renderizar; el caché del edge evita repetirlo en cada visita
+Astro.response.headers.set('Cache-Control', 'public, s-maxage=3600, stale-while-revalidate=86400');
 ---
 
 <BaseLayout title="Red Lodge" description="RED LODGE: escritorio interactivo de Santiago Sánchez Márquez.">
@@ -162,8 +165,8 @@ import GamesApp from '../components/GamesApp.astro';
 
       <!-- P.A.C.T.A.S.I.S App -->
       <button id="pactasis-icon" type="button" class="w-20 flex flex-col items-center justify-start group rounded-sm border border-transparent hover:bg-blue-500/20 hover:border-blue-400/30 focus-visible:border-blue-400/60 transition-colors p-1 cursor-pointer z-20">
-        <div class="relative w-9 h-9 mb-1">
-          <img src="/images/pactasis_icon.png" alt="P.A.C.T.A.S.I.S" width="36" height="36" class="w-full h-full object-contain drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]" onerror="this.onerror=null;this.src='/images/sanchodev_logo.png'" />
+        <div class="relative w-11 h-11 mb-1">
+          <img src="/images/pactasis_icon.png" alt="P.A.C.T.A.S.I.S" width="44" height="44" class="w-full h-full object-contain drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]" onerror="this.onerror=null;this.src='/images/sanchodev_logo.png'" />
           <div class="absolute -bottom-1 -left-1 w-3 h-3 bg-white border border-gray-400 flex items-center justify-center shadow-sm">
             <svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="#0066cc" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
               <path d="M10 5l7 7-7 7" />
@@ -869,6 +872,8 @@ import GamesApp from '../components/GamesApp.astro';
       frame.title = '3D Pinball - Space Cadet';
       frame.className = 'w-full h-full border-none';
       frame.allow = 'autoplay; fullscreen; gamepad';
+      frame.sandbox.add('allow-scripts', 'allow-same-origin', 'allow-pointer-lock');
+      frame.referrerPolicy = 'no-referrer';
       // Sin foco en el iframe, las teclas de las paletas se quedan en la página padre
       frame.addEventListener('load', () => frame.focus());
       container.appendChild(frame);
@@ -1060,11 +1065,16 @@ import GamesApp from '../components/GamesApp.astro';
           headers: { 'content-type': 'application/json' },
           body: JSON.stringify({ message: text, history: pactasisHistory }),
         });
+        if (res.status === 429) {
+          pactasisPrint('sys', 'P.A.C.T.A.S.I.S', 'ERROR: demasiadas solicitudes. Espera un minuto e intenta de nuevo.');
+          return;
+        }
         const data = (await res.json()) as { reply?: string; error?: string };
-        if (!res.ok || !data.reply) throw new Error(data.error ?? 'Error desconocido');
+        if (!res.ok || !data.reply) throw new Error(`${res.status} ${data.error ?? 'Error desconocido'}`);
         pactasisHistory.push({ role: 'user', content: text }, { role: 'assistant', content: data.reply });
         pactasisPrint('sys', 'P.A.C.T.A.S.I.S', data.reply);
-      } catch {
+      } catch (err) {
+        console.error('P.A.C.T.A.S.I.S request failed', err);
         pactasisPrint('sys', 'P.A.C.T.A.S.I.S', 'ERROR: enlace interrumpido. Intenta de nuevo.');
       } finally {
         pactasisBusy = false;

@@ -22,7 +22,6 @@ export const projects: readonly Project[] = [
     tech: [
       'DOCKER',
       'DOCKER COMPOSE',
-      'LINUX',
       'PYTHON',
       'FLASK',
       'REACT 19',

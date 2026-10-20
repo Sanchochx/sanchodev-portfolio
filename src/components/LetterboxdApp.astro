@@ -13,6 +13,7 @@ interface RecentMovie {
   poster: string;
 }
 
+const FETCH_TIMEOUT_MS = 4000;
 const favoriteIds: number[] = [103, 1018, 28422, 27064];
 const tmdbApiKey: string | undefined = import.meta.env.TMDB_API_KEY;
 
@@ -22,13 +23,16 @@ if (tmdbApiKey) {
   try {
     const responses = await Promise.all(
       favoriteIds.map(async (id): Promise<FavoriteMovie | null> => {
-        const res = await fetch(`https://api.themoviedb.org/3/movie/${id}?api_key=${tmdbApiKey}&language=en-US`);
+        const res = await fetch(`https://api.themoviedb.org/3/movie/${id}?api_key=${tmdbApiKey}&language=en-US`, {
+          signal: AbortSignal.timeout(FETCH_TIMEOUT_MS),
+        });
         return res.ok ? ((await res.json()) as FavoriteMovie) : null;
       })
     );
     favorites = responses.filter((m): m is FavoriteMovie => m !== null && Boolean(m.poster_path));
   } catch (e) {
-    console.error('Error fetching TMDB:', e);
+    // Solo el mensaje: el error completo puede incluir la URL con api_key en los logs
+    console.error('Error fetching TMDB:', e instanceof Error ? e.name : 'unknown');
   }
 }
 
@@ -36,6 +40,7 @@ let recentMovies: RecentMovie[] = [];
 
 try {
   const parser = new Parser({
+    timeout: FETCH_TIMEOUT_MS,
     customFields: {
       item: ['letterboxd:filmTitle', 'letterboxd:filmYear', 'letterboxd:memberRating'],
     },
