@@ -42,6 +42,58 @@ import GamesApp from '../components/GamesApp.astro';
       background-clip: text;
     }
 
+    /* Colores por tema de ASCII (data-theme en #terminal-window) */
+    #terminal-window[data-theme="pink"] { --theme-color: #f472b6; --theme-glow: rgba(244, 114, 182, 0.6); }
+    #terminal-window[data-theme="white"] { --theme-color: #f8fafc; --theme-glow: rgba(248, 250, 252, 0.6); }
+    #terminal-window[data-theme="purple"] { --theme-color: #c084fc; --theme-glow: rgba(192, 132, 252, 0.6); }
+    #terminal-window[data-theme="blue"] { --theme-color: #60a5fa; --theme-glow: rgba(96, 165, 250, 0.6); }
+    #terminal-window[data-theme="orange"] { --theme-color: #fb923c; --theme-glow: rgba(251, 146, 60, 0.6); }
+
+    .theme-text {
+      color: var(--theme-color);
+      text-shadow: 0 0 8px var(--theme-glow);
+    }
+
+    /* Marco arcoíris de la terminal (se reemplaza por el color del tema) */
+    #terminal-window:not([data-theme]) { border-color: transparent; }
+    #terminal-window:not([data-theme]) #terminal-titlebar { border-bottom-color: transparent; }
+    #terminal-window:not([data-theme])::before,
+    #terminal-window:not([data-theme]) #terminal-titlebar::after {
+      content: '';
+      position: absolute;
+      pointer-events: none;
+    }
+    #terminal-window:not([data-theme])::before {
+      inset: -1px;
+      border: 1px solid;
+      border-image: linear-gradient(90deg, #ff0040, #ff8000, #ffe600, #00e060, #00c8ff, #8000ff, #ff0040) 1;
+    }
+    #terminal-titlebar { position: relative; }
+    #terminal-window:not([data-theme]) #terminal-titlebar::after {
+      left: 0;
+      right: 0;
+      bottom: -1px;
+      height: 1px;
+      background-image: linear-gradient(90deg, #ff0040, #ff8000, #ffe600, #00e060, #00c8ff, #8000ff, #ff0040);
+    }
+
+    /* Marco y textos de la terminal con el color del tema activo */
+    #terminal-window[data-theme],
+    #terminal-window[data-theme] #terminal-titlebar {
+      border-color: var(--theme-color);
+    }
+    #terminal-window[data-theme] #terminal-close {
+      color: var(--theme-color);
+    }
+    #terminal-window[data-theme] .rainbow-text {
+      animation: none;
+      background-image: none;
+    }
+    #terminal-window[data-theme] .rainbow-text,
+    #terminal-window[data-theme] .rainbow-text * {
+      color: var(--theme-color) !important;
+    }
+
     /* Rayo catódico del encendido CRT */
     @keyframes crt-beam-on {
       0% { transform: scale(0.01, 0.002); opacity: 1; }
@@ -63,7 +115,9 @@ import GamesApp from '../components/GamesApp.astro';
 
     /* Solo se animan si el usuario no pidió reducir movimiento */
     @media (prefers-reduced-motion: no-preference) {
-      .rainbow-text { animation: rainbow-hue 0.6s linear infinite; }
+      .rainbow-text,
+      #terminal-window:not([data-theme])::before,
+      #terminal-window:not([data-theme]) #terminal-titlebar::after { animation: rainbow-hue 0.6s linear infinite; }
       .red-text { animation: red-glow 1.5s ease-in-out infinite alternate; }
       .animate-spin-y { animation: spin-y 3s linear infinite; transform-style: preserve-3d; }
     }
@@ -222,7 +276,7 @@ import GamesApp from '../components/GamesApp.astro';
           <img src="/images/doom_icon.png" alt="" width="16" height="16" class="w-4 h-4 mr-2" onerror="this.style.display='none'" />
           js-dos - DOOM
         </div>
-        <button id="doom-close" type="button" aria-label="Cerrar DOOM" class="w-6 h-6 hover:bg-red-500 focus-visible:bg-red-500 text-red-600 hover:text-white flex items-center justify-center text-xs">✕</button>
+        <button id="doom-close" type="button" aria-label="Cerrar DOOM" class="w-6 h-6 hover:bg-red-500 focus-visible:bg-red-500 text-red-600 hover:text-white flex items-center justify-center text-xs"><span class="rainbow-text">✕</span></button>
       </div>
       <div class="w-full aspect-[16/10] bg-black relative" id="dos-container">
         <canvas id="jsdos" class="!w-full !h-full block object-contain"></canvas>
@@ -395,16 +449,14 @@ import GamesApp from '../components/GamesApp.astro';
     <GamesApp />
 
     <!-- Ventana de terminal (abierta por defecto, se puede cerrar y arrastrar) -->
-    <div id="terminal-window" class="fixed top-6 right-6 max-h-[calc(100vh-7rem)] w-[min(480px,95vw)] bg-black border border-red-900 rounded-sm shadow-2xl z-30 flex flex-col font-mono">
-      <div id="terminal-titlebar" class="h-8 shrink-0 bg-black flex items-center justify-between px-2 select-none border-b border-red-900 cursor-move touch-none">
-        <div class="text-red-600 text-xs font-mono tracking-wider">sancho_dev - Terminal</div>
+    <div id="terminal-window" class="fixed top-6 right-6 max-h-[calc(100vh-7rem)] w-[min(380px,95vw)] bg-black border border-red-900 rounded-sm shadow-2xl z-30 flex flex-col font-mono">
+      <div id="terminal-titlebar" class="h-8 shrink-0 bg-black flex items-center justify-end px-2 select-none border-b border-red-900 cursor-move touch-none">
         <button id="terminal-close" type="button" aria-label="Cerrar Terminal" class="w-6 h-6 hover:bg-red-500 focus-visible:bg-red-500 text-red-600 hover:text-white flex items-center justify-center text-xs">✕</button>
       </div>
       <div class="overflow-auto p-3 selection:bg-green-800 selection:text-white">
-        <pre aria-hidden="true" class="rainbow-text text-[10px] sm:text-xs leading-tight whitespace-pre">+============================================================================+</pre>
-        <div class="perspective-container flex justify-center overflow-hidden py-2">
+        <div class="perspective-container flex items-center justify-center overflow-hidden h-[min(360px,55vh)]">
           <div class="animate-spin-y">
-            <pre aria-label="SanchoDev ASCII art" class="rainbow-text text-[10px] sm:text-xs leading-tight whitespace-pre">
+            <pre id="ascii-content" aria-label="ASCII art" class="rainbow-text transition-opacity duration-300 leading-tight whitespace-pre">
    _____                  __               ____
   / ___/____ _____  _____/ /_  ____       / __ \___ _   __
   \__ \/ __ `/ __ \/ ___/ __ \/ __ \     / / / / _ \ | / /
@@ -434,9 +486,6 @@ import GamesApp from '../components/GamesApp.astro';
 </pre>
           </div>
         </div>
-        <pre class="rainbow-text text-[10px] sm:text-xs leading-tight whitespace-pre">+============================================================================+
-
-&gt; <span class="motion-safe:animate-pulse">_</span></pre>
       </div>
     </div>
 
@@ -469,6 +518,190 @@ import GamesApp from '../components/GamesApp.astro';
   </main>
 
   <!-- Encendido CRT -> escritorio -->
+  <script>
+    // Motor ASCII: rota entre artes dentro de #ascii-content
+    const asciiContent = document.getElementById('ascii-content');
+
+    if (asciiContent) {
+      type AsciiArt = { colorClass: string; content: string; theme?: string };
+
+      const KIRBY = `⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣠⣤⢤⠶⠶⠶⢦⣤⣤⣄⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⣀⡤⠴⠶⢤⣄⡀⠀⠀⠀⢀⣤⠶⠛⠋⣁⣀⣤⣤⣤⣤⣤⣤⣤⣀⣈⠉⠛⠳⢤⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⣠⠞⢁⣠⣤⣤⣤⣀⠙⠲⣤⠖⠋⣀⣴⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣦⣄⡈⠓⢦⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⢰⠃⢠⣿⣿⣿⣿⣿⣿⣷⡦⢀⣴⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣦⡀⠙⢦⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⢰⡏⠀⣿⣿⣿⣿⣿⣿⣿⣿⣶⣿⣿⣿⣿⣿⣿⣿⣿⠿⢿⣿⣿⣿⣿⣿⣿⠿⢿⣿⣿⣿⣿⣿⣿⣿⣦⡀⠙⣄⠀⠀⠀⠀⠀⠀⠀⠀
+⢸⡇⠘⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⢱⣶⡎⢿⣿⣿⣿⣿⢣⣾⣆⢻⣿⣿⣿⣿⣿⣿⣿⣿⣆⠈⢦⡀⠀⠀⠀⠀⠀⠀
+⠈⣷⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⢸⣿⡇⢸⣿⣿⣿⡏⢸⣿⡟⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣆⠈⢧⠀⠀⠀⠀⠀⠀
+⠀⢹⡆⠸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⠀⠉⠀⢸⣿⣿⣿⡇⠀⠉⠁⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡆⠘⡇⠀⠀⠀⠀⠀
+⠀⠀⢿⡄⠘⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⠀⠀⠀⢸⣿⣿⣿⣇⠀⠀⠀⢰⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠀⠹⣆⠀⠀⠀⠀
+⠀⠀⠀⠙⣆⠈⢋⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⠀⠀⠀⣾⣿⣿⣿⣿⡀⠀⠀⣼⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣄⠈⢦⠀⠀⠀
+⠀⠀⠀⠀⢸⡇⠸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣤⣾⡟⠉⠉⠉⠙⣷⣤⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣧⠈⢧⡀⠀
+⠀⠀⠀⠀⠘⡇⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣧⠰⣿⡷⢰⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡆⠸⡇⠀
+⠀⠀⠀⠀⠀⣧⠀⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣤⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⠀⣿⠀
+⠀⠀⠀⠀⠀⢻⡆⠸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠇⢠⡿⠀
+⠀⠀⠀⠀⠀⠈⣿⡀⢹⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠻⣿⣿⣿⠿⠋⢀⡞⠁⠀
+⠀⠀⠀⠀⠀⠀⣸⠇⠀⠹⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠗⠀⠀⢤⣤⠶⠋⠀⠀⠀
+⠀⠀⠀⢀⡴⠋⠀⣴⣾⣦⡘⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠋⣰⣷⣦⣄⠉⠳⣄⠀⠀⠀
+⠀⠀⡴⠋⠀⠐⠋⢹⣿⣿⣿⣦⡙⠿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠋⣠⣾⣿⣿⡏⠉⠓⠄⠈⢧⡀⠀
+⠀⣼⠁⣰⡇⠀⣀⣼⣿⣿⣿⣿⣿⣦⣌⠛⠿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠟⣉⣴⣿⣿⣿⣿⣿⣷⣄⡀⢀⣆⠀⢧⠀
+⠀⣿⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣶⣤⣍⡙⠛⠛⠿⠿⣿⡿⠿⠟⠛⠛⣉⣤⣶⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠆⢸⡆
+⠀⠻⣄⠈⠻⠿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠿⠟⠓⠀⣠⣤⣄⠀⠐⠚⠿⠿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠿⠟⠋⢀⡼⠁
+⠀⠀⠈⠛⠶⣤⣤⣀⣀⣉⣉⣉⣉⣉⣀⣀⣀⣠⣤⣤⠴⠖⠋⠁⠀⠈⠙⠲⠶⣤⣤⣄⣀⣀⣀⣉⣉⣉⣉⣉⣁⣀⣤⣤⠴⠞⠋⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠀⠀⠀⠀⠀⠀⠀`;
+
+      const ORANGE = `⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣠⣤⣶⣶⣿⣿⣿⣿⣿⣿⣶⣶⣤⣄⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⣠⣴⣾⣿⣿⣿⡿⠿⠟⠛⠛⠛⠛⠻⠿⢿⣿⣿⣿⣷⣦⣄⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⣠⣾⣿⣿⡿⠛⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠛⢿⣿⣿⣷⣄⠀⠀⠀⠀⠀
+⠀⠀⠀⣠⣾⣿⣿⠟⠉⠀⠀⠀⠀⣀⣀⣀⣀⣀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠉⡻⣿⣿⣷⣄⠀⠀⠀
+⠀⠀⣰⣿⣿⡿⠃⠀⠀⠀⠀⠀⠀⣿⣿⣿⣿⣿⣷⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⢿⣿⣿⣾⠀⠀
+⠀⣸⣿⣿⡟⠀⠀⠀⠀⠀⠀⠀⠀⠉⠉⠙⣿⣿⣿⣧⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢻⣿⣿⣇⠀
+⢠⣿⣿⡿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢹⣿⣿⣿⡆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⢿⣿⣿⡆
+⣼⣿⣿⠇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢰⣿⣿⣿⣿⣿⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠸⣿⣿⣧
+⣿⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣰⣿⣿⣿⣿⣿⣿⣷⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠁⣿⣿⣿
+⣿⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣴⣿⣿⣿⡿⠛⣿⣿⣿⣧⠀⠀⠀⠀⠀⠀⠀⠀⠀⡀⣿⣿⣿
+⢻⣿⣿⡆⠀⠀⠀⠀⠀⠀⠀⢀⣼⣿⣿⣿⡟⠁⠉⠹⣿⣿⣿⣇⠀⠀⠀⠀⠀⠀⠀⠀⢲⣿⣿⡟
+⠘⣿⣿⣷⠀⠀⠀⠀⠀⠀⢀⣾⣿⣿⣿⠏⠀⠀⠀⠀⢻⣿⣿⣿⡄⠀⠀⢀⠄⠀⠀⠀⣾⣿⣿⠃
+⠀⢹⣿⣿⣧⡀⠀⠀⠀⢠⣾⣿⣿⣿⠋⠀⠀⠀⠀⠀⠀⣿⣿⣿⣿⣶⣿⣿⡆⠀⠀⣼⣿⣿⡏⠀
+⠀⠀⠹⣿⣿⣷⡄⠀⣠⣿⣿⣿⡿⠁⠀⠀⠀⠀⠀⠀⠀⠘⣿⣿⣿⣿⠿⠟⠛⢠⣾⣿⣿⠏⠀⠀
+⠀⠀⠀⠙⢿⣿⣿⣦⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠉⠀⠀⠀⣀⣴⣿⣿⡿⠋⠀⠀⠀
+⠀⠀⠀⠀⠠⠙⢿⣿⣿⣷⣤⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣤⣾⣿⣿⡿⠋⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠙⠻⢿⣿⣿⣿⣷⣶⣦⣤⣤⣤⣤⣴⣶⣾⣿⣿⣿⡿⠟⡋⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠙⠛⠿⠿⣿⣿⣿⣿⣿⣿⠿⠿⠛⠋⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀`;
+
+      const BLUE = `⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⣴⣿⣿⣿⣶⣶⣤⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣴⣿⠟⠋⠉⠉⠙⠻⢿⣿⣷⣶⣄⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣰⣿⠏⠀⠀⠀⠀⠀⠀⠀⠙⣿⣿⣿⣿⣶⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢰⣿⡏⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣏⠻⣿⣿⣿⣷⣦⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣿⣿⠇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠻⣿⣿⣿⣿⣦⣤⣀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣸⣿⣿⣧⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⠻⠿⣿⣷⣿⣿⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⣿⣿⣟⠛⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠛⠿⣷⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣸⣿⣿⡏⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣀⣀⡀⠀⠀⠈⠙⢷⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⢀⣄⣀⣠⣤⣶⣶⣾⣿⣿⣿⢿⣿⣷⣦⣄⠀⠀⠙⣷⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣿⣿⡿⠀⠀⠀⠀⠀⠀⢀⣠⣶⣿⣿⣿⠿⠛⠛⣏⠉⠉⢻⡄⠀⢹⠉⠛⣿⣧⡀⠀⠈⢿⣷⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⣿⣿⣿⠁⠀⠀⠀⢀⣤⣾⣿⣿⠿⠋⠉⣿⡀⠀⠀⢸⣦⠀⢸⣷⠀⢸⣧⠀⣿⠙⣿⡄⠀⠈⣿⣿⣦⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⢿⣿⣿⠃⠀⠀⢀⣴⣿⣿⡿⠋⠹⣦⡀⠀⢿⣿⣆⠀⣿⣿⣇⣿⣿⣦⣿⣿⣄⣿⡇⣿⢻⡀⠀⠘⣿⣿⣿⣆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⡏⠀⠀⢠⣿⣿⠟⠁⢢⡀⠀⣿⣿⣦⣸⣿⣿⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣿⢀⣧⠀⠀⢹⣿⣿⣿⣷⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⡇⠀⠀⣾⣿⠛⣆⠀⠘⣿⣷⣼⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠀⠀⠈⣿⣿⣿⣿⣿⣆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⡇⠀⠀⣿⡇⠀⠹⣿⣶⣼⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡆⠀⠀⠈⢿⣿⣿⣿⣿⣧⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣧⠀⠀⢿⡗⣦⣄⣹⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣧⠀⠀⠀⠀⠙⢿⣿⣿⣿⣷⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⡆⠀⢸⣇⡘⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡏⠻⢿⣿⡷⠈⢿⣿⣿⣿⣿⣿⣷⠀⠀⠀⠀⠀⠙⢿⣿⣿⣷⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⣧⠀⠀⢿⠹⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠁⢻⣿⣿⡇⠀⠀⢻⠇⠀⠀⢿⠙⡟⢻⣉⡿⠀⠀⠀⠀⠀⠀⠀⠙⣿⣿⣷⡀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⣿⡀⠀⠈⢷⣽⣿⣿⣿⣿⣿⣿⡏⠻⣿⣿⠀⠀⠙⢿⣇⣀⣤⣬⣤⣤⣤⡤⠶⠖⠋⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⣿⣿⣧⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⣿⡇⠀⠀⠀⠻⣿⣿⣿⣿⣿⣿⣧⠀⠈⠙⠂⣠⣴⠿⠛⠉⠉⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠸⣿⣿⣇⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⣿⡇⠀⠀⠀⠀⠘⣿⣿⣿⣿⡌⠛⠆⣠⣴⠟⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢻⣿⣿⡆⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⣿⡇⠀⠀⠀⠀⠀⠹⣿⡻⢄⣙⡴⠟⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠸⣿⣿⣿⡄⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠉⠉⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢿⣿⣿⣧⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠸⣿⣿⣇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣤⠶⠚⠋⠉⠉⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠸⣿⣿⣿⡆⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢿⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠞⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠹⣿⣿⣿⡄⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⣿⣿⣇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢹⣿⣿⣧⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣄⠸⣿⣿⣆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢻⣿⣿⡆⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⣀⣴⣿⣿⣷⣮⣛⠿⣷⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣠⣴⣿⣿⣷⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢿⣿⣷⡀⠀
+⠀⠀⠀⢀⣀⣠⣶⣾⣿⡿⠿⠛⠿⢿⣿⣿⣷⣾⣥⣄⣀⣀⣀⣀⣀⣀⠀⢀⣠⣶⣄⡀⢤⣀⣀⣀⣀⣤⣴⣶⣿⣿⣿⣿⠿⢿⣿⣿⣿⣶⣤⣀⣀⠀⠀⠀⠀⠀⠀⠀⠘⣿⣿⣇⠀
+⠈⠉⠉⠛⠛⠉⠉⠁⠀⠀⠀⠀⠀⠀⠀⠉⠙⠛⠛⠛⠛⠛⠛⠛⣉⣤⣾⣿⣿⣿⣿⣿⣦⣀⠉⠛⠛⠛⠛⠛⠛⠛⠉⠀⠀⠀⠀⠉⠛⠻⠿⠿⢿⣿⣿⣿⣶⣶⣶⣶⠶⠶⠶⠚⠋
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣠⣤⣾⣿⣿⣿⠿⠛⠉⠉⠛⠻⢿⣿⣿⣦⣤⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠠⠤⠤⠴⠶⠿⠿⠿⠛⠛⠋⠉⠀⡀⠀⠀⠀⠀⠀⠀⠈⠉⠛⠛⠿⠿⠶⢶⣤⣤⣄⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀`;
+
+      const PURPLE = `⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⠿⣦⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⠀⠈⠻⣦⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⡆⠀⠀⠈⠻⣷⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢻⡇⠀⠀⠀⠀⠈⠙⢷⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⡇⠀⠀⠀⠀⠀⠀⠀⠙⢷⣄⠀⣿⣷⣄⢀⣤⡀⠀⠀⢀⣀⣤⣶⡶⠿⢛⣿⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⢿⣿⣬⠻⣿⡟⣿⣶⠾⠛⠋⠉⠀⠀⢠⣿⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⢀⣸⡿⣶⣄⣀⠀⠀⠀⠀⠸⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢰⣿⣧⣤⣴⣶⡆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⢿⣟⠛⠋⠀⠉⠛⠿⣦⣄⠀⠀⣿⠀⠀⠀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣾⣯⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣄
+⢀⣽⡷⠀⠀⠀⠀⠀⠈⠙⠻⣶⣿⣤⣶⠟⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠉⠉⠉⠉⠉⠉⠉⠉⠀⠀⠀⠀⠀⠀⠀⠀⢀⣨⡿⠋
+⠘⠻⢷⣦⡀⠀⠀⠀⠀⠀⠀⢠⣿⠟⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣴⡿⠋⠀⠀
+⠀⠀⠀⠹⣷⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣴⠟⠉⠀⠀⠀⠀
+⠀⠀⠀⠀⠹⣧⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣴⢿⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣾⠟⠁⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠹⣷⣠⡿⠀⠀⠀⠀⠀⠀⢠⣿⠃⠘⣿⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣴⡾⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⣸⡟⠀⠀⠀⠀⡀⠀⠀⣾⡇⠀⠀⢹⣧⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣠⣴⠾⠀⠀⠀⠀⠀⣿⣄⣴⠟⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⢀⣿⠁⠀⠀⠀⠀⣿⡄⠀⢹⣧⠀⠀⢸⣿⡆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣤⡶⠟⠋⣿⠀⠀⠀⠀⠀⠀⢸⣿⣁⣀⣀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⢸⡏⠀⠀⠀⠀⠀⣿⢿⣄⠀⠙⢷⣤⣄⣈⣿⡀⠀⠀⠀⠀⠀⠀⢀⣤⣾⠟⠋⠀⠀⢸⡿⠀⠀⠀⠀⠀⠀⢸⡏⠉⠉⠙⠛⠛⠛⠛⠛⠷⣶⣶⡄⠀⠀
+⠀⠀⠀⠀⠀⣾⡇⠀⠀⠀⠀⠀⣿⠈⠻⣦⣄⠀⠈⠉⠉⠉⠁⠀⠀⠀⠀⣠⣾⠟⠙⠏⠀⠀⠀⣠⡿⠁⠀⠀⠀⠀⠀⠀⠸⠇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⢻⣶⡄⠀
+⠀⠀⠀⠀⠀⣿⡇⠀⠀⠀⠀⠀⣿⡄⢠⡿⠛⢷⣦⣄⡀⠀⠀⠀⠀⠀⠀⠉⠙⠿⢶⣦⣴⣶⠾⠋⠀⢀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣀⣸⡟⠋⠁⠀
+⠀⠀⠀⠀⠀⣿⡇⠀⠀⠀⠀⠀⠘⣿⣼⠇⠀⠀⠈⣽⠟⠷⢶⣤⣤⣀⣀⡀⠀⠀⠀⠀⠀⣀⣀⣤⣾⠟⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣤⣴⠾⠛⠛⠻⠃⠀⠀⠀
+⠀⠀⠀⠀⠀⣸⣇⠀⠀⠀⠀⠀⠀⠈⠻⣦⣀⠀⢰⡿⠀⠀⠀⠀⠉⠙⣿⠟⠛⠛⠛⢻⡿⠛⢫⣿⠃⠀⠀⠀⠀⠀⢠⣿⣀⣠⣴⡶⠿⠛⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⣼⡿⣿⡄⠀⠀⠀⠀⠀⠀⠀⠈⠻⢷⣾⣇⠀⠀⠀⠀⠀⢠⣿⠀⠀⠀⠀⣼⣇⣴⠟⠁⠀⠀⠀⠀⠀⠀⣼⠟⠋⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⢰⡿⠀⠹⣷⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠛⠿⢶⣦⣤⣄⣼⣇⣀⣠⣤⣴⠿⠛⠁⠀⠀⠀⠀⠀⠀⠀⣼⡟⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⢸⡇⠀⠀⠈⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠉⠉⠉⠉⠉⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣼⡟⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠸⣷⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢶⣦⣄⣾⠏⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠻⣷⡀⠀⠀⠀⠘⣷⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⢿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠙⠻⣷⣤⡀⢀⣈⣻⣷⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠈⢿⣧⣮⣿⣿⣿⠙⠿⣶⣤⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠙⠛⠁⠀⠀⠀⠀⠉⠛⣿⣷⣶⣶⣶⣶⡶⢶⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⡟⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠻⣷⣄⣼⡟⠀⠀⠻⣧⠀⢀⠊⠢⠔⢱⡀⡀⣠⡿⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠉⠁⠀⠀⠀⢻⣇⠀⠀⠀⠀⠀⢀⣾⠟⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠻⣷⣤⣤⣴⡾⠛⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀`;
+
+      const WHITE = `███████████████████████████
+███████▀▀▀░░░░░░░▀▀▀███████
+████▀░░░░░░░░░░░░░░░░░▀████
+███│░░░░░░░░░░░░░░░░░░░│███
+██▌│░░░░░░░░░░░░░░░░░░░│▐██
+██░└┐░░░░░░░░░░░░░░░░░┌┘░██
+██░░└┐░░░░░░░░░░░░░░░┌┘░░██
+██░░┌┘▄▄▄▄▄░░░░░▄▄▄▄▄└┐░░██
+██▌░│██████▌░░░▐██████│░▐██
+███░│▐███▀▀░░▄░░▀▀███▌│░███
+██▀─┘░░░░░░░▐█▌░░░░░░░└─▀██
+██▄░░░▄▄▄▓░░▀█▀░░▓▄▄▄░░░▄██
+████▄─┘██▌░░░░░░░▐██└─▄████
+█████░░▐█─┬┬┬┬┬┬┬─█▌░░█████
+████▌░░░▀┬┼┼┼┼┼┼┼┬▀░░░▐████
+█████▄░░░└┴┴┴┴┴┴┴┘░░░▄█████
+███████▄░░░░░░░░░░░▄███████
+██████████▄▄▄▄▄▄▄██████████
+███████████████████████████`;
+
+      // El primer arte es el que ya viene en el HTML
+      const arts: AsciiArt[] = [
+        { colorClass: 'rainbow-text', content: asciiContent.textContent ?? '' },
+        { colorClass: 'theme-text', content: KIRBY, theme: 'pink' },
+        { colorClass: 'theme-text', content: ORANGE, theme: 'orange' },
+        { colorClass: 'theme-text', content: BLUE, theme: 'blue' },
+        { colorClass: 'theme-text', content: PURPLE, theme: 'purple' },
+        { colorClass: 'theme-text', content: WHITE, theme: 'white' },
+      ];
+
+      const terminalWindow = document.getElementById('terminal-window');
+      const stage = asciiContent.closest('.perspective-container');
+
+      // Ajusta el tamaño de fuente para que cada arte llene la ventana pequeña sin recortarse
+      const fit = (text: string): void => {
+        if (!stage) return;
+        const lines = text.split('\n');
+        const cols = Math.max(...lines.map((l) => l.length));
+        const byWidth = (stage.clientWidth - 8) / (cols * 0.65);
+        const byHeight = (stage.clientHeight - 8) / (lines.length * 1.25);
+        asciiContent.style.fontSize = `${Math.max(6, Math.min(14, byWidth, byHeight))}px`;
+      };
+      let index = 0;
+
+      const show = (): void => {
+        const art = arts[index];
+        asciiContent.classList.remove(...arts.map((a) => a.colorClass));
+        asciiContent.classList.add(art.colorClass);
+        asciiContent.textContent = art.content;
+        fit(art.content);
+        if (!terminalWindow) return;
+        if (art.theme) terminalWindow.dataset.theme = art.theme;
+        else delete terminalWindow.dataset.theme;
+      };
+
+      fit(arts[0].content);
+      window.addEventListener('resize', () => fit(arts[index].content));
+
+      setInterval(() => {
+        index = (index + 1) % arts.length;
+        asciiContent.style.opacity = '0';
+        setTimeout(() => {
+          show();
+          asciiContent.style.opacity = '1';
+        }, 300);
+      }, 10000);
+    }
+  </script>
+
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const overlay = document.getElementById('crt-overlay');
