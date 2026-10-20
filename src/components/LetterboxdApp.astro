@@ -85,7 +85,7 @@ try {
                 loading="lazy"
                 class="w-full h-auto aspect-[2/3] rounded-sm shadow-lg border border-red-900/50 group-hover:border-red-600 transition-colors"
               />
-              <span class="text-xs text-center mt-2 font-semibold truncate w-full text-gray-300">{movie.title}</span>
+              <span class="text-xs text-center mt-2 font-semibold leading-tight break-words w-full text-gray-300">{movie.title}</span>
             </div>
           ))}
         </div>
@@ -107,7 +107,7 @@ try {
                 ) : (
                   <div class="w-full aspect-[2/3] bg-black flex items-center justify-center border border-red-900/50 text-xs text-center p-2">{movie.title}</div>
                 )}
-                <span class="text-xs text-center mt-2 font-semibold truncate w-full text-gray-300">{movie.title}</span>
+                <span class="text-xs text-center mt-2 font-semibold leading-tight break-words w-full text-gray-300">{movie.title}</span>
                 <span class="text-[10px] text-yellow-500">{movie.rating ? `Rating: ${movie.rating} / 5` : 'Unrated'}</span>
               </a>
             ))}

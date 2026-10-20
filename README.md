@@ -57,7 +57,8 @@ src/
 ├── layouts/
 │   └── BaseLayout.astro  # <head>, SEO, OG, Twitter Card, ChatWidget
 ├── pages/
-│   ├── index.astro       # Orquesta las secciones
+│   ├── index.astro       # RED LODGE: escritorio interactivo (página de inicio)
+│   ├── portfolio.astro   # Portafolio: orquesta las secciones
 │   ├── 404.astro         # Página de error personalizada
 │   └── api/chat.ts       # Endpoint POST del chatbot
 └── styles/global.css     # Fuentes, directivas Tailwind, utilidades .glass

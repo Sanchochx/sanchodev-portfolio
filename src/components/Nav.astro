@@ -3,7 +3,7 @@ const links = [
   { href: '#skills', label: 'SKILLS' },
   { href: '#projects', label: 'PROJECTS' },
   { href: '#contact', label: 'CONTACT' },
-  { href: '/red-lodge', label: 'RED LODGE', accent: true },
+  { href: '/', label: 'RED LODGE', accent: true },
 ] as const;
 ---
 
@@ -29,7 +29,7 @@ const links = [
           <a
             href={link.href}
             class:list={[
-              'font-display text-[11px] md:text-sm uppercase tracking-wider md:tracking-widest font-medium transition-colors duration-200',
+              'font-sans text-[10px] md:text-xs uppercase tracking-wider md:tracking-widest font-medium transition-colors duration-200',
               'accent' in link ? 'text-red-500 hover:text-red-400' : 'text-on-surface/60 hover:text-primary-container',
             ]}
           >
