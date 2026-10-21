@@ -546,28 +546,13 @@ Astro.response.headers.set('Cache-Control', 'public, s-maxage=3600, stale-while-
     </div>
 
     <!-- Barra de Tareas (Taskbar) -->
-    <div class="absolute bottom-0 left-0 w-full h-12 bg-black/80 backdrop-blur-md border-t border-red-900/50 flex items-center justify-between px-2 select-none z-50">
+    <div class="absolute bottom-0 left-0 w-full h-12 bg-black/80 backdrop-blur-md border-t border-red-900/50 flex items-center justify-end px-2 select-none z-50">
 
-      <!-- Lado Izquierdo: Botón de Inicio (Logo) y Buscar -->
-      <div class="flex items-center h-full">
-        <button class="h-full px-4 flex items-center justify-center hover:bg-red-900/30 transition-colors rounded-sm group">
-          <!-- Logo de Sancho Dev con filtro rojo -->
-          <img
-            src="/images/sanchodev_logo.png"
-            alt="Sancho OS"
-            width="24"
-            height="24"
-            class="h-6 w-auto object-contain transition-transform group-hover:scale-110"
-            style="filter: invert(15%) sepia(95%) saturate(7487%) hue-rotate(356deg) brightness(103%) contrast(116%);"
-            onerror="this.style.display='none'"
-          />
-        </button>
-      </div>
-
-      <!-- Lado Derecho: Reloj del Sistema -->
+      <!-- Reloj del Sistema -->
       <div class="flex items-center h-full text-gray-300 font-mono text-sm">
-        <div id="os-clock" class="red-text h-full px-4 flex items-center cursor-default transition-colors whitespace-pre border-l border-red-900/30">
-          --:--
+        <div id="os-clock" class="h-full flex items-center cursor-default whitespace-pre">
+          <span id="os-clock-time" class="red-text h-full px-4 flex items-center">--:--</span>
+          <span id="os-clock-date" class="red-text h-full px-4 flex items-center border-l border-red-900/30"></span>
         </div>
       </div>
     </div>
@@ -786,8 +771,9 @@ Astro.response.headers.set('Cache-Control', 'public, s-maxage=3600, stale-while-
   <!-- Script para actualizar el reloj en tiempo real -->
   <script>
     function updateClock(): void {
-      const clockElement = document.getElementById('os-clock');
-      if (clockElement) {
+      const timeElement = document.getElementById('os-clock-time');
+      const dateElement = document.getElementById('os-clock-date');
+      if (timeElement && dateElement) {
         const now = new Date();
         const hours = now.getHours();
         const minutes = now.getMinutes();
@@ -797,7 +783,8 @@ Astro.response.headers.set('Cache-Control', 'public, s-maxage=3600, stale-while-
 
         const date = now.toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' });
 
-        clockElement.textContent = hours12 + ':' + minutesStr + ' ' + ampm + '  ' + date;
+        timeElement.textContent = hours12 + ':' + minutesStr + ' ' + ampm;
+        dateElement.textContent = date;
       }
     }
 
