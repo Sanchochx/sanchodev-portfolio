@@ -2,7 +2,7 @@
 import { Icon } from 'astro-icon/components';
 import { projects } from '../data/projects';
 
-const sectionLabel = '02 / MY PROJECTS';
+const sectionLabel = 'PROJECTS';
 
 const revealDelays = ['delay-100', 'delay-200', 'delay-300', 'delay-400', 'delay-500'] as const;
 ---
@@ -46,37 +46,12 @@ const revealDelays = ['delay-100', 'delay-200', 'delay-300', 'delay-400', 'delay
               )}
             </div>
 
-            <h3 class="font-display text-headline-md text-on-surface mb-2 uppercase tracking-tight">
+            <h3 class="font-sans text-headline-sm text-on-surface mb-2 uppercase tracking-tight">
               {project.title.replaceAll('_', ' ')}
             </h3>
-            <p class="font-sans text-body-md text-on-surface-variant mb-6 leading-relaxed">
+            <p class="font-sans text-body-md text-on-surface-variant mb-8 leading-relaxed">
               {project.description}
             </p>
-
-            <div class="space-y-4 mb-8">
-              <div>
-                <div class="flex items-center gap-2 mb-1">
-                  <span class="w-1.5 h-1.5 bg-primary-container rounded-full" />
-                  <span class="font-display text-mono-label text-xs text-on-surface/40 uppercase">
-                    Problem
-                  </span>
-                </div>
-                <p class="text-sm text-on-surface-variant pl-4 border-l border-white/5">
-                  {project.problem}
-                </p>
-              </div>
-              <div>
-                <div class="flex items-center gap-2 mb-1">
-                  <span class="w-1.5 h-1.5 bg-primary-container rounded-full" />
-                  <span class="font-display text-mono-label text-xs text-on-surface/40 uppercase">
-                    Tech Decision
-                  </span>
-                </div>
-                <p class="text-sm text-on-surface-variant pl-4 border-l border-white/5">
-                  {project.techDecision}
-                </p>
-              </div>
-            </div>
 
             <ul class="flex flex-wrap gap-2 mb-8 list-none m-0 p-0">
               {project.tech.map((tag) => (

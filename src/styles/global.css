@@ -119,8 +119,8 @@ html {
 
   .glass-hover:hover,
   .glass-hover:focus-visible {
-    border-color: rgb(255 255 255 / 0.18);
-    /* 255 0 0 = primary-container (#ff0000) en rgb — alpha 15% para el glow. */
+    /* 255 0 0 = primary-container (#ff0000) en rgb — alpha 60% para el borde, 15% para el glow. */
+    border-color: rgb(255 0 0 / 0.6);
     box-shadow: 0 0 24px 0 rgb(255 0 0 / 0.15);
   }
 }
