@@ -1,80 +1,80 @@
-# Portafolio Personal — Santiago Sánchez Márquez
+# Personal Portfolio — Santiago Sánchez Márquez
 
-Portafolio construido con Astro en modo servidor (SSR) y desplegado en Vercel. Incluye un chatbot que responde como Santiago usando la API de OpenAI.
+Portfolio built with Astro in server mode (SSR) and deployed on Vercel. It includes a chatbot that answers as Santiago using the OpenAI API.
 
 ---
 
 ## Stack
 
-- **Astro 5** con `output: 'server'` y adaptador `@astrojs/vercel`
-- **TypeScript** en modo `strict`
-- **Tailwind CSS 3** — sistema de diseño "Cyber-Refined Narrative" (ver `DESIGN.md`), tokens en `tailwind.config.mjs`
-- **astro-icon** + `@iconify-json/material-symbols` — íconos como SVG inline en build
-- **@fontsource/space-grotesk** + **@fontsource/inter** — tipografías self-hosted
-- **@astrojs/sitemap** — sitemap automático
-- **OpenAI `gpt-4o-mini`** — modelo del chatbot, llamado desde `src/pages/api/chat.ts`
+- **Astro 5** with `output: 'server'` and the `@astrojs/vercel` adapter
+- **TypeScript** in `strict` mode
+- **Tailwind CSS 3** — "Cyber-Refined Narrative" design system (see `DESIGN.md`), tokens in `tailwind.config.mjs`
+- **astro-icon** + `@iconify-json/material-symbols` — icons inlined as SVG at build time
+- **@fontsource/space-grotesk** + **@fontsource/inter** — self-hosted fonts
+- **@astrojs/sitemap** — automatic sitemap
+- **OpenAI `gpt-4o-mini`** — chatbot model, called from `src/pages/api/chat.ts`
 
 ---
 
-## Comandos
+## Commands
 
-| Comando | Descripción |
+| Command | Description |
 |---------|-------------|
-| `npm install` | Instala dependencias |
-| `npm run dev` | Dev server en `http://localhost:4321` |
-| `npm run build` | Build de producción |
-| `npm run preview` | Sirve el build localmente |
+| `npm install` | Install dependencies |
+| `npm run dev` | Dev server at `http://localhost:4321` |
+| `npm run build` | Production build |
+| `npm run preview` | Serve the build locally |
 | `npm run check` | `astro check` (TypeScript + diagnostics) |
 
-**Requisito**: Node.js ≥ 20.3.
+**Requirement**: Node.js ≥ 20.3.
 
 ---
 
-## Variables de entorno
+## Environment variables
 
-| Variable | Descripción |
+| Variable | Description |
 |----------|-------------|
-| `OPENAI_API_KEY` | **Obligatoria.** Usada por `/api/chat`. En local va en `.env` (ignorado por git); en Vercel, en *Settings → Environment Variables*. |
+| `OPENAI_API_KEY` | **Required.** Used by `/api/chat`. Locally it goes in `.env` (git-ignored); on Vercel, in *Settings → Environment Variables*. |
 
 ---
 
-## Deploy en Vercel
+## Deploying to Vercel
 
-1. Importar el repositorio en Vercel (preset `Astro`).
-2. Definir `OPENAI_API_KEY` para Production y Preview.
-3. El dominio se configura en `SITE_URL` de `astro.config.mjs` (afecta canonical, OG y sitemap).
+1. Import the repository in Vercel (`Astro` preset).
+2. Set `OPENAI_API_KEY` for Production and Preview.
+3. The domain is configured in `SITE_URL` in `astro.config.mjs` (affects canonical, OG and sitemap).
 
 ---
 
-## Estructura
+## Structure
 
 ```
 src/
 ├── components/     # Nav, Hero, SkillsBento, Projects, Contact, Footer, ChatWidget, CyberGrid
 ├── data/
-│   ├── projects.ts # Proyectos mostrados en la sección Projects
-│   └── me.ts       # Contexto y system prompt del chatbot
+│   ├── projects.ts # Projects shown in the Projects section
+│   └── me.ts       # Chatbot context and system prompt
 ├── layouts/
 │   └── BaseLayout.astro  # <head>, SEO, OG, Twitter Card, ChatWidget
 ├── pages/
-│   ├── index.astro       # RED LODGE: escritorio interactivo (página de inicio)
-│   ├── portfolio.astro   # Portafolio: orquesta las secciones
-│   ├── 404.astro         # Página de error personalizada
-│   └── api/chat.ts       # Endpoint POST del chatbot
-└── styles/global.css     # Fuentes, directivas Tailwind, utilidades .glass
-public/                   # Imágenes (proyectos, 404), logo y CV (PDF)
-DESIGN.md                 # Sistema de diseño
+│   ├── index.astro       # RED LODGE: interactive desktop (home page)
+│   ├── portfolio.astro   # Portfolio: assembles the sections
+│   ├── 404.astro         # Custom error page
+│   └── api/chat.ts       # Chatbot POST endpoint
+└── styles/global.css     # Fonts, Tailwind directives, .glass utilities
+public/                   # Images (projects, 404), logo and CV (PDF)
+DESIGN.md                 # Design system
 ```
 
 ## Chatbot (`/api/chat`)
 
-- Recibe `{ message, history }`; límite de 2000 caracteres por mensaje, 20 mensajes de historial y 500 tokens de respuesta.
-- Rate limit en memoria de 10 peticiones por minuto por IP. Es *best-effort*: el estado es por instancia serverless, no una cuota global.
-- El contexto (experiencia, proyectos, stack) vive en `src/data/me.ts`; al cambiarlo hay que redesplegar.
+- Receives `{ message, history }`; limits of 2000 characters per message, 20 history messages and 500 response tokens.
+- In-memory rate limit of 10 requests per minute per IP. It is *best-effort*: state is per serverless instance, not a global quota.
+- The context (experience, projects, stack) lives in `src/data/me.ts`; changing it requires a redeploy.
 
-## Cómo añadir un proyecto
+## Adding a project
 
-Agregar un objeto a `src/data/projects.ts` (con su imagen en `public/images/projects/`) y, si debe aparecer en el chatbot, actualizar también la sección *Projects* de `LINKEDIN` en `src/data/me.ts`.
+Add an object to `src/data/projects.ts` (with its image in `public/images/projects/`) and, if it should appear in the chatbot, also update the *Projects* section of `LINKEDIN` in `src/data/me.ts`.
 
 ```text
 +============================================================================+
@@ -107,3 +107,4 @@ Agregar un objeto a `src/data/projects.ts` (con su imagen en `public/images/proj
 +============================================================================+
 
 > _
+```
