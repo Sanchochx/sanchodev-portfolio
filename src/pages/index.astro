@@ -297,6 +297,26 @@ Astro.response.headers.set('Cache-Control', 'public, s-maxage=3600, stale-while-
         </span>
       </button>
 
+      <!-- Icono: Chaos Faction 2 -->
+      <button id="chaos-icon" type="button" class="w-20 flex flex-col items-center justify-start group rounded-sm border border-transparent hover:bg-blue-500/20 hover:border-blue-400/30 focus-visible:border-blue-400/60 transition-colors p-1 cursor-pointer z-20">
+        <div class="w-9 h-9 mb-1 flex items-center justify-center text-3xl drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]" aria-hidden="true">🥊</div>
+        <span class="text-white text-[9px] text-center font-mono tracking-wider drop-shadow-[0_1px_3px_rgba(0,0,0,1)] px-1 leading-tight mt-1">
+          CHAOS_F2
+        </span>
+      </button>
+
+    </div>
+
+    <!-- Ventana de Chaos Faction 2 (oculta por defecto) -->
+    <div id="chaos-window" class="hidden fixed inset-0 m-auto h-[min(520px,calc(100vh-4rem))] w-[min(640px,95vw)] bg-black border border-red-900 rounded-sm shadow-2xl z-50 flex flex-col">
+      <div id="chaos-titlebar" class="h-8 shrink-0 bg-black flex items-center justify-between px-2 select-none border-b border-red-900 cursor-move">
+        <div class="flex items-center text-red-600 text-xs font-mono tracking-wider truncate">
+          <span class="mr-2" aria-hidden="true">🎮</span> CHAOS_FACTION_2.exe (By EON)
+        </div>
+        <button id="chaos-close" type="button" aria-label="Cerrar Chaos Faction 2" class="w-6 h-6 hover:bg-red-500 focus-visible:bg-red-500 text-red-600 hover:text-white flex items-center justify-center text-xs">✕</button>
+      </div>
+      <!-- El iframe se inyecta por JS para que no consuma recursos en segundo plano -->
+      <div class="flex-1 w-full bg-black relative" id="chaos-container"></div>
     </div>
 
     <!-- Ventana de DOOM (oculta por defecto) -->
@@ -996,6 +1016,34 @@ Astro.response.headers.set('Cache-Control', 'public, s-maxage=3600, stale-while-
     document.getElementById('cine-close')?.addEventListener('click', () => {
       document.getElementById('cine-window')?.classList.add('hidden');
     });
+
+    // Chaos Faction 2
+    makeDraggable(document.getElementById('chaos-window'), document.getElementById('chaos-titlebar'));
+    function openChaos(): void {
+      const win = document.getElementById('chaos-window');
+      const container = document.getElementById('chaos-container');
+      if (!win || !container) return;
+      win.classList.remove('hidden');
+      if (container.querySelector('iframe')) return;
+      const frame = document.createElement('iframe');
+      frame.src = 'https://www.retrogames.cc/embed/41725-chaos-faction-2.html';
+      frame.title = 'Chaos Faction 2';
+      frame.className = 'w-full h-full border-none';
+      frame.allow = 'autoplay; fullscreen; gamepad';
+      frame.allowFullscreen = true;
+      frame.sandbox.add('allow-scripts', 'allow-same-origin', 'allow-pointer-lock');
+      frame.referrerPolicy = 'no-referrer';
+      container.appendChild(frame);
+    }
+    function closeChaos(): void {
+      document.getElementById('chaos-window')?.classList.add('hidden');
+      // Quitar el iframe apaga el audio y libera memoria
+      document.getElementById('chaos-container')?.replaceChildren();
+    }
+    const chaosIcon = document.getElementById('chaos-icon');
+    chaosIcon?.addEventListener('dblclick', openChaos);
+    chaosIcon?.addEventListener('keydown', (e) => { if (e.key === 'Enter') openChaos(); });
+    document.getElementById('chaos-close')?.addEventListener('click', closeChaos);
 
     // Videogames
     makeDraggable(document.getElementById('games-window'), document.getElementById('games-titlebar'));
