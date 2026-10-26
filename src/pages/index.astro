@@ -311,11 +311,11 @@ Astro.response.headers.set('Cache-Control', 'public, s-maxage=3600, stale-while-
     <div id="chaos-window" class="hidden fixed inset-0 m-auto h-[min(520px,calc(100vh-4rem))] w-[min(640px,95vw)] bg-black border border-red-900 rounded-sm shadow-2xl z-50 flex flex-col">
       <div id="chaos-titlebar" class="h-8 shrink-0 bg-black flex items-center justify-between px-2 select-none border-b border-red-900 cursor-move">
         <div class="flex items-center text-red-600 text-xs font-mono tracking-wider truncate">
-          <span class="mr-2" aria-hidden="true">🎮</span> CHAOS_FACTION_2.exe (By EON)
+          <span class="mr-2" aria-hidden="true">🎮</span> CHAOS_FACTION_2.swf [NEWGROUNDS EMULATOR]
         </div>
         <button id="chaos-close" type="button" aria-label="Cerrar Chaos Faction 2" class="w-6 h-6 hover:bg-red-500 focus-visible:bg-red-500 text-red-600 hover:text-white flex items-center justify-center text-xs">✕</button>
       </div>
-      <!-- El iframe se inyecta por JS para que no consuma recursos en segundo plano -->
+      <!-- Ruffle se inyecta por JS para que no consuma recursos en segundo plano -->
       <div class="flex-1 w-full bg-black relative" id="chaos-container"></div>
     </div>
 
@@ -1024,20 +1024,41 @@ Astro.response.headers.set('Cache-Control', 'public, s-maxage=3600, stale-while-
       const container = document.getElementById('chaos-container');
       if (!win || !container) return;
       win.classList.remove('hidden');
-      if (container.querySelector('iframe')) return;
-      const frame = document.createElement('iframe');
-      frame.src = 'https://www.retrogames.cc/embed/41725-chaos-faction-2.html';
-      frame.title = 'Chaos Faction 2';
-      frame.className = 'w-full h-full border-none';
-      frame.allow = 'autoplay; fullscreen; gamepad';
-      frame.allowFullscreen = true;
-      frame.sandbox.add('allow-scripts', 'allow-same-origin', 'allow-pointer-lock');
-      frame.referrerPolicy = 'no-referrer';
-      container.appendChild(frame);
+      if (container.firstElementChild) return;
+
+      // Ruffle se descarga solo la primera vez que se abre la ventana
+      loadRuffle().then((ruffle) => {
+        if (container.firstElementChild || win.classList.contains('hidden')) return;
+        const player = ruffle.newest().createPlayer();
+        player.style.width = '100%';
+        player.style.height = '100%';
+        container.appendChild(player);
+        void player.load('/games/chaos_faction_2.swf');
+      }).catch((err) => console.error('Ruffle failed to load', err));
+    }
+
+    interface RufflePlayerElement extends HTMLElement { load(url: string): Promise<void>; }
+    interface RuffleApi { newest(): { createPlayer(): RufflePlayerElement }; }
+    let rufflePromise: Promise<RuffleApi> | null = null;
+    function loadRuffle(): Promise<RuffleApi> {
+      const get = (): RuffleApi | undefined => (window as unknown as { RufflePlayer?: RuffleApi }).RufflePlayer;
+      rufflePromise ??= new Promise((resolve, reject) => {
+        const existing = get();
+        if (existing) { resolve(existing); return; }
+        const script = document.createElement('script');
+        script.src = 'https://unpkg.com/@ruffle-rs/ruffle@0.7.1/ruffle.js';
+        script.onload = () => {
+          const api = get();
+          if (api) resolve(api); else reject(new Error('RufflePlayer missing'));
+        };
+        script.onerror = () => { rufflePromise = null; reject(new Error('Ruffle script blocked')); };
+        document.head.appendChild(script);
+      });
+      return rufflePromise;
     }
     function closeChaos(): void {
       document.getElementById('chaos-window')?.classList.add('hidden');
-      // Quitar el iframe apaga el audio y libera memoria
+      // Quitar el reproductor apaga el audio y libera memoria
       document.getElementById('chaos-container')?.replaceChildren();
     }
     const chaosIcon = document.getElementById('chaos-icon');
