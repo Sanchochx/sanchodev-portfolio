@@ -1,5 +1,6 @@
 ---
 import Parser from 'rss-parser';
+import { getSecret } from 'astro:env/server';
 
 interface FavoriteMovie {
   title: string;
@@ -15,7 +16,7 @@ interface RecentMovie {
 
 const FETCH_TIMEOUT_MS = 4000;
 const favoriteIds: number[] = [103, 1018, 28422, 27064];
-const tmdbApiKey: string | undefined = import.meta.env.TMDB_API_KEY;
+const tmdbApiKey: string | undefined = getSecret('TMDB_API_KEY');
 
 let favorites: FavoriteMovie[] = [];
 

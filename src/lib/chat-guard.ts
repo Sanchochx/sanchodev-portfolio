@@ -1,7 +1,9 @@
 // Lógica común de /api/chat y /api/pactasis: validación de entrada, límites de coste y
 // llamada a OpenAI. Mantener un único sitio evita que los límites diverjan entre bots.
 
-type Role = 'system' | 'user' | 'assistant';
+import { getSecret } from 'astro:env/server';
+
+type Role ='system' | 'user' | 'assistant';
 
 type ChatMessage = {
   role: Role;
@@ -117,7 +119,7 @@ export const handleChat = async ({
   maxReplyTokens,
   blockCodeFences,
 }: ChatOptions): Promise<Response> => {
-  const apiKey = process.env.OPENAI_API_KEY ?? import.meta.env.OPENAI_API_KEY;
+  const apiKey = getSecret('OPENAI_API_KEY');
   if (!apiKey) return json({ error: 'Server is not configured' }, 500);
 
   if (isRateLimited(getClientKey(request, clientAddress))) {
