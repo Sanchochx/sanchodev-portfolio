@@ -202,30 +202,38 @@ const spineColors: string[] = ['bg-[#2a2a2a]', 'bg-[#333333]', 'bg-[#222222]', '
   const backCover = document.getElementById('showcase-back') as HTMLImageElement | null;
   const flip = document.getElementById('game-flip');
 
-  const COVER_EXTENSIONS = ['jpg', 'png', 'webp'];
+  const COVER_EXTENSIONS = ['webp', 'jpg', 'png'];
   const SPINE_EXTENSIONS = ['png', 'jpg', 'webp'];
   const COVER_DIR = '/images/videogame_covers';
   const FALLBACK_COVER = '/images/sanchodev_logo.png';
   let fadeTimer: number | undefined;
+  let coverToken = 0;
 
-  // Prueba .jpg, luego .png y .webp; si no existe ninguna, usa el logo
+  // Prueba .webp, luego .jpg y .png; si no existe ninguna, usa el logo
   const loadCover = (id: string): void => {
     if (!cover) return;
+    // Vacía la carátula anterior para que nunca se vea la del juego previo mientras carga
+    cover.removeAttribute('src');
+    backCover?.removeAttribute('src');
+    const probe = new Image();
     let attempt = 0;
-    cover.onerror = () => {
+    const token = ++coverToken;
+    const apply = (src: string): void => {
+      // Ignora respuestas tardías de un juego que ya no es el seleccionado
+      if (token !== coverToken) return;
+      cover.src = src;
+      if (backCover) backCover.src = src;
+    };
+    probe.onload = () => apply(probe.src);
+    probe.onerror = () => {
       attempt += 1;
       if (attempt < COVER_EXTENSIONS.length) {
-        cover.src = `${COVER_DIR}/${id}.${COVER_EXTENSIONS[attempt]}`;
+        probe.src = `${COVER_DIR}/${id}.${COVER_EXTENSIONS[attempt]}`;
       } else {
-        cover.onerror = null;
-        cover.src = FALLBACK_COVER;
+        apply(FALLBACK_COVER);
       }
     };
-    // La parte de atrás reutiliza la misma imagen, ya resuelta la extensión
-    cover.onload = () => {
-      if (backCover) backCover.src = cover.src;
-    };
-    cover.src = `${COVER_DIR}/${id}.${COVER_EXTENSIONS[0]}`;
+    probe.src = `${COVER_DIR}/${id}.${COVER_EXTENSIONS[0]}`;
   };
 
   // Cuando carga la imagen del lomo, sustituye al texto y ajusta el ancho a su proporción
