@@ -2,31 +2,41 @@
 // importarlo sin parsear PDFs en runtime serverless. Cuando cambies de
 // experiencia o stack, edita estas constantes y redeploy.
 
-export const NAME = 'Santiago Sanchez';
+export const NAME = 'Santiago Sanchez Marquez';
 
-export const SUMMARY = `Software Engineer with Full-Stack development experience and a hands-on approach to DevOps culture and Cloud-Native architectures. 
-
-Capable of designing, programming, and orchestrating secure applications, managing the complete software lifecycle through to containerized deployment in Linux environments. 
-
-I integrate Artificial Intelligence (including agent-based architectures) to maximize workflow productivity, ensuring code quality, the integrity of architectural decisions, and infrastructure standardization. 
-
-Bilingual (English and Spanish), with a strong focus on problem-solving, continuous learning, and delivering high-value software.`;
+export const SUMMARY = `Software engineer focused on DevOps and Cloud, with a solid foundation in Full-Stack development.
+Responsible for the architecture of the software lifecycle, from planning, documentation, and
+development through deployment and maintenance.
+I apply DevOps practices to deploy applications securely, automatically, and reproducibly, while
+moving toward cloud architectures.
+I design and build applications based on Artificial Intelligence and language models, and I use AI
+agents that strictly follow defined workflows to generate code, which I supervise and validate.
+Bilingual (English and Spanish), with a strong focus on problem-solving, continuous learning, and
+high-quality software engineering.`;
 
 export const LINKEDIN = `## Contact
-LinkedIn: https://www.linkedin.com/in/santiago-sánchez-márquez-821b742b1/
+LinkedIn: https://www.linkedin.com/in/santiagosanchezmarquez
 GitHub: https://github.com/Sanchochx
 Website: https://sanchodev-portfolio.vercel.app/
 
 ## Profile
-Software Engineer with Full-Stack development experience and a hands-on approach to DevOps culture and Cloud-Native architectures.
+Software engineer focused on DevOps and Cloud, with a solid foundation in Full-Stack development.
+Responsible for the architecture of the software lifecycle, from planning, documentation, and
+development through deployment and maintenance.
+I apply DevOps practices to deploy applications securely, automatically, and reproducibly, while
+moving toward cloud architectures.
+I design and build applications based on Artificial Intelligence and language models, and I use AI
+agents that strictly follow defined workflows to generate code, which I supervise and validate.
+Bilingual (English and Spanish), with a strong focus on problem-solving, continuous learning, and
+high-quality software engineering.
 
 ## Technical Skills
--Frontend: Angular, React, TypeScript, JavaScript, HTML, CSS, Astro, Vite.
--Backend: Node.js, Express, Python, Flask.
--Bases de datos: MySQL, NoSQL, SQL
--Infraestructura & DevOps: Docker, Docker Compose, Linux, Contenerización.
--Desarrollo & Herramientas: RESTful APIs, Git, metodologías ágiles.
--Inteligencia Artificial: Desarrollo de software con IA, IA agéntica, LangChain, LangGraph, Servidores MCP.
+Frontend: Angular, React, TypeScript, JavaScript, HTML, CSS, TailwindCSS, Astro, Vite.
+Backend: Node.js, Express, Python, FastAPI, RESTful APIs, Flask, WebSockets.
+Databases: PostgreSQL, MySQL, SQLAlchemy.
+Infrastructure & DevOps: Git, Docker, Traefik, CI/CD, Linux, Bash Scripting, SSH, fail2ban,
+UFW, HTTPS/TLS.
+Artificial Intelligence: Agentic AI, LangChain, LangGraph, MCP Servers.
 
 ## Work Experience
 
@@ -35,13 +45,17 @@ Full-stack web developer specializing in Angular, React, Node.js, and Flask.
 I design and build complete web solutions for independent clients, from requirements gathering to deployment. Focused on clean architecture, responsive design, and measurable business impact. 
 I leverage AI-assisted development workflows to accelerate delivery without sacrificing code quality.
 
-### Full Stack Developer Intern — ESE Hospital Universitario San Rafael (Tunja, Colombia)
-Hybrid | October 2025 - May 2026
-- Developed modular management systems using Angular and Node.js for administrative operations
-- Implemented authentication and role-based access control for secure user management
-- Designed responsive interfaces with Angular Material and integrated RESTful APIs
-- Built reporting and data visualization features to support operational decision-making
-Tech: Angular, TypeScript, RxJS, Node.js, Express, SQL / NoSQL, Git
+### Full-Stack Developer | Medsupplies Ingeniería S.A.S. (November 2026 – Present)
+Develop the company’s main corporate website and am responsible for its maintenance,
+content updates, and bug fixing.
+Freelance Full-Stack Developer (April 2026 – Present)
+I design and build complete web solutions for independent clients, from requirements
+gathering to deployment. Focused on clean architecture, responsive design, and measurable
+business impact.
+Developer Intern | ESE Hospital Universitario San Rafael (October 2025 – May 2026)
+Developed modular systems with Angular and Node.js to streamline administrative workflows,
+featuring RESTful APIs and role-based authentication.
+Implemented reporting and data visualization modules to support operational decision-making.
 
 ## Education
 B.Sc. in IT Engineering — Universidad Santo Tomás
@@ -56,8 +70,21 @@ B.Sc. in IT Engineering — Universidad Santo Tomás
 - English (Bilingual proficiency)
 
 ## Projects (all completed)
+
+### AutoOps: Automated Technical Support Platform with AI Agents
+Developed an incident management platform (FastAPI, React, PostgreSQL) with LangGraph AI
+agents that classify ticket severity and generate root-cause analyses, with real-time reasoning
+streamed via WebSockets.
+Designed the infrastructure with Docker Compose: isolated networks, hardened containers,
+and Traefik as the sole entry point with HTTPS and HSTS.
+Automated the provisioning of an Ubuntu server with idempotent Bash scripts (SSH, fail2ban,
+UFW, systemd, backups).
+Implemented CI/CD with GitHub Actions: images tagged by commit SHA in GHCR and
+automated deployment with rollback and smoke testing.
+GitHub: https://github.com/Sanchochx/autoOps
+
 ### GESTRACK ERP 
-Cloud-Native Full-Stack application designed to efficiently manage inventory and clients, featuring a containerized architecture for standardized deployment and secure role-based access. 
+Full-Stack application designed to efficiently manage inventory and clients, featuring a containerized architecture for standardized deployment and secure role-based access. 
 Tech: Python, Flask, Docker, Docker Compose,React 19, PostgreSQL, SQLAlchemy, JWT, REST APIs, Vite
 GitHub: https://github.com/Sanchochx/GesTrack
 
@@ -87,14 +114,6 @@ Full-stack web application focused on secure user and vote management.
 - Designed scalable architecture for controlled vote processing and audit logging
 Tech: Python, Flask, MySQL, REST API, CSS, HTML
 GitHub: https://github.com/Sanchochx/final_project_seguridad_dev
-
-### World Cup 2026 AI Simulator
-Interactive World Cup simulator with 48 teams, full knockout bracket, and real-time AI-generated tactical match analysis.
-- Simulates group stage and ranks teams using real FIFA rules
-- Generates AI-powered match analysis in real time via OpenAI API
-- Covers all 48 teams of the 2026 World Cup with the actual bracket
-Tech: Next.js, TypeScript, React, OpenAI API
-GitHub: https://github.com/Sanchochx/world_cup_ai_simulator
 
 ### LinProg Solver — Linear Programming Calculator
 Academic project: a calculator with an intuitive interface for defining and solving linear programming problems.

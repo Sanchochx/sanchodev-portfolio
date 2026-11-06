@@ -1,7 +1,7 @@
 ---
 import { Icon } from 'astro-icon/components';
 
-const sectionLabel = 'TECHNOLOGIES';
+const sectionLabel = 'SKILLS';
 
 type CategoryCard = {
   icon: string;
@@ -12,33 +12,33 @@ type CategoryCard = {
 
 const categoryCards: readonly CategoryCard[] = [
   {
+    icon: 'material-symbols:cloud',
+    title: 'Infrastructure & DevOps',
+    stack: ['Docker', 'Traefik', 'Linux', 'Git', 'CI/CD', 'Bash', 'Fail2ban', 'UFW'],
+    span: 'large',
+  },
+  {
     icon: 'material-symbols:web',
     title: 'Frontend',
-    stack: ['Angular', 'React', 'Typescript', 'Astro', 'Tailwind', 'Vite'],
-    span: 'large',
+    stack: ['Angular', 'React', 'TypeScript', 'Astro', 'Tailwind', 'Vite'],
+    span: 'medium',
   },
   {
     icon: 'material-symbols:terminal',
     title: 'Backend',
-    stack: ['Python', 'Flask', 'Node.js', 'Express'],
-    span: 'medium',
-  },
-  {
-    icon: 'material-symbols:cloud',
-    title: 'Infrastructure & DevOps',
-    stack: ['Docker', 'DockerCompose', 'Linux'],
+    stack: ['Python', 'Flask', 'Node.js', 'Express', 'FastAPI', 'WebSockets'],
     span: 'medium',
   },
   {
     icon: 'material-symbols:psychology',
     title: 'Artificial Intelligence',
-    stack: ['Agentic AI', 'Langchain', 'Langgraph', 'MCP Servers'],
+    stack: ['Agentic AI', 'LangChain', 'LangGraph', 'MCP Servers'],
     span: 'medium',
   },
   {
     icon: 'material-symbols:database',
     title: 'Data & Tools',
-    stack: ['PostgreSQL', 'MySQL', 'NoSQL', 'Rest APIs', 'JWT', 'Git'],
+    stack: ['PostgreSQL', 'MySQL', 'SQLAlchemy', 'Alembic'],
     span: 'medium',
   },
 ] as const;

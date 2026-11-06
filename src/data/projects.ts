@@ -10,9 +10,27 @@ export type Project = {
 
 export const projects: readonly Project[] = [
   {
+    title: 'AutoOps: Automated Technical Support Platform with AI Agents',
+    description:
+      'Incident management platform where LangGraph AI agents triage ticket severity and generate root-cause analyses, streamed in real time. Deployed with hardened Docker containers behind Traefik (HTTPS and HSTS), idempotent Bash server provisioning, and a GitHub Actions CI/CD pipeline with rollback and smoke testing.',
+    tech: [
+      'FASTAPI',
+      'REACT 19',
+      'LANGGRAPH',
+      'POSTGRESQL',
+      'DOCKER COMPOSE',
+      'TRAEFIK',
+      'GITHUB ACTIONS',
+      'BASH'
+    ],
+    image: '/images/projects/autoops.jpg',
+    imageAlt: 'AutoOps dashboard showing incident tickets with AI agent triage and real-time reasoning.',
+    href: 'https://github.com/Sanchochx/autoOps',
+  },
+  {
     title: 'GesTrack ERP',
     description:
-      'Cloud-Native Full-Stack application designed to efficiently manage inventory and clients, featuring a containerized architecture for standardized deployment and secure role-based access.',
+      'Full-Stack application designed to efficiently manage inventory and clients, featuring a containerized architecture for standardized deployment and secure role-based access.',
     tech: [
       'DOCKER',
       'DOCKER COMPOSE',
