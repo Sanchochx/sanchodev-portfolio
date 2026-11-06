@@ -14,16 +14,14 @@ export const projects: readonly Project[] = [
     description:
       'Incident management platform where LangGraph AI agents triage ticket severity and generate root-cause analyses, streamed in real time. Deployed with hardened Docker containers behind Traefik (HTTPS and HSTS), idempotent Bash server provisioning, and a GitHub Actions CI/CD pipeline with rollback and smoke testing.',
     tech: [
-      'FASTAPI',
-      'REACT 19',
       'LANGGRAPH',
-      'POSTGRESQL',
-      'DOCKER COMPOSE',
       'TRAEFIK',
+      'DOCKER COMPOSE',
       'GITHUB ACTIONS',
-      'BASH'
+      'BASH',
+      'LINUX'
     ],
-    image: '/images/projects/autoops.jpg',
+    image: '/images/projects/autoops.png',
     imageAlt: 'AutoOps dashboard showing incident tickets with AI agent triage and real-time reasoning.',
     href: 'https://github.com/Sanchochx/autoOps',
   },
