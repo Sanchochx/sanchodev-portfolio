@@ -13,7 +13,7 @@ Production: https://sanchodev-portfolio.vercel.app
 
 - **Astro 5** with `output: 'server'` and the `@astrojs/vercel` adapter
 - **TypeScript** in `strict` mode
-- **Tailwind CSS 3** — "Cyber-Refined Narrative" design system (see `DESIGN.md`), tokens in `tailwind.config.mjs`
+- **Tailwind CSS 3** — "Cyber-Refined Narrative" dark theme, tokens in `tailwind.config.mjs`
 - **astro-icon** + `@iconify-json/material-symbols` — icons inlined as SVG at build time
 - **@fontsource/space-grotesk** + **@fontsource/inter** — self-hosted fonts
 - **@astrojs/sitemap** — automatic sitemap
@@ -63,35 +63,38 @@ Copy `.env.example` to `.env` (git-ignored).
 ```
 src/
 ├── components/
-│   ├── Nav, Hero, SkillsBento, Projects, Contact, Footer   # /portfolio sections
-│   ├── ChatWidget.astro      # Floating chatbot (calls /api/chat)
-│   ├── CyberGrid.astro       # Background grid
-│   ├── LetterboxdApp.astro   # Cinema window: favorites (TMDB) + last 10 watched (Letterboxd RSS)
-│   └── GamesApp.astro        # Videogames window: shelf of game spines, click for the cover
+│   ├── portfolio/        # /portfolio: Nav, Hero, SkillsBento, Projects, Contact, ChatWidget, CyberGrid
+│   └── desktop/          # RED LODGE: DesktopIcon, DesktopWindow, CrtOverlay, TerminalWindow, Taskbar
+│       └── apps/         # One component per window (Notepad, Paint, Pactasis, Doom, Wolf, Pinball, Chaos)
+│                         # + LetterboxdApp (Cinema: TMDB + Letterboxd RSS) and GamesApp (Videogames shelf)
 ├── data/
-│   ├── projects.ts   # Projects shown in the Projects section
-│   └── me.ts         # Chatbot context and system prompt
+│   ├── projects.ts       # Projects shown in the Projects section
+│   ├── me.ts             # Chatbot context and system prompt
+│   ├── desktopApps.ts    # Desktop icon list and rows
+│   └── asciiArts.ts      # Arts rotated by the ASCII terminal
 ├── layouts/
 │   └── BaseLayout.astro  # <head>, SEO, OG, Twitter Card, ChatWidget
 ├── lib/
 │   └── chat-guard.ts     # Shared validation, rate limit and OpenAI call for both bots
 ├── pages/
-│   ├── index.astro       # RED LODGE: interactive desktop (home page)
+│   ├── index.astro       # RED LODGE: composes the desktop (home page)
 │   ├── portfolio.astro   # Portfolio: assembles the sections
 │   ├── 404.astro         # Custom error page
 │   └── api/
 │       ├── chat.ts       # Portfolio chatbot (answers as Santiago)
 │       └── pactasis.ts   # P.A.C.T.A.S.I.S terminal bot
-└── styles/global.css     # Fonts, Tailwind directives, .glass utilities
+├── scripts/desktop/      # Client logic per window (ascii, crt, clock, doom, wolf, pinball, chaos, pactasis, paint, windows)
+└── styles/
+    ├── global.css        # Fonts, Tailwind directives, .glass utilities
+    └── desktop.css       # RED LODGE only: CRT, themes, rainbow/red text
 public/
-├── images/               # Logo, avatar, desktop icons, projects, 404 art, videogame_covers/
-└── games/wolf3d.zip      # Wolfenstein 3D bundle for js-dos
-DESIGN.md                 # Design system
+├── images/               # brand/, icons/ (desktop + contact), 404/, projects/, videogame_covers/
+└── games/                # wolf3d.zip (js-dos bundle), chaos_faction_2.swf (Ruffle)
 ```
 
 ## RED LODGE desktop (`/`)
 
-The home page hides the global Nav, Footer and chat widget and renders a full-screen desktop. Everything is in `src/pages/index.astro` plus two components.
+The home page hides the global Nav and chat widget and renders a full-screen desktop. `src/pages/index.astro` only composes components from `src/components/desktop/`; each window has its logic in `src/scripts/desktop/`.
 
 | Icon | What it does |
 |------|--------------|
@@ -114,7 +117,7 @@ Details:
 
 ### Adding a game to the shelf
 
-Add `{ id: '<slug>' }` to `localGames` in `GamesApp.astro` and drop `<slug>.jpg|png|webp` (cover) and `<slug>-spine.png|jpg|webp` in `public/images/videogame_covers/`.
+Add `{ id: '<slug>' }` to `localGames` in `src/components/desktop/apps/GamesApp.astro` and drop `<slug>.jpg|png|webp` (cover) and `<slug>-spine.png|jpg|webp` in `public/images/videogame_covers/`.
 
 ## Chatbots
 

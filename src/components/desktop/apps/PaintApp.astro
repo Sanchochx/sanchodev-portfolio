@@ -1,0 +1,89 @@
+---
+---
+
+<!-- Ventana de MS Paint, estilo Windows 95 (oculta por defecto) -->
+<div id="paint-window" class="hidden fixed inset-0 m-auto h-fit w-[min(660px,95vw)] bg-[#c0c0c0] border-2 border-t-white border-l-white border-b-black border-r-black shadow-2xl z-40 flex flex-col font-sans select-none text-black">
+  <div id="paint-titlebar" class="h-7 shrink-0 bg-gradient-to-r from-[#000080] to-[#1084d0] flex items-center justify-between px-2 cursor-move touch-none">
+    <div class="flex items-center text-white text-xs font-bold tracking-wide">
+      <img src="/images/icons/paint_icon.png" alt="" width="16" height="16" class="w-4 h-4 mr-2" onerror="this.style.display='none'" />
+      Paint
+    </div>
+    <div class="flex space-x-1">
+      <button type="button" aria-label="Minimize" class="w-5 h-5 bg-[#c0c0c0] border-t border-l border-white border-b-2 border-r-2 border-black text-black flex items-center justify-center text-xs font-bold active:border-t-2 active:border-l-2 active:border-b-white active:border-r-white">_</button>
+      <button type="button" aria-label="Maximize" class="w-5 h-5 bg-[#c0c0c0] border-t border-l border-white border-b-2 border-r-2 border-black text-black flex items-center justify-center text-xs font-bold active:border-t-2 active:border-l-2 active:border-b-white active:border-r-white">□</button>
+      <button id="paint-close" type="button" aria-label="Close Paint" class="w-5 h-5 bg-[#c0c0c0] border-t border-l border-white border-b-2 border-r-2 border-black text-black flex items-center justify-center text-xs font-bold active:border-t-2 active:border-l-2 active:border-b-white active:border-r-white">✕</button>
+    </div>
+  </div>
+
+  <div class="bg-[#c0c0c0] text-black text-xs px-2 py-0.5 flex space-x-3 border-b border-[#808080]">
+    <div class="relative" id="paint-file-menu">
+      <button id="paint-file-btn" type="button" aria-haspopup="true" aria-expanded="false" class="px-1 hover:bg-[#000080] hover:text-white focus-visible:bg-[#000080] focus-visible:text-white aria-expanded:bg-[#000080] aria-expanded:text-white"><u>F</u>ile</button>
+      <div id="paint-file-dropdown" role="menu" class="hidden absolute left-0 top-full z-50 min-w-[9rem] bg-[#c0c0c0] border-2 border-t-white border-l-white border-b-black border-r-black py-0.5 shadow-md">
+        <button id="paint-save" type="button" role="menuitem" class="w-full text-left px-6 py-0.5 hover:bg-[#000080] hover:text-white focus-visible:bg-[#000080] focus-visible:text-white">Save Image</button>
+      </div>
+    </div>
+    <button id="paint-clear" type="button" class="hover:bg-[#000080] hover:text-white focus-visible:bg-[#000080] focus-visible:text-white px-1"><u>C</u>lear</button>
+  </div>
+
+  <div class="flex p-2 bg-[#c0c0c0] gap-2">
+    <div class="w-16 shrink-0 grid grid-cols-2 gap-1 bg-[#c0c0c0] p-1 border-t border-l border-[#808080] border-b border-r border-white h-fit">
+      <button type="button" data-tool="eraser" id="paint-tool-eraser" title="Eraser" aria-label="Eraser" class="paint-tool p-1.5 flex items-center justify-center text-xs">⬜</button>
+      <button type="button" data-tool="fill" id="paint-tool-fill" title="Fill with color" aria-label="Fill with color" class="paint-tool p-1.5 flex items-center justify-center text-xs">🪣</button>
+      <button type="button" data-tool="picker" id="paint-tool-picker" title="Color picker" aria-label="Color picker" class="paint-tool p-1.5 flex items-center justify-center text-xs">💉</button>
+      <button type="button" data-tool="pencil" id="paint-tool-pencil" title="Pencil" aria-label="Pencil" class="paint-tool p-1.5 flex items-center justify-center text-xs">✏️</button>
+      <button type="button" data-tool="brush" id="paint-tool-brush" title="Brush" aria-label="Brush" class="paint-tool p-1.5 flex items-center justify-center text-xs">🖌️</button>
+    </div>
+
+    <div class="flex-1 min-w-0 bg-white border-2 border-t-[#808080] border-l-[#808080] border-b-white border-r-white relative overflow-hidden h-[340px] max-h-[50vh]" id="paint-canvas-wrap">
+      <canvas id="paint-canvas" class="w-full h-full cursor-crosshair touch-none"></canvas>
+    </div>
+  </div>
+
+  <div class="px-3 pb-1 flex items-center gap-2 bg-[#c0c0c0]">
+    <select id="paint-size" aria-label="Line width" class="bg-white text-black text-xs border border-[#808080] p-0.5">
+      <option value="1">1px</option>
+      <option value="3" selected>3px</option>
+      <option value="6">6px</option>
+      <option value="12">12px</option>
+    </select>
+  </div>
+
+  <div class="bg-[#c0c0c0] p-2 border-t border-[#808080] flex items-center gap-3">
+    <div class="relative w-8 h-8 shrink-0 border border-white border-b-black border-r-black bg-[#808080]" aria-hidden="true">
+      <div id="paint-active-color" class="absolute bottom-1 right-1 w-5 h-5 bg-black border border-black z-10"></div>
+      <div class="absolute top-1 left-1 w-5 h-5 bg-white border border-black"></div>
+    </div>
+
+    <div id="paint-palette" class="grid grid-cols-[repeat(14,1rem)] gap-0.5 bg-[#808080] p-1 border border-white border-b-[#404040] border-r-[#404040]">
+      <button type="button" data-color="#000000" aria-label="#000000" style="background:#000000" class="w-4 h-4 border border-[#808080]"></button>
+      <button type="button" data-color="#808080" aria-label="#808080" style="background:#808080" class="w-4 h-4 border border-[#808080]"></button>
+      <button type="button" data-color="#800000" aria-label="#800000" style="background:#800000" class="w-4 h-4 border border-[#808080]"></button>
+      <button type="button" data-color="#808000" aria-label="#808000" style="background:#808000" class="w-4 h-4 border border-[#808080]"></button>
+      <button type="button" data-color="#008000" aria-label="#008000" style="background:#008000" class="w-4 h-4 border border-[#808080]"></button>
+      <button type="button" data-color="#008080" aria-label="#008080" style="background:#008080" class="w-4 h-4 border border-[#808080]"></button>
+      <button type="button" data-color="#000080" aria-label="#000080" style="background:#000080" class="w-4 h-4 border border-[#808080]"></button>
+      <button type="button" data-color="#800080" aria-label="#800080" style="background:#800080" class="w-4 h-4 border border-[#808080]"></button>
+      <button type="button" data-color="#808040" aria-label="#808040" style="background:#808040" class="w-4 h-4 border border-[#808080]"></button>
+      <button type="button" data-color="#004040" aria-label="#004040" style="background:#004040" class="w-4 h-4 border border-[#808080]"></button>
+      <button type="button" data-color="#0080ff" aria-label="#0080ff" style="background:#0080ff" class="w-4 h-4 border border-[#808080]"></button>
+      <button type="button" data-color="#004080" aria-label="#004080" style="background:#004080" class="w-4 h-4 border border-[#808080]"></button>
+      <button type="button" data-color="#8000ff" aria-label="#8000ff" style="background:#8000ff" class="w-4 h-4 border border-[#808080]"></button>
+      <button type="button" data-color="#804000" aria-label="#804000" style="background:#804000" class="w-4 h-4 border border-[#808080]"></button>
+
+      <button type="button" data-color="#ffffff" aria-label="#ffffff" style="background:#ffffff" class="w-4 h-4 border border-[#808080]"></button>
+      <button type="button" data-color="#c0c0c0" aria-label="#c0c0c0" style="background:#c0c0c0" class="w-4 h-4 border border-[#808080]"></button>
+      <button type="button" data-color="#ff0000" aria-label="#ff0000" style="background:#ff0000" class="w-4 h-4 border border-[#808080]"></button>
+      <button type="button" data-color="#ffff00" aria-label="#ffff00" style="background:#ffff00" class="w-4 h-4 border border-[#808080]"></button>
+      <button type="button" data-color="#00ff00" aria-label="#00ff00" style="background:#00ff00" class="w-4 h-4 border border-[#808080]"></button>
+      <button type="button" data-color="#00ffff" aria-label="#00ffff" style="background:#00ffff" class="w-4 h-4 border border-[#808080]"></button>
+      <button type="button" data-color="#0000ff" aria-label="#0000ff" style="background:#0000ff" class="w-4 h-4 border border-[#808080]"></button>
+      <button type="button" data-color="#ff00ff" aria-label="#ff00ff" style="background:#ff00ff" class="w-4 h-4 border border-[#808080]"></button>
+      <button type="button" data-color="#ffff80" aria-label="#ffff80" style="background:#ffff80" class="w-4 h-4 border border-[#808080]"></button>
+      <button type="button" data-color="#00ff80" aria-label="#00ff80" style="background:#00ff80" class="w-4 h-4 border border-[#808080]"></button>
+      <button type="button" data-color="#80ffff" aria-label="#80ffff" style="background:#80ffff" class="w-4 h-4 border border-[#808080]"></button>
+      <button type="button" data-color="#8080ff" aria-label="#8080ff" style="background:#8080ff" class="w-4 h-4 border border-[#808080]"></button>
+      <button type="button" data-color="#ff0080" aria-label="#ff0080" style="background:#ff0080" class="w-4 h-4 border border-[#808080]"></button>
+      <button type="button" data-color="#ff8040" aria-label="#ff8040" style="background:#ff8040" class="w-4 h-4 border border-[#808080]"></button>
+    </div>
+  </div>
+</div>

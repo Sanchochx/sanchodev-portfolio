@@ -1,0 +1,9 @@
+---
+import DesktopWindow from '../DesktopWindow.astro';
+---
+
+<DesktopWindow name="wolf" title="js-dos - Wolfenstein 3D" icon="/images/icons/wolf_icon.png" closeLabel="Cerrar Wolfenstein 3D" class="h-fit w-[min(800px,95vw,calc((100vh-4rem)*1.6))] z-40">
+  <div class="w-full aspect-[16/10] bg-black relative" id="wolf-container">
+    <canvas id="jsdos-wolf" class="!w-full !h-full block object-contain"></canvas>
+  </div>
+</DesktopWindow>

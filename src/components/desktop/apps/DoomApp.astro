@@ -1,0 +1,9 @@
+---
+import DesktopWindow from '../DesktopWindow.astro';
+---
+
+<DesktopWindow name="doom" title="js-dos - DOOM" icon="/images/icons/doom_icon.png" closeLabel="Cerrar DOOM" rainbowClose class="h-fit w-[min(800px,95vw,calc((100vh-4rem)*1.6))] z-40">
+  <div class="w-full aspect-[16/10] bg-black relative" id="dos-container">
+    <canvas id="jsdos" class="!w-full !h-full block object-contain"></canvas>
+  </div>
+</DesktopWindow>

@@ -1,0 +1,8 @@
+---
+import DesktopWindow from '../DesktopWindow.astro';
+---
+
+<DesktopWindow name="pinball" title="3D Pinball for Windows - Space Cadet" icon="/images/icons/pinball_icon.png" closeLabel="Cerrar 3D Pinball" class="h-[min(720px,calc(100vh-4rem))] w-[min(960px,95vw)] z-40">
+  <!-- El iframe se inyecta por JS para que no consuma recursos en segundo plano -->
+  <div class="flex-1 w-full bg-black relative" id="pinball-container"></div>
+</DesktopWindow>

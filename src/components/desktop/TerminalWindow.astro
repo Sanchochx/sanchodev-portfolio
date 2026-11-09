@@ -1,0 +1,43 @@
+---
+---
+
+<!-- Ventana de terminal (abierta por defecto, se puede cerrar y arrastrar) -->
+<div id="terminal-window" class="fixed top-6 right-6 max-h-[calc(100vh-7rem)] w-[min(380px,95vw)] bg-black border border-red-900 rounded-sm shadow-2xl z-30 flex flex-col font-mono">
+  <div id="terminal-titlebar" class="h-8 shrink-0 bg-black flex items-center justify-end px-2 select-none border-b border-red-900 cursor-move touch-none">
+    <button id="terminal-close" type="button" aria-label="Cerrar Terminal" class="w-6 h-6 hover:bg-red-500 focus-visible:bg-red-500 text-red-600 hover:text-white flex items-center justify-center text-xs">✕</button>
+  </div>
+  <div class="overflow-auto p-3 selection:bg-green-800 selection:text-white">
+    <div class="perspective-container flex items-center justify-center overflow-hidden h-[min(360px,55vh)]">
+      <div class="animate-spin-y">
+        <pre id="ascii-content" aria-label="ASCII art" class="rainbow-text transition-opacity duration-300 leading-tight whitespace-pre">
+   _____                  __               ____
+  / ___/____ _____  _____/ /_  ____       / __ \___ _   __
+  \__ \/ __ `/ __ \/ ___/ __ \/ __ \     / / / / _ \ | / /
+ ___/ / /_/ / / / / /__/ / / / /_/ /    / /_/ /  __/ |/ /
+/____/\__,_/_/ /_/\___/_/ /_/\____/____/_____/\___/|___/
+                                 /_____/
+
+               .-"""-.
+             _/-=-.   \
+            (_|a a/   |_
+             / "  \   ,_)
+        _    \`=' /__/
+       / \_  .;--'  `-.
+       \___)//      ,  \
+        \ \/;        \  \
+         \_.|         | |
+          .-\ '     _/_/
+        .'  _;.    (_  \
+       /  .'   `\   \\_/
+      |_ /       |  |\\
+     /  _)       /  / ||
+    /  /       _/  /  //
+    \_/       ( `-/  ||
+              /  /   \\ .-.
+              \_/     \'-'/
+                       `"`
+</pre>
+      </div>
+    </div>
+  </div>
+</div>

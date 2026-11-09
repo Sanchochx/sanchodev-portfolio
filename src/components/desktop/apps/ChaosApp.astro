@@ -1,0 +1,8 @@
+---
+import DesktopWindow from '../DesktopWindow.astro';
+---
+
+<DesktopWindow name="chaos" title="Chaos Faction 2" closeLabel="Cerrar Chaos Faction 2" draggable class="h-[min(780px,calc(100vh-4rem))] w-[min(1040px,95vw)] z-50">
+  <!-- Ruffle se inyecta por JS para que no consuma recursos en segundo plano -->
+  <div class="flex-1 w-full bg-black relative" id="chaos-container"></div>
+</DesktopWindow>

@@ -6,7 +6,7 @@ Personal portfolio of Santiago Sánchez Márquez (full-stack developer) for recr
 ## Stack
 - Astro 5, `output: 'server'` (SSR) with `@astrojs/vercel`
 - TypeScript `strict`
-- Tailwind CSS 3, tokens in `tailwind.config.mjs` (source of truth: `DESIGN.md`, "Cyber-Refined Narrative", dark theme)
+- Tailwind CSS 3, tokens in `tailwind.config.mjs` ("Cyber-Refined Narrative", dark theme; this file is the source of truth)
 - astro-icon + material-symbols, self-hosted fonts (Inter, Space Grotesk)
 - Two OpenAI `gpt-4o-mini` bots sharing `src/lib/chat-guard.ts`: `/api/chat` (Santiago) and `/api/pactasis` (P.A.C.T.A.S.I.S terminal bot)
 - `rss-parser` (Letterboxd feed) + TMDB API (Cinema app); js-dos 6.22 from CDN (DOOM, Wolfenstein 3D)
@@ -25,22 +25,30 @@ npm run check      # astro check (TypeScript)
 ## Structure
 ```
 src/
-  components/   ← /portfolio: Nav, Hero, SkillsBento, Projects, Contact, Footer, ChatWidget, CyberGrid
-                  desktop apps: LetterboxdApp (Cinema), GamesApp (Videogames shelf)
-  data/         ← projects.ts (Projects section), me.ts (chatbot context)
+  components/
+    portfolio/  ← /portfolio: Nav, Hero, SkillsBento, Projects, Contact, ChatWidget, CyberGrid
+    desktop/    ← RED LODGE: DesktopIcon, DesktopWindow (shared window shell), CrtOverlay,
+                  TerminalWindow (ASCII), Taskbar
+      apps/     ← one component per window: Notepad, Paint, Pactasis, Doom, Wolf, Pinball, Chaos,
+                  LetterboxdApp (Cinema), GamesApp (Videogames shelf)
+  data/         ← projects.ts (Projects section), me.ts (chatbot context),
+                  desktopApps.ts (desktop icon list and rows), asciiArts.ts (terminal arts)
   layouts/      ← BaseLayout.astro (SEO, OG, mounts ChatWidget)
   lib/          ← chat-guard.ts (validation, rate limit, OpenAI call for both bots)
-  pages/        ← index.astro (RED LODGE desktop), portfolio.astro, 404.astro,
+  pages/        ← index.astro (composes the desktop), portfolio.astro, 404.astro,
                   api/chat.ts, api/pactasis.ts
-  styles/       ← global.css
-public/         ← images (logo, avatar, desktop icons, projects, 404, videogame_covers/), games/wolf3d.zip
+  scripts/desktop/ ← client logic per window (ascii, crt, clock, doom, wolf, pinball, chaos,
+                  pactasis, paint, windows = drag + simple open/close), imported from index.astro
+  styles/       ← global.css, desktop.css (RED LODGE only)
+public/         ← images/{brand,icons,404,projects,videogame_covers}/, games/ (wolf3d.zip, chaos_faction_2.swf)
 ```
 
 ## RED LODGE desktop (`src/pages/index.astro`)
-- Hides Nav/Footer/ChatWidget via global CSS; CRT power-on animation; draggable windows; taskbar clock; ASCII terminal that rotates arts and sets a color theme (`data-theme`).
-- Icons: My Portfolio (→ `/portfolio`), P.A.C.T.A.S.I.S, About Me (notepad), MS Paint, Cinema, Videogames, DOOM, 3D Pinball (iframe injected on open, removed on close), Wolfenstein 3D.
+- `index.astro` only composes components. Window ids follow `<name>-window`, `<name>-titlebar`, `<name>-close` (built by `DesktopWindow`) and the scripts in `scripts/desktop/` look elements up by id, so keep them in sync.
+- Hides Nav/ChatWidget via `desktop.css`; CRT power-on animation; draggable windows; taskbar clock; ASCII terminal that rotates arts and sets a color theme (`data-theme`).
+- Icons (list in `src/data/desktopApps.ts`): My Portfolio (→ `/portfolio`), P.A.C.T.A.S.I.S, About Me (notepad), MS Paint, Cinema, ASCII (reopens the terminal), Videogames, DOOM, 3D Pinball (iframe injected on open, removed on close), Wolfenstein 3D, Chaos Faction 2 (Ruffle loaded on first open).
 - Response is cached at the edge (`s-maxage=3600`) because Cinema queries Letterboxd/TMDB at render time.
-- Videogames: add `{ id }` to `localGames` in `GamesApp.astro` plus `<id>.*` and `<id>-spine.*` in `public/images/videogame_covers/`.
+- Videogames: add `{ id }` to `localGames` in `components/desktop/apps/GamesApp.astro` plus `<id>.*` and `<id>-spine.*` in `public/images/videogame_covers/`.
 
 ## Conventions
 - Code, file names and variables in English; components `PascalCase.astro`, data in `camelCase`.
@@ -53,7 +61,7 @@ public/         ← images (logo, avatar, desktop icons, projects, 404, videogam
 2. Both bots keep their limits in `chat-guard.ts` (1000-char message, 6-message/6000-char history, 8 req/min and 60 req/h per IP) and `max_tokens` (400 `/api/chat`, 300 `/api/pactasis`); don't relax them without reason, every call costs money. P.A.C.T.A.S.I.S must keep refusing code, images and ASCII art.
 3. Don't use `innerHTML` with user or model content; use `textContent`.
 4. `me.ts` contains contact data sent to the model: review before adding sensitive information.
-5. Follow `DESIGN.md` for colors, typography and spacing; don't introduce loose values outside the Tailwind tokens.
+5. Take colors, typography and spacing from `tailwind.config.mjs`; do not introduce loose values outside the Tailwind tokens.
 6. Review with the `code-review` skill before merging.
 
 ## Environment variables
@@ -73,5 +81,5 @@ TMDB_API_KEY=     # optional; Cinema omits favorite posters without it
 - Comments only for the *why*.
 
 ## Additional context
-- [README.md](../README.md) · [DESIGN.md](../DESIGN.md)
+- [README.md](../README.md)
 - Repository: https://github.com/Sanchochx

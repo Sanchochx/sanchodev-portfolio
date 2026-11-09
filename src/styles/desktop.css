@@ -1,0 +1,120 @@
+/* Estilos globales del escritorio RED LODGE (importado desde src/pages/index.astro) */
+header, nav, footer, #chat-widget { display: none !important; }
+body { overflow: hidden; } /* Evita el scroll en el escritorio */
+
+@keyframes rainbow-hue {
+  from { filter: hue-rotate(0deg); }
+  to { filter: hue-rotate(360deg); }
+}
+
+/* Texto con degradado arcoíris; el filtro rota el tono para que cambie de color */
+.rainbow-text,
+.rainbow-text * {
+  color: transparent !important;
+}
+.rainbow-text {
+  background-image: linear-gradient(90deg, #ff0040, #ff8000, #ffe600, #00e060, #00c8ff, #8000ff, #ff0040);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+@keyframes red-glow {
+  from { filter: brightness(0.75); }
+  to { filter: brightness(1.35); }
+}
+
+/* Degradado de rojos; el brillo pulsa para alternar entre tonos */
+.red-text,
+.red-text * {
+  color: transparent !important;
+}
+.red-text {
+  background-image: linear-gradient(90deg, #7f0000, #cc0000, #ff2a2a, #cc0000, #7f0000);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+/* Colores por tema de ASCII (data-theme en #terminal-window) */
+#terminal-window[data-theme="pink"] { --theme-color: #f472b6; --theme-glow: rgba(244, 114, 182, 0.6); }
+#terminal-window[data-theme="white"] { --theme-color: #f8fafc; --theme-glow: rgba(248, 250, 252, 0.6); }
+#terminal-window[data-theme="purple"] { --theme-color: #c084fc; --theme-glow: rgba(192, 132, 252, 0.6); }
+#terminal-window[data-theme="blue"] { --theme-color: #60a5fa; --theme-glow: rgba(96, 165, 250, 0.6); }
+#terminal-window[data-theme="orange"] { --theme-color: #fb923c; --theme-glow: rgba(251, 146, 60, 0.6); }
+#terminal-window[data-theme="green"] { --theme-color: #4ade80; --theme-glow: rgba(74, 222, 128, 0.6); }
+#terminal-window[data-theme="red"] { --theme-color: #f87171; --theme-glow: rgba(248, 113, 113, 0.6); }
+
+.theme-text {
+  color: var(--theme-color);
+  text-shadow: 0 0 8px var(--theme-glow);
+}
+
+/* Marco arcoíris de la terminal (se reemplaza por el color del tema) */
+#terminal-window:not([data-theme]) { border-color: transparent; }
+#terminal-window:not([data-theme]) #terminal-titlebar { border-bottom-color: transparent; }
+#terminal-window:not([data-theme])::before,
+#terminal-window:not([data-theme]) #terminal-titlebar::after {
+  content: '';
+  position: absolute;
+  pointer-events: none;
+}
+#terminal-window:not([data-theme])::before {
+  inset: -1px;
+  border: 1px solid;
+  border-image: linear-gradient(90deg, #ff0040, #ff8000, #ffe600, #00e060, #00c8ff, #8000ff, #ff0040) 1;
+}
+#terminal-titlebar { position: relative; }
+#terminal-window:not([data-theme]) #terminal-titlebar::after {
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 1px;
+  background-image: linear-gradient(90deg, #ff0040, #ff8000, #ffe600, #00e060, #00c8ff, #8000ff, #ff0040);
+}
+
+/* Marco y textos de la terminal con el color del tema activo */
+#terminal-window[data-theme],
+#terminal-window[data-theme] #terminal-titlebar {
+  border-color: var(--theme-color);
+}
+#terminal-window[data-theme] #terminal-close {
+  color: var(--theme-color);
+}
+#terminal-window[data-theme] .rainbow-text {
+  animation: none;
+  background-image: none;
+}
+#terminal-window[data-theme] .rainbow-text,
+#terminal-window[data-theme] .rainbow-text * {
+  color: var(--theme-color) !important;
+}
+
+/* Rayo catódico del encendido CRT */
+@keyframes crt-beam-on {
+  0% { transform: scale(0.01, 0.002); opacity: 1; }
+  30% { transform: scale(1, 0.002); opacity: 1; }
+  60% { transform: scale(1, 1); opacity: 1; }
+  100% { transform: scale(1, 1); opacity: 0; }
+}
+
+.animate-crt-beam {
+  animation: crt-beam-on 0.7s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+}
+
+.perspective-container { perspective: 1000px; }
+
+@keyframes spin-y {
+  from { transform: rotateY(0deg); }
+  to { transform: rotateY(360deg); }
+}
+
+/* Solo se animan si el usuario no pidió reducir movimiento */
+@media (prefers-reduced-motion: no-preference) {
+  .rainbow-text,
+  #terminal-window:not([data-theme])::before,
+  #terminal-window:not([data-theme]) #terminal-titlebar::after { animation: rainbow-hue 0.6s linear infinite; }
+  .red-text { animation: red-glow 1.5s ease-in-out infinite alternate; }
+  .red-text.red-text-fast { animation-duration: 0.5s; }
+  .animate-spin-y { animation: spin-y 3s linear infinite; transform-style: preserve-3d; }
+}
+.log-user { color: #f87171; }
+.log-sys { color: #dc2626; text-shadow: 0 0 5px rgba(220,38,38,0.6); white-space: pre-wrap; }
