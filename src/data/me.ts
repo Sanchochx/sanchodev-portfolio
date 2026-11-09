@@ -71,7 +71,7 @@ B.Sc. in IT Engineering — Universidad Santo Tomás
 
 ## Projects (all completed)
 
-### AutoOps: Automated Technical Support Platform with AI Agents
+### AutoOps: Automated Technical Support Platform with AI Agents (Last project and the one Im currently working on)
 Developed an incident management platform (FastAPI, React, PostgreSQL) with LangGraph AI
 agents that classify ticket severity and generate root-cause analyses, with real-time reasoning
 streamed via WebSockets.
@@ -104,32 +104,7 @@ Full-stack application where 4 AI models (GPT-4o-mini, DeepSeek-chat, Llama 3.1,
 - Built a Next.js orchestration layer unifying OpenAI, DeepSeek, Groq, and OpenRouter (Gemini) APIs
 - Implemented turn-based debate flow with automated AI scoring
 Tech: Next.js, TypeScript, OpenAI API, DeepSeek API, Groq API, OpenRouter API, Tailwind CSS, Framer Motion
-GitHub: https://github.com/Sanchochx/ai-debate-arena
-
-### Secure Voting Management System
-Full-stack web application focused on secure user and vote management.
-- Developed RESTful backend with authentication and role-based access control using Flask and MySQL
-- Built dynamic frontend with secure session handling and input validation
-- Implemented vote hashing and unique per-voter tokens to guarantee integrity without exposing voter identity
-- Designed scalable architecture for controlled vote processing and audit logging
-Tech: Python, Flask, MySQL, REST API, CSS, HTML
-GitHub: https://github.com/Sanchochx/final_project_seguridad_dev
-
-### LinProg Solver — Linear Programming Calculator
-Academic project: a calculator with an intuitive interface for defining and solving linear programming problems.
-- Integrated PuLP as the open-source solver with a Flask interface
-- Accepts constraints dynamically from the user with a visual plot of the optimal solution
-- Built for the Optimization course final project
-Tech: Python, Flask, PuLP, Linear Programming, Optimization
-GitHub: https://github.com/Sanchochx/linear-programming-project
-
-### 2D Platformer — AI-Assisted Development (Coffee Bros)
-A fully-featured 2D platformer game demonstrating human-AI collaboration through Claude Code and agile development methodologies.
-- Implemented AI pathfinding and game logic using object-oriented design
-- Applied modular architecture and version control for scalable development
-- Used AI-assisted development via Claude Code for level design and user story mapping, cutting prototyping time significantly
-Tech: Python, Pygame, AI-Assisted Development, Agile Methodologies, User Story Mapping
-GitHub: https://github.com/Sanchochx/coffee_bros`;
+GitHub: https://github.com/Sanchochx/ai-debate-arena`;
 
 export const SYSTEM_PROMPT = `You are acting as ${NAME}. You are answering questions on ${NAME}'s website, particularly questions related to ${NAME}'s career, background, skills and experience. Your responsibility is to represent ${NAME} for interactions on the website as faithfully as possible. You are given a summary of ${NAME}'s background and LinkedIn profile which you can use to answer questions. Be professional and engaging, as if talking to a potential client or future employer who came across the website.
 

@@ -25,6 +25,16 @@ export const projects: readonly Project[] = [
     imageAlt: 'AutoOps dashboard showing incident tickets with AI agent triage and real-time reasoning.',
     href: 'https://github.com/Sanchochx/autoOps',
   },
+    {
+    title: 'MULTI-MODEL DEBATE ARENA',
+    description:
+      'Full-stack application with 4 AI models (GPT-4o-mini, DeepSeek-chat, Llama 3.1, Gemini 2.0) that debate in real time on any topic. It allows you to choose models and rounds, receives a verdict from the AI judge, supports Spanish/English.',
+    tech: ['NEXT.JS', 'TYPESCRIPT', 'OPENAI API', 'DEEPSEEK API', 'GROQ API', 'OPENROUTER API', 'TAILWIND CSS', 'FRAMER MOTION'],
+    image: '/images/projects/debate_arena.png',
+    imageAlt:
+      'Multimodel arena debate interface showing AI models competing in real-time.',
+    href: 'https://github.com/Sanchochx/ai-debate-arena',
+  },
   {
     title: 'GesTrack ERP',
     description:
@@ -53,25 +63,5 @@ export const projects: readonly Project[] = [
       'Hidrosoldaduras index page.',
     href: 'https://github.com/Sanchochx/hidrosoldaduras_web',
     websiteHref: 'https://hidrosoldaduras.com',
-  },
-  {
-    title: 'MULTI-MODEL DEBATE ARENA',
-    description:
-      'Full-stack application with 4 AI models (GPT-4o-mini, DeepSeek-chat, Llama 3.1, Gemini 2.0) that debate in real time on any topic. It allows you to choose models and rounds, receives a verdict from the AI judge, supports Spanish/English.',
-    tech: ['NEXT.JS', 'TYPESCRIPT', 'OPENAI API', 'DEEPSEEK API', 'GROQ API', 'OPENROUTER API', 'TAILWIND CSS', 'FRAMER MOTION'],
-    image: '/images/projects/debate_arena.png',
-    imageAlt:
-      'Multimodel arena debate interface showing AI models competing in real-time.',
-    href: 'https://github.com/Sanchochx/ai-debate-arena',
-  },
-  {
-    title: 'LINPROG SOLVER',
-    description:
-      'I developed a calculator that provides an intuitive interface for defining and solving linear programming problems.',
-    tech: ['PYTHON', 'FLASK', 'PULP', 'LINEAR PROGRAMMING', 'OPTIMIZATION'],
-    image: '/images/projects/linear_programming.jpg',
-    imageAlt:
-      'Linear programming calculator showing constraints and an optimal solution plot.',
-    href: 'https://github.com/Sanchochx/linear-programming-project',
   },
 ] as const;
