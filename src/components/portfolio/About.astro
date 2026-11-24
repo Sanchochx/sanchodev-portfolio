@@ -1,0 +1,233 @@
+---
+const sectionLabel = 'About Me';
+
+// Bio copy, in reading order. `accent` = red highlight, `strong` = brighter bold text.
+type AboutSegment = { text: string; emphasis?: 'accent' | 'strong' };
+
+const aboutLead: readonly AboutSegment[] = [
+  { text: 'Software engineer focused on ' },
+  { text: 'DevOps and Cloud', emphasis: 'accent' },
+  { text: ', with a solid foundation in ' },
+  { text: 'Full-Stack development', emphasis: 'accent' },
+];
+
+// One string per paragraph.
+const paragraphs: readonly string[] = [
+  'Responsible for the architecture of the software lifecycle, from planning, documentation, and development through deployment and maintenance.',
+  'I apply DevOps practices to deploy applications securely, automatically, and reproducibly, while moving toward cloud architectures.',
+  'I design and build applications based on Artificial Intelligence and language models, and I use AI agents that strictly follow defined workflows to generate code, which I supervise and validate.',
+  'Bilingual (English and Spanish), with a strong focus on problem-solving, continuous learning, and high-quality software\u00A0engineering.',
+];
+
+const emphasisClass = {
+  accent: 'about-accent',
+  strong: 'font-semibold text-on-surface',
+} as const;
+---
+
+<section
+  id="about"
+  data-reveal-group
+  data-reveal-once
+  class="about-section py-section-gap overflow-x-hidden"
+>
+  <div class="max-w-container-max mx-auto px-6">
+    <header class="about-from-left mb-10">
+      <h2 class="font-display text-mono-label text-on-surface uppercase block mb-4">
+        {sectionLabel}
+      </h2>
+      <span class="block w-12 h-px bg-primary-container" aria-hidden="true"></span>
+    </header>
+
+    <div class="about-grid text-left font-sans">
+      <p class="about-lead about-from-left">
+        {
+          aboutLead.map((segment) =>
+            segment.emphasis ? (
+              <strong class={emphasisClass[segment.emphasis]}>{segment.text}</strong>
+            ) : (
+              segment.text
+            )
+          )
+        }
+      </p>
+      <div class="about-body">
+        {
+          paragraphs.map((paragraph) => (
+            <p data-typewriter>
+              {/* Screen readers get the full text at once; the typed copy is visual only. */}
+              <span class="sr-only">{paragraph}</span>
+              {/* No whitespace between these spans: it would show up as a space at the typing point. */}
+              <span aria-hidden="true"><span class="tw-typed" /><span class="tw-caret" hidden /><span class="tw-rest">{paragraph}</span></span>
+            </p>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Headline left (~45%), paragraphs right (~55%) from 900px; stacked below. */
+  .about-grid {
+    --about-body-size: clamp(1.05rem, 0.95rem + 0.3vw, 1.15rem);
+    display: grid;
+    gap: 2rem;
+  }
+
+  @media (min-width: 900px) {
+    .about-grid {
+      grid-template-columns: 45fr 55fr;
+      gap: 4rem;
+      align-items: start;
+    }
+  }
+
+  .about-lead {
+    font-size: clamp(1.75rem, 6vw, 2.25rem);
+    font-weight: 600;
+    line-height: 1.12;
+    letter-spacing: -0.02em;
+    color: var(--text-title);
+    overflow-wrap: break-word;
+  }
+
+  @media (min-width: 900px) {
+    .about-lead {
+      font-size: clamp(2.25rem, 4vw, 3.5rem);
+      /* Line up the cap tops of the headline and the first paragraph. In Inter (ascender 0.969em, content
+         area 1.211em, cap height 0.727em) the cap top sits (line-height - 1.211) / 2 + 0.242 em below the
+         line box: 0.486em for the paragraphs (line-height 1.7) and 0.196em for the headline (1.12). */
+      margin-top: calc(var(--about-body-size) * 0.486 - 0.196em);
+    }
+  }
+
+  .about-body {
+    font-size: var(--about-body-size);
+    line-height: 1.7;
+    max-width: 60ch;
+    color: var(--text-body);
+  }
+
+  .about-body p + p {
+    margin-top: 1.5rem;
+  }
+
+  /* Solid accent red for the highlighted phrases (same weight as the headline, no effects). */
+  .about-accent {
+    color: var(--accent);
+    font-weight: inherit; /* <strong> would otherwise render bolder than the headline */
+  }
+
+  /* Plays once per page load (data-reveal-once): the label and headline slide in from the left; the
+     paragraphs are typed out by the script below. Hidden state lives in CSS so nothing flashes first. */
+  .about-from-left {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+
+  @media (min-width: 768px) {
+    .about-from-left {
+      transform: translateX(-60px);
+    }
+  }
+
+  .about-section.is-visible .about-from-left {
+    opacity: 1;
+    transform: none;
+    transition:
+      opacity 600ms ease-out,
+      transform 600ms ease-out;
+  }
+
+  .about-section.is-visible .about-lead {
+    transition-delay: 100ms;
+  }
+
+  /* Untyped text keeps its space (transparent), so lines never reflow while typing. */
+  .tw-rest {
+    color: transparent;
+  }
+
+  /* Zero-width caret: the 2px border is cancelled by the negative margins. */
+  .tw-caret {
+    border-left: 2px solid var(--accent);
+    margin: 0 -1px;
+  }
+
+  .tw-caret[hidden] {
+    display: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .about-from-left {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  // Typewriter for the About paragraphs: one after another, time-based (smooth at any frame rate), once per load.
+  const CHARS_PER_SECOND = 320;
+  const PAUSE_BETWEEN_MS = 120;
+  const START_DELAY_MS = 350; // lets the headline land first
+
+  const section = document.getElementById('about');
+  const items = [...(section?.querySelectorAll<HTMLElement>('[data-typewriter]') ?? [])].flatMap((p) => {
+    const typed = p.querySelector<HTMLElement>('.tw-typed');
+    const caret = p.querySelector<HTMLElement>('.tw-caret');
+    const rest = p.querySelector<HTMLElement>('.tw-rest');
+    const text = rest?.textContent ?? '';
+    return typed && caret && rest ? [{ typed, caret, rest, text, shown: 0 }] : [];
+  });
+
+  const show = (item: (typeof items)[number], count: number): void => {
+    if (count === item.shown) return;
+    item.shown = count;
+    item.typed.textContent = item.text.slice(0, count);
+    item.rest.textContent = item.text.slice(count);
+  };
+
+  const finish = (): void => {
+    items.forEach((item) => {
+      show(item, item.text.length);
+      item.caret.hidden = true;
+    });
+  };
+
+  const run = (): void => {
+    // Each paragraph's start/end on one shared timeline, in ms.
+    let cursor = 0;
+    const timeline = items.map((item) => {
+      const start = cursor;
+      const end = start + (item.text.length / CHARS_PER_SECOND) * 1000;
+      cursor = end + PAUSE_BETWEEN_MS;
+      return { item, start, end };
+    });
+    const total = cursor - PAUSE_BETWEEN_MS;
+    let t0: number | undefined;
+
+    const frame = (now: number): void => {
+      t0 ??= now;
+      const elapsed = now - t0;
+      timeline.forEach(({ item, start, end }) => {
+        const progress = Math.min(Math.max((elapsed - start) / (end - start), 0), 1);
+        show(item, Math.round(progress * item.text.length));
+        item.caret.hidden = !(elapsed >= start && elapsed < end);
+      });
+      if (elapsed < total) requestAnimationFrame(frame);
+      else finish();
+    };
+    requestAnimationFrame(frame);
+  };
+
+  if (section && items.length) {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      finish();
+    } else {
+      section.addEventListener('reveal:enter', () => window.setTimeout(run, START_DELAY_MS), { once: true });
+    }
+  }
+</script>

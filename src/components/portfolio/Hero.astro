@@ -21,7 +21,7 @@ const secondaryRole = 'AI, DevOps & Cloud';
       {fullName}
     </h1>
 
-    <div class="animate-on-load anim-delay-200 flex flex-col md:flex-row items-center justify-center gap-4 mb-12">
+    <div class="reveal-base delay-200 flex flex-col md:flex-row items-center justify-center gap-4 mb-12">
       <span
         id="hacker-sub-1"
         data-value={primaryRole}
@@ -53,15 +53,24 @@ const secondaryRole = 'AI, DevOps & Cloud';
   const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()_+<>{}[]01';
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  // Pending timers per element, so a replay restarts the scramble instead of stacking a second one.
+  const timers = new Map<HTMLElement, { timeout?: number; interval?: number }>();
+
   function decodeText(elementId: string, delay: number): void {
     const element = document.getElementById(elementId);
     const originalText = element?.dataset.value;
     if (!element || !originalText) return;
 
-    setTimeout(() => {
+    const previous = timers.get(element);
+    window.clearTimeout(previous?.timeout);
+    window.clearInterval(previous?.interval);
+    const current: { timeout?: number; interval?: number } = {};
+    timers.set(element, current);
+
+    current.timeout = window.setTimeout(() => {
       let iterations = 0;
 
-      const interval = setInterval(() => {
+      current.interval = window.setInterval(() => {
         element.textContent = originalText
           .split('')
           .map((letter, index) =>
@@ -72,7 +81,7 @@ const secondaryRole = 'AI, DevOps & Cloud';
           .join('');
 
         if (iterations >= originalText.length) {
-          clearInterval(interval);
+          window.clearInterval(current.interval);
         }
 
         iterations += 1 / 3;
@@ -80,12 +89,15 @@ const secondaryRole = 'AI, DevOps & Cloud';
     }, delay);
   }
 
-  if (!prefersReducedMotion) {
-    // Cascada: el nombre primero, luego cada subtítulo
+  // Runs with the name's first scroll reveal only (shared observer in BaseLayout); a reload plays it again.
+  // The fade/slide itself still replays on every re-entry. Reduced motion never runs it.
+  document.getElementById('hacker-name')?.addEventListener('reveal:enter', () => {
+    if (prefersReducedMotion) return;
+    // Cascade: the name first, then each subtitle
     decodeText('hacker-name', 400);
     decodeText('hacker-sub-1', 1000);
     decodeText('hacker-sub-2', 1400);
-  }
+  }, { once: true });
 </script>
 
 <style>

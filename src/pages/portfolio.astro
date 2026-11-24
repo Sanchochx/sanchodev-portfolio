@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Nav from '../components/portfolio/Nav.astro';
 import Hero from '../components/portfolio/Hero.astro';
+import About from '../components/portfolio/About.astro';
 import SkillsBento from '../components/portfolio/SkillsBento.astro';
 import Projects from '../components/portfolio/Projects.astro';
 import Contact from '../components/portfolio/Contact.astro';
@@ -15,11 +16,28 @@ const description =
   <Nav />
   <main>
     <Hero />
+    <About />
     <SkillsBento />
     <Projects />
     <Contact />
   </main>
 </BaseLayout>
+
+<script>
+  // F5 / reload always starts at the top: no restored scroll position and no jump to a leftover #anchor.
+  // A first visit to /portfolio#section still lands on that section.
+  // Manual restoration is set on every visit: the browser reads it from the entry before a reload restores.
+  history.scrollRestoration = 'manual';
+
+  const [navigation] = performance.getEntriesByType('navigation') as PerformanceNavigationTiming[];
+  if (navigation?.type === 'reload') {
+    if (window.location.hash) history.replaceState(null, '', window.location.pathname + window.location.search);
+    // 'instant' bypasses the page's smooth scroll-behavior; repeated on load in case late layout moved it.
+    const toTop = (): void => window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    toTop();
+    window.addEventListener('load', toTop, { once: true });
+  }
+</script>
 
 <style is:global>
   /* Smooth scroll para los anclas del Nav, respetando preferencias de movimiento reducido. */

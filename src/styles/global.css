@@ -14,61 +14,104 @@
 /* Inter — weight 400 cubre body-lg y body-md; 500 reservado para énfasis en copy. */
 @import '@fontsource/inter/400.css';
 @import '@fontsource/inter/500.css';
+@import '@fontsource/inter/600.css'; /* card and modal titles */
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/*
+ * Surface palette (near-black + the site's strong red). Applied to the Projects cards and details modal first;
+ * the rest of the page will migrate to it later.
+ */
+:root {
+  --bg-page: #09090b;
+  --bg-card: #111114;
+  --bg-card-inner: #19171a;
+  --border-subtle: #252528;
+  --border-divider: #222226;
+  --accent: #ff0000; /* the site's strong red (primary-container) */
+  /* 8% keeps red tag text on its tinted background at AA (4.5:1); 15% would drop it to 4.3:1. */
+  --accent-soft: rgba(255, 0, 0, 0.08);
+  --accent-border: rgba(255, 0, 0, 0.45);
+  --accent-glow: rgba(255, 0, 0, 0.12);
+  --accent-text: #ff0000; /* 4.7:1 on --bg-card, 4.5:1 on tags */
+  --accent-text-hover: #ff4d4d;
+  --text-title: #e4e4e7;
+  --text-body: #a1a1aa;
+  --text-muted: #71717a;
+  --icon-muted: #52525b;
+
+  /* Card typography */
+  --card-title-size: 0.95rem;
+  --card-title-weight: 600;
+  --card-title-line-height: 1.3;
+  --modal-title-size: 1.25rem;
+  --card-summary-size: 0.85rem;
+  --card-summary-line-height: 1.5;
+
+  /* Shifting reds (About Me highlights, project links on hover): pair with the `red-shift` keyframes. */
+  --red-shift-gradient: linear-gradient(
+    90deg,
+    theme('colors.primary-fixed-dim'),
+    theme('colors.primary-container'),
+    theme('colors.primary-fixed'),
+    theme('colors.primary-container'),
+    theme('colors.primary-fixed-dim')
+  );
+}
 
 html {
   background-color: theme('colors.surface');
 }
 
 /*
- * Glassmorphism — Level 2/3 de DESIGN.md ("Elevation & Depth").
- * Superficies translúcidas con backdrop blur + borde sutil.
- * Se usan como clase única (.glass) o combinadas con .glass-hover para interactividad.
- */
-/*
- * Slide & Snap — único sistema de reveal (carga y scroll): desliza 30px con curva expo-out, sin rebote.
- * .reveal-base = estado inicial; .is-visible lo añade el IntersectionObserver del BaseLayout,
- * que también retira estas clases al terminar para no pisar las transiciones de hover.
+ * Slide & Snap — shared scroll reveal for the portfolio: 30px slide with an expo-out curve, no bounce.
+ * The BaseLayout observer replays it on every entry:
+ *   .reveal-base                         hidden (no transition, so the reset off-screen is instant)
+ *   .reveal-base.is-visible.is-entering  plays the entrance (durations + stagger delays live only here)
+ *   .reveal-base.is-visible              settled: no reveal transition, so components' own hover transitions win
  */
 @layer utilities {
   .reveal-base {
     opacity: 0;
     transform: translateY(30px);
+  }
+
+  .reveal-base:not(.is-visible),
+  .reveal-base.is-entering {
     will-change: transform, opacity;
   }
 
   .reveal-base.is-visible {
-    transform: translateY(0);
     opacity: 1;
+    transform: none;
+  }
+
+  .reveal-base.is-entering {
     transition: opacity 1s ease-out, transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
-  /* Entrada lenta (3s) para título, subtítulo y chat. Solo longhand: el shorthand reiniciaría el delay. */
-  .reveal-base.is-visible.reveal-slow {
+  /* Slow (3s) entrance for the hero and nav. Longhand only: the shorthand would reset the delay. */
+  .reveal-base.is-entering.reveal-slow {
     transition-duration: 3s;
   }
 
-  /* Mayor especificidad que .is-visible: su shorthand `transition` reiniciaría el delay. */
-  .reveal-base.delay-100 { transition-delay: 100ms; }
-  .reveal-base.delay-200 { transition-delay: 200ms; }
-  .reveal-base.delay-300 { transition-delay: 300ms; }
-  .reveal-base.delay-400 { transition-delay: 400ms; }
-  .reveal-base.delay-500 { transition-delay: 500ms; }
-  
+  /* Higher specificity than .is-entering so its `transition` shorthand doesn't reset the delay. */
+  .reveal-base.is-entering.delay-100 { transition-delay: 100ms; }
+  .reveal-base.is-entering.delay-200 { transition-delay: 200ms; }
+  .reveal-base.is-entering.delay-300 { transition-delay: 300ms; }
+  .reveal-base.is-entering.delay-400 { transition-delay: 400ms; }
+  .reveal-base.is-entering.delay-500 { transition-delay: 500ms; }
+
+  /* Reduced motion: content is always visible and the observer doesn't run. */
   @media (prefers-reduced-motion: reduce) {
-    .reveal-base {
+    .reveal-base,
+    .reveal-base.is-entering {
+      opacity: 1;
       transform: none;
-    }
-    .reveal-base.is-visible,
-    .reveal-base.is-visible.reveal-slow {
-      transition: opacity 0.3s ease-out;
-    }
-    .reveal-base.delay-100, .reveal-base.delay-200, .reveal-base.delay-300,
-    .reveal-base.delay-400, .reveal-base.delay-500 {
-      transition-delay: 0ms;
+      transition: none;
+      will-change: auto;
     }
   }
 }
@@ -85,7 +128,6 @@ html {
   will-change: transform, opacity;
 }
 
-.anim-delay-200 { animation-delay: 200ms; }
 .anim-delay-600 { animation-delay: 600ms; }
 
 @media (prefers-reduced-motion: reduce) {
@@ -95,7 +137,93 @@ html {
   }
 }
 
+/* Brightness pulse for text filled with --red-shift-gradient (same effect as .red-text in desktop.css). */
+@keyframes red-shift {
+  from { filter: brightness(0.85); }
+  to { filter: brightness(1.25); }
+}
+
 @layer components {
+  /* Shared card design (Projects, Skills): near-black surface, subtle border, red border on hover. */
+  .card-surface {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    transition: border-color 150ms ease-out;
+  }
+
+  .card-surface:hover {
+    border-color: var(--accent-border);
+  }
+
+  /* Inset well for a card's image or icon. */
+  .card-well {
+    position: relative;
+    background-color: var(--bg-card-inner);
+    border: 1px solid var(--border-subtle);
+  }
+
+  /* Tech tag: tinted red pill. */
+  .card-tag {
+    display: inline-block;
+    padding: theme('spacing.1') theme('spacing.3');
+    font-family: theme('fontFamily.mono');
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: theme('letterSpacing.widest');
+    border-radius: theme('borderRadius.DEFAULT');
+    background-color: var(--accent-soft);
+    border: 1px solid var(--accent-border);
+    color: var(--accent-text);
+  }
+
+  /* Card title: body font, title case. */
+  .card-title {
+    font-family: theme('fontFamily.sans');
+    font-size: var(--card-title-size);
+    font-weight: var(--card-title-weight);
+    line-height: var(--card-title-line-height);
+    letter-spacing: -0.01em;
+    color: var(--text-title);
+  }
+
+  /* 2 lines max with the space for both always reserved, so whatever sits below stays aligned across cards. */
+  .card-title-clamp {
+    min-height: calc(2em * var(--card-title-line-height));
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    overflow: hidden;
+  }
+
+  /* Short intro under a card title: up to 3 lines, height reserved so footers stay aligned. */
+  .card-summary {
+    font-family: theme('fontFamily.sans');
+    font-size: var(--card-summary-size);
+    line-height: var(--card-summary-line-height);
+    color: var(--text-body);
+    min-height: calc(3em * var(--card-summary-line-height));
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    overflow: hidden;
+  }
+
+  .modal-title {
+    font-family: theme('fontFamily.sans');
+    font-size: var(--modal-title-size);
+    font-weight: var(--card-title-weight);
+    line-height: var(--card-title-line-height);
+    letter-spacing: -0.01em;
+    color: var(--text-title);
+  }
+
+  /*
+   * Glassmorphism — Level 2/3 de DESIGN.md ("Elevation & Depth").
+   * Superficies translúcidas con backdrop blur + borde sutil.
+   * Se usan como clase única (.glass) o combinadas con .glass-hover para interactividad.
+   */
   .glass {
     background-color: rgb(255 255 255 / 0.03);
     border: 1px solid rgb(255 255 255 / 0.08);

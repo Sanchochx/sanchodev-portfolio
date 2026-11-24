@@ -2,7 +2,7 @@
 
 Portfolio built with Astro in server mode (SSR) and deployed on Vercel. It has two faces:
 
-- **`/` — RED LODGE**: an interactive retro desktop (CRT boot animation, draggable windows, taskbar clock) with small apps: About Me notepad, MS Paint, Cinema, Videogames, the P.A.C.T.A.S.I.S terminal bot and playable DOOM, Wolfenstein 3D and 3D Pinball.
+- **`/` — RED LODGE**: an interactive retro desktop (CRT boot animation, draggable windows) with small apps: About Me notepad, MS Paint, Cinema, Videogames, the P.A.C.T.A.S.I.S terminal bot and playable DOOM, Wolfenstein 3D and 3D Pinball.
 - **`/portfolio`**: the conventional software-engineer portfolio (Hero, Skills, Projects, Contact) with a chatbot that answers as Santiago.
 
 Production: https://sanchodev-portfolio.vercel.app
@@ -83,7 +83,7 @@ src/
 │   └── api/
 │       ├── chat.ts       # Portfolio chatbot (answers as Santiago)
 │       └── pactasis.ts   # P.A.C.T.A.S.I.S terminal bot
-├── scripts/desktop/      # Client logic per window (ascii, crt, clock, doom, wolf, pinball, chaos, pactasis, paint, windows)
+├── scripts/desktop/      # Client logic per window (ascii, crt, doom, wolf, pinball, chaos, pactasis, paint, windows)
 └── styles/
     ├── global.css        # Fonts, Tailwind directives, .glass utilities
     └── desktop.css       # RED LODGE only: CRT, themes, rainbow/red text

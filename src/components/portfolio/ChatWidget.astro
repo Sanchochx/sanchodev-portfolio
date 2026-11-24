@@ -4,17 +4,19 @@ import { Icon } from 'astro-icon/components';
 const MAX_INPUT = 1000;
 ---
 
-<div id="chat-widget" class="animate-on-load anim-delay-600 fixed bottom-6 right-6 z-50 flex flex-col items-end gap-4">
+<div id="chat-widget" class="animate-on-load anim-delay-600 fixed bottom-6 right-6 z-50">
   <div
     id="chat-panel"
     role="dialog"
     aria-label="Chat with Santiago"
     aria-hidden="true"
-    class="hidden w-[min(94vw,400px)] h-[min(80vh,600px)] bg-surface-container-lowest border border-white/10 rounded-xl shadow-2xl flex-col overflow-hidden relative"
+    data-state="closed"
+    inert
+    class="absolute bottom-full right-0 mb-4 flex w-[min(94vw,400px)] h-[min(80vh,600px)] bg-[color:var(--bg-card)] border border-white/10 rounded-xl shadow-2xl flex-col overflow-hidden"
   >
     <div class="absolute inset-0 chat-scanline pointer-events-none opacity-20"></div>
 
-    <header class="p-4 border-b border-white/10 flex justify-between items-center bg-white/5 relative">
+    <header class="chat-panel-part p-4 border-b border-white/10 flex justify-between items-center relative">
       <div class="flex items-center gap-3">
         <div class="relative shrink-0">
           <div class="w-2 h-2 bg-primary-container rounded-full"></div>
@@ -43,11 +45,11 @@ const MAX_INPUT = 1000;
       id="chat-messages"
       role="log"
       aria-live="polite"
-      class="flex-1 overflow-y-auto p-5 flex flex-col gap-5 chat-scrollbar relative"
+      class="chat-panel-part flex-1 overflow-y-auto p-5 flex flex-col gap-5 chat-scrollbar relative"
     >
     </div>
 
-    <div class="p-4 bg-white/5 border-t border-white/10 relative">
+    <div class="chat-panel-part p-4 border-t border-white/10 relative">
       <div class="relative group">
         <div
           class="absolute -inset-1 bg-primary-container/10 blur-md opacity-0 group-focus-within:opacity-100 transition-opacity pointer-events-none"
@@ -81,13 +83,14 @@ const MAX_INPUT = 1000;
     aria-label="Open chat"
     aria-expanded="false"
     aria-controls="chat-panel"
-    class="w-14 h-14 bg-primary-container text-on-primary rounded-full shadow-[0_0_24px_-2px_rgba(255,0,0,0.55)] hover:shadow-[0_0_32px_0_rgba(255,0,0,0.8)] flex items-center justify-center active:scale-90 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-container focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
+    class="relative w-14 h-14 bg-primary-container text-on-primary rounded-full shadow-[0_0_24px_-2px_rgba(255,0,0,0.55)] hover:shadow-[0_0_32px_0_rgba(255,0,0,0.8)] flex items-center justify-center active:scale-90 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-container focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
   >
     <Icon
       id="chat-icon-open"
       name="material-symbols:chat-bubble"
       width={26}
       height={26}
+      class="chat-toggle-icon"
       aria-hidden="true"
     />
     <Icon
@@ -95,7 +98,7 @@ const MAX_INPUT = 1000;
       name="material-symbols:close"
       width={26}
       height={26}
-      class="hidden"
+      class="chat-toggle-icon"
       aria-hidden="true"
     />
   </button>
@@ -105,8 +108,96 @@ const MAX_INPUT = 1000;
   /* `is:global` porque las burbujas / typing / sugerencias se crean en runtime con
      document.createElement y no reciben el atributo data-astro-cid-XXX para scoping. */
 
-  #chat-panel.is-open {
-    display: flex;
+  /*
+   * Open/close: one state attribute drives CSS transitions, so interrupting either direction reverses
+   * smoothly from wherever it is. closed → open grows from the button (bottom-right origin); open →
+   * closing shrinks a little less, then JS flips to `closed` (hidden, inert) once it has finished.
+   */
+  #chat-panel {
+    transform-origin: bottom right;
+    opacity: 0;
+    transform: translateY(12px) scale(0.85);
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  #chat-panel[data-state='open'] {
+    opacity: 1;
+    transform: none;
+    visibility: visible;
+    pointer-events: auto;
+    transition:
+      opacity 260ms cubic-bezier(0.16, 1, 0.3, 1),
+      transform 260ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  #chat-panel[data-state='closing'] {
+    opacity: 0;
+    transform: translateY(8px) scale(0.9);
+    visibility: visible;
+    transition:
+      opacity 180ms ease-in,
+      transform 180ms ease-in;
+  }
+
+  /* The panel's shape lands first, then its content. */
+  #chat-panel .chat-panel-part {
+    opacity: 0;
+    transition: opacity 120ms ease-in;
+  }
+
+  #chat-panel[data-state='open'] .chat-panel-part {
+    opacity: 1;
+    transition: opacity 200ms ease-out 80ms;
+  }
+
+  /* Toggle icon crossfade: chat bubble rotates out, X rotates in. */
+  #chat-toggle .chat-toggle-icon {
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    transition:
+      opacity 200ms ease-out,
+      transform 200ms ease-out;
+  }
+
+  #chat-icon-close {
+    opacity: 0;
+    transform: rotate(-90deg);
+  }
+
+  #chat-toggle[aria-expanded='true'] #chat-icon-open {
+    opacity: 0;
+    transform: rotate(90deg);
+  }
+
+  #chat-toggle[aria-expanded='true'] #chat-icon-close {
+    opacity: 1;
+    transform: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #chat-panel,
+    #chat-panel[data-state] {
+      transform: none;
+    }
+
+    #chat-panel[data-state='open'],
+    #chat-panel[data-state='closing'] {
+      transition: opacity 100ms linear;
+    }
+
+    #chat-panel .chat-panel-part,
+    #chat-panel[data-state='open'] .chat-panel-part {
+      transition: none;
+      opacity: 1;
+    }
+
+    #chat-toggle .chat-toggle-icon,
+    #chat-toggle[aria-expanded='true'] .chat-toggle-icon {
+      transform: none;
+      transition: opacity 100ms linear;
+    }
   }
 
   .chat-scanline {
@@ -166,9 +257,9 @@ const MAX_INPUT = 1000;
   }
 
   .chat-msg.assistant .chat-msg-bubble {
-    background: rgb(255 255 255 / 0.08);
+    background: var(--bg-card-inner);
     color: #e5e2e1;
-    border: 1px solid rgb(255 255 255 / 0.06);
+    border: 1px solid var(--border-subtle);
     border-bottom-left-radius: 0.3rem;
   }
 
@@ -281,8 +372,6 @@ const MAX_INPUT = 1000;
     const toggleBtn = document.getElementById('chat-toggle') as HTMLButtonElement | null;
     const closeBtn = document.getElementById('chat-close') as HTMLButtonElement | null;
     const panel = document.getElementById('chat-panel');
-    const iconOpen = document.getElementById('chat-icon-open');
-    const iconClose = document.getElementById('chat-icon-close');
     const messagesEl = document.getElementById('chat-messages');
     const inputEl = document.getElementById('chat-input') as HTMLTextAreaElement | null;
     const sendBtn = document.getElementById('chat-send') as HTMLButtonElement | null;
@@ -415,24 +504,42 @@ const MAX_INPUT = 1000;
       }
     };
 
+    // Longest close transition (180ms) plus margin, in case transitionend never fires.
+    const CLOSE_FALLBACK_MS = 260;
+    let closeTimer: number | undefined;
+
+    const finishClose = (): void => {
+      window.clearTimeout(closeTimer);
+      if (panel.dataset.state === 'closing') panel.dataset.state = 'closed';
+    };
+
+    panel.addEventListener('transitionend', (e) => {
+      if (e.target === panel) finishClose();
+    });
+
     const setOpen = (open: boolean) => {
+      if (open === isOpen) return;
       isOpen = open;
-      panel.classList.toggle('is-open', open);
-      panel.classList.toggle('hidden', !open);
+      window.clearTimeout(closeTimer);
+      // Mounted the whole time (messages and scroll position survive); `inert` + aria-hidden while not open.
+      panel.dataset.state = open ? 'open' : 'closing';
+      panel.inert = !open;
       panel.setAttribute('aria-hidden', String(!open));
       toggleBtn.setAttribute('aria-expanded', String(open));
-      iconOpen?.classList.toggle('hidden', open);
-      iconClose?.classList.toggle('hidden', !open);
-      if (open) {
-        if (history.length === 0 && !messagesEl.hasChildNodes()) {
-          appendMessage(
-            'assistant',
-            "I am Santiago's AI assistant. Ask me anything about his background, projects, or experience. I support English and Spanish."
-          );
-          appendSuggestions();
-        }
-        inputEl.focus();
+      toggleBtn.setAttribute('aria-label', open ? 'Close chat' : 'Open chat');
+      if (!open) {
+        closeTimer = window.setTimeout(finishClose, CLOSE_FALLBACK_MS);
+        toggleBtn.focus();
+        return;
       }
+      if (history.length === 0 && !messagesEl.hasChildNodes()) {
+        appendMessage(
+          'assistant',
+          "I am Santiago's AI assistant. Ask me anything about his background, projects, or experience. I support English and Spanish."
+        );
+        appendSuggestions();
+      }
+      inputEl.focus({ preventScroll: true });
     };
 
     toggleBtn.addEventListener('click', () => setOpen(!isOpen));

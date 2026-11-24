@@ -1,5 +1,7 @@
 export type Project = {
   title: string;
+  /** One-line intro shown on the card; the full description lives in the details modal. */
+  summary: string;
   description: string;
   tech: readonly string[];
   image?: string;
@@ -11,6 +13,7 @@ export type Project = {
 export const projects: readonly Project[] = [
   {
     title: 'AutoOps: Automated Technical Support Platform with AI Agents',
+    summary: 'AI agents that triage support incidents and stream root-cause analyses in real time.',
     description:
       'Incident management platform where LangGraph AI agents triage ticket severity and generate root-cause analyses, streamed in real time. Deployed with hardened Docker containers behind Traefik (HTTPS and HSTS), idempotent Bash server provisioning, and a GitHub Actions CI/CD pipeline with rollback and smoke testing.',
     tech: [
@@ -26,7 +29,8 @@ export const projects: readonly Project[] = [
     href: 'https://github.com/Sanchochx/autoOps',
   },
     {
-    title: 'MULTI-MODEL DEBATE ARENA',
+    title: 'Multi-Model Debate Arena',
+    summary: 'Four AI models debate any topic live, with an AI judge delivering the final verdict.',
     description:
       'Full-stack application with 4 AI models (GPT-4o-mini, DeepSeek-chat, Llama 3.1, Gemini 2.0) that debate in real time on any topic. It allows you to choose models and rounds, receives a verdict from the AI judge, supports Spanish/English.',
     tech: ['NEXT.JS', 'TYPESCRIPT', 'OPENAI API', 'DEEPSEEK API', 'GROQ API', 'OPENROUTER API', 'TAILWIND CSS', 'FRAMER MOTION'],
@@ -36,7 +40,8 @@ export const projects: readonly Project[] = [
     href: 'https://github.com/Sanchochx/ai-debate-arena',
   },
   {
-    title: 'GesTrack ERP',
+    title: 'Gestrack ERP',
+    summary: 'Containerized ERP for inventory and client management with role-based access.',
     description:
       'Full-Stack application designed to efficiently manage inventory and clients, featuring a containerized architecture for standardized deployment and secure role-based access.',
     tech: [
@@ -54,7 +59,8 @@ export const projects: readonly Project[] = [
     href: 'https://github.com/Sanchochx/GesTrack',
   },
   {
-    title: 'HIDROSOLDADURAS ACH SAS - WEBSITE',
+    title: 'Hidrosoldaduras ACH SAS - Website',
+    summary: 'Industrial landing page with a dynamic product catalog and 17 technical detail pages.',
     description:
       'Professional industrial landing page for a hydraulic solutions company with a dynamic product catalog, 17 individual technical detail pages generated from a unified JSON data model, and route-based navigation.',
     tech: ['ANGULAR 17+', 'TYPESCRIPT', 'SCSS', 'AOS', 'ANGULAR ANIMATIONS', 'GIT'],

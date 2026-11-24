@@ -68,7 +68,7 @@ const revealDelays = ['delay-100', 'delay-200', 'delay-300', 'delay-400', 'delay
             class:list={[
               'reveal-base',
               revealDelays[Math.min(i, 4)],
-              'glass glass-hover rounded-lg flex transition-colors',
+              'glass bg-[color:var(--bg-card)] rounded-lg flex',
               card.span === 'large'
                 ? 'col-span-2 row-span-2 p-card-padding flex-col'
                 : 'col-span-2 p-gutter flex-row items-center gap-6',
@@ -122,7 +122,7 @@ const revealDelays = ['delay-100', 'delay-200', 'delay-300', 'delay-400', 'delay
       {
         toolingCards.map(({ icon, label }, i) => (
           <article
-            class:list={['reveal-base', revealDelays[Math.min(i, 4)], 'glass glass-hover rounded-lg p-6 flex flex-col items-center justify-center gap-3 transition-colors']}
+            class:list={['reveal-base', revealDelays[Math.min(i, 4)], 'glass bg-[color:var(--bg-card)] rounded-lg p-6 flex flex-col items-center justify-center gap-3']}
           >
             <Icon
               name={icon}
