@@ -1,10 +1,11 @@
 ---
-const links = [
-  { href: '#about', label: 'ABOUT ME' },
+// `shortLabel` is shown below md so the bar fits a 320px phone.
+const links: readonly { href: string; label: string; shortLabel?: string }[] = [
+  { href: '#about', label: 'ABOUT ME', shortLabel: 'ABOUT' },
   { href: '#skills', label: 'SKILLS' },
   { href: '#projects', label: 'PROJECTS' },
   { href: '#contact', label: 'CONTACT' },
-] as const;
+];
 ---
 
 <nav
@@ -30,19 +31,18 @@ const links = [
             href={link.href}
             class="font-sans text-[10px] md:text-xs uppercase tracking-wider md:tracking-widest font-medium transition-colors duration-200 text-on-surface/60 hover:text-primary-container"
           >
-            {link.label}
+            {link.shortLabel ? (
+              <>
+                <span class="md:hidden">{link.shortLabel}</span>
+                <span class="hidden md:inline">{link.label}</span>
+              </>
+            ) : (
+              link.label
+            )}
           </a>
         </li>
       ))
     }
-    <li class="md:hidden">
-      <a
-        href="/?desktop"
-        class="font-sans text-[10px] uppercase tracking-wider font-medium transition-colors duration-200 text-on-surface/60 hover:text-primary-container"
-      >
-        Desktop
-      </a>
-    </li>
   </ul>
 </nav>
 

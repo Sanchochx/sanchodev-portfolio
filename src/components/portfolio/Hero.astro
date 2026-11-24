@@ -16,7 +16,7 @@ const secondaryRole = 'AI, DevOps & Cloud';
       id="hacker-name"
       data-value={fullName}
       aria-label={fullName}
-      class="reveal-base reveal-slow font-display text-headline-xl text-primary-container drop-shadow-[0_0_10px_rgb(255_0_0/0.8)] uppercase mb-6"
+      class="hero-name reveal-base reveal-slow font-display text-headline-xl text-primary-container drop-shadow-[0_0_10px_rgb(255_0_0/0.8)] uppercase mb-6"
     >
       {fullName}
     </h1>
@@ -101,6 +101,11 @@ const secondaryRole = 'AI, DevOps & Cloud';
 </script>
 
 <style>
+  /* 64px on desktop, scaling down on phones so "SANTIAGO" (~4.4em wide) fits a 320px screen. */
+  .hero-name {
+    font-size: clamp(2.5rem, 12vw, 4rem);
+  }
+
   .hero-bg-glow {
     position: absolute;
     top: 50%;
