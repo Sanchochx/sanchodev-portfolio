@@ -128,11 +128,6 @@ body { overflow: hidden; } /* Evita el scroll en el escritorio */
   to { opacity: 1; transform: translateY(0); }
 }
 
-@keyframes type-after-in {
-  from { opacity: 0; transform: scale(0.9); }
-  to { opacity: 1; transform: scale(1); }
-}
-
 @keyframes welcome-close {
   from { opacity: 1; transform: scale(1); }
   to { opacity: 0; transform: scale(0.94); }
@@ -141,13 +136,9 @@ body { overflow: hidden; } /* Evita el scroll en el escritorio */
 /* No es clicable hasta terminar de aparecer */
 #welcome-cta.welcome-cta-in { pointer-events: none; }
 
-/* About Me: la foto aparece al terminar de escribirse el texto */
-.type-after-pending { opacity: 0; visibility: hidden; }
-
 @media (prefers-reduced-motion: no-preference) {
   #terminal-window.welcome-opening { animation: welcome-open 200ms ease-out both; }
   #welcome-cta.welcome-cta-in { animation: welcome-cta-in 300ms ease-out both; }
-  .type-after-in { animation: type-after-in 400ms ease-out both; }
   #terminal-window.welcome-closing { animation: welcome-close 180ms ease-in forwards; pointer-events: none; }
 }
 

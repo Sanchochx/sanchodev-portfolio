@@ -1,24 +1,13 @@
 import { registerAppWindow } from './appWindow';
 import { createTypewriter } from './typewriter';
 
-// About Me: the text and specs are typed like the welcome window (a bit faster: it is longer),
-// then the photo appears last.
+// About Me: the text and specs are typed like the welcome window (a bit faster: it is longer).
 // Only on the first open of each visit, and never under reduced motion (onOpening doesn't run then).
 const NOTEPAD_TYPE_MS = 18;
 const notepad = document.getElementById('notepad-window');
 const notepadTyper = createTypewriter(notepad ? Array.from(notepad.querySelectorAll<HTMLElement>('[data-type]')) : [], NOTEPAD_TYPE_MS);
-const notepadAfter = notepad ? Array.from(notepad.querySelectorAll<HTMLElement>('[data-type-after]')) : [];
 let notepadTypedOnce = false;
 let notepadTyping = false;
-
-function revealNotepadAfter(animate: boolean): void {
-  notepadAfter.forEach((el) => {
-    el.classList.remove('type-after-pending');
-    if (!animate) return el.classList.remove('type-after-in');
-    el.classList.add('type-after-in');
-    el.addEventListener('animationend', () => el.classList.remove('type-after-in'), { once: true });
-  });
-}
 
 registerAppWindow('notepad', {
   onOpening: () => {
@@ -26,20 +15,17 @@ registerAppWindow('notepad', {
     notepadTypedOnce = true;
     notepadTyping = true;
     notepadTyper.prepare();
-    notepadAfter.forEach((el) => el.classList.add('type-after-pending'));
   },
   onOpened: () => {
     if (!notepadTyping) return;
     notepadTyper.run(() => {
       notepadTyping = false;
-      revealNotepadAfter(true);
     });
   },
   onClosing: () => {
     if (!notepadTyping) return;
     notepadTyping = false;
     notepadTyper.finish();
-    revealNotepadAfter(false);
   },
 });
 

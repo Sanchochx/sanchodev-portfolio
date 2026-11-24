@@ -34,14 +34,23 @@ let spinning = false;
 let revealTimer: number | undefined;
 let fadeTimer: number | undefined;
 
+const MIN_FONT_PX = 6;
+// High enough that small arts grow to fill the stage instead of stopping at a fixed size
+const MAX_FONT_PX = 22;
+// Monospace glyph width relative to the font size (slightly generous so nothing clips)
+const CHAR_WIDTH = 0.62;
+// With the 1000px perspective, the spinning art projects up to ~2.6% wider than when flat
+const SPIN_WIDTH_SLACK = 0.97;
+const HEIGHT_MARGIN_PX = 4;
+
 // Sizes the font so each art fills the stage without clipping (line-height is 1, see the <pre>)
 function fit(text: string): void {
   if (!pre || !stage || !stage.clientWidth) return;
   const lines = text.split('\n');
   const cols = Math.max(...lines.map((l) => l.length));
-  const byWidth = (stage.clientWidth - 8) / (cols * 0.62);
-  const byHeight = (stage.clientHeight - 8) / lines.length;
-  pre.style.fontSize = `${Math.max(6, Math.min(14, byWidth, byHeight))}px`;
+  const byWidth = (stage.clientWidth * SPIN_WIDTH_SLACK) / (cols * CHAR_WIDTH);
+  const byHeight = (stage.clientHeight - HEIGHT_MARGIN_PX) / lines.length;
+  pre.style.fontSize = `${Math.max(MIN_FONT_PX, Math.min(MAX_FONT_PX, byWidth, byHeight))}px`;
 }
 
 function applyArt(art: AsciiArt): void {
