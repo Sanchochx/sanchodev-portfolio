@@ -1,17 +1,15 @@
 import { prepareAsciiReveal, refitAscii, revealAscii, showStaticAscii, startAsciiLoop, stopAsciiLoop } from './ascii';
+import { createTypewriter } from './typewriter';
 
 // Welcome window (#terminal-window) sequence: pop-up → typed text → button → ASCII reveal → ASCII loop.
 // The pre-paint script in TerminalWindow.astro adds .welcome-pending only when motion is allowed.
 const win = document.getElementById('terminal-window');
 const cta = document.getElementById('welcome-cta');
-const typed = win ? Array.from(win.querySelectorAll<HTMLElement>('[data-type]')) : [];
-const fullText = new Map(typed.map((el) => [el, el.textContent?.trim() ?? '']));
+const typewriter = createTypewriter(win ? Array.from(win.querySelectorAll<HTMLElement>('[data-type]')) : []);
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 const POPUP_DELAY_MS = 400;
 const POPUP_MS = 200;
-const TYPE_MS = 30;
-const CURSOR_BLINK_MS = 500;
 const CTA_MS = 300;
 const CLOSE_MS = 180;
 // Safety net in case the CRT never announces the reveal
@@ -27,48 +25,15 @@ function later(fn: () => void, ms: number): void {
   timers.add(id);
 }
 
-let cursorTimer: number | undefined;
 let closeTimer: number | undefined;
-
-const cursor = document.createElement('span');
-cursor.setAttribute('aria-hidden', 'true');
-cursor.textContent = '█';
 
 /** Cancels the sequence and leaves the window in its final, static state. */
 function finishSequence(): void {
   timers.forEach((id) => window.clearTimeout(id));
   timers.clear();
-  window.clearInterval(cursorTimer);
-  cursor.remove();
-  typed.forEach((el) => {
-    el.textContent = fullText.get(el) ?? '';
-    el.style.minHeight = '';
-  });
+  typewriter.finish();
   cta?.classList.remove('welcome-cta-pending', 'welcome-cta-in');
   win?.classList.remove('welcome-pending', 'welcome-opening');
-}
-
-function typeLine(i: number, onDone: () => void): void {
-  const el = typed[i];
-  if (!el) return onDone();
-  const text = fullText.get(el) ?? '';
-  // Screen readers get the whole line at once; the typed copy is decorative
-  const sr = document.createElement('span');
-  sr.className = 'sr-only';
-  sr.textContent = text;
-  const out = document.createElement('span');
-  out.setAttribute('aria-hidden', 'true');
-  el.replaceChildren(sr, out, cursor);
-
-  let n = 0;
-  const tick = (): void => {
-    n += 1;
-    out.textContent = text.slice(0, n);
-    if (n < text.length) return later(tick, TYPE_MS);
-    el.textContent = text;
-    typeLine(i + 1, onDone);
-  };
-  later(tick, TYPE_MS);
 }
 
 function showCta(onDone: () => void): void {
@@ -86,24 +51,12 @@ function runSequence(): void {
   win.classList.add('welcome-opening');
   later(() => {
     win.classList.remove('welcome-opening');
-    cursorTimer = window.setInterval(() => {
-      // Toggled as text (not opacity) so it also blinks inside the gradient-clipped subtitle
-      cursor.textContent = cursor.textContent === '█' ? ' ' : '█';
-    }, CURSOR_BLINK_MS);
-    typeLine(0, () => {
-      window.clearInterval(cursorTimer);
-      cursor.remove();
-      showCta(() => revealAscii(startAsciiLoop));
-    });
+    typewriter.run(() => showCta(() => revealAscii(startAsciiLoop)));
   }, POPUP_MS);
 }
 
 if (win?.classList.contains('welcome-pending')) {
-  // Measured while invisible but laid out: reserving the final height keeps typing from shifting the layout
-  typed.forEach((el) => {
-    el.style.minHeight = `${el.offsetHeight}px`;
-    el.textContent = '';
-  });
+  typewriter.prepare();
   cta?.classList.add('welcome-cta-pending');
   prepareAsciiReveal();
 

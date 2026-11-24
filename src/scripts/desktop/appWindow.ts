@@ -3,6 +3,8 @@
 // Not used by the welcome window (#terminal-window), which has its own sequence in welcome.ts.
 
 export interface AppWindowHooks {
+  /** Runs when the window becomes laid out but before it animates in (not under reduced motion). */
+  onOpening?: () => void;
   /** Runs once the open animation has finished: start heavy content here. */
   onOpened?: () => void;
   /** Runs as soon as closing starts: stop heavy content here. */
@@ -110,6 +112,7 @@ export function registerAppWindow(name: string, hooks: AppWindowHooks = {}): App
     // Reopening mid-close keeps the current origin and simply transitions back from where it is
     if (!wasClosing) {
       win.classList.remove('hidden', 'app-win-closing');
+      hooks.onOpening?.();
       // Measured before collapsing: a scaled window would report a scaled rect
       const fromIcon = aimAtIcon();
       if (!fromIcon) win.style.transformOrigin = '';
