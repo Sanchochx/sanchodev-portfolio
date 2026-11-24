@@ -13,7 +13,7 @@ body { overflow: hidden; } /* Evita el scroll en el escritorio */
   color: transparent !important;
 }
 .rainbow-text {
-  background-image: linear-gradient(90deg, #ff0040, #ff8000, #ffe600, #00e060, #00c8ff, #8000ff, #ff0040);
+  background-image: linear-gradient(90deg, #ff4d6d, #ffa040, #fff04d, #4dff8f, #4dd8ff, #b57aff, #ff4d6d);
   -webkit-background-clip: text;
   background-clip: text;
 }
@@ -35,13 +35,13 @@ body { overflow: hidden; } /* Evita el scroll en el escritorio */
 }
 
 /* Colores por tema de ASCII (data-theme en #terminal-window) */
-#terminal-window[data-theme="pink"] { --theme-color: #f472b6; --theme-glow: rgba(244, 114, 182, 0.6); }
-#terminal-window[data-theme="white"] { --theme-color: #f8fafc; --theme-glow: rgba(248, 250, 252, 0.6); }
-#terminal-window[data-theme="purple"] { --theme-color: #c084fc; --theme-glow: rgba(192, 132, 252, 0.6); }
-#terminal-window[data-theme="blue"] { --theme-color: #60a5fa; --theme-glow: rgba(96, 165, 250, 0.6); }
-#terminal-window[data-theme="orange"] { --theme-color: #fb923c; --theme-glow: rgba(251, 146, 60, 0.6); }
-#terminal-window[data-theme="green"] { --theme-color: #4ade80; --theme-glow: rgba(74, 222, 128, 0.6); }
-#terminal-window[data-theme="red"] { --theme-color: #f87171; --theme-glow: rgba(248, 113, 113, 0.6); }
+#terminal-window[data-theme="pink"] { --theme-color: #ff8fd0; --theme-glow: rgba(255, 143, 208, 0.75); }
+#terminal-window[data-theme="white"] { --theme-color: #ffffff; --theme-glow: rgba(255, 255, 255, 0.7); }
+#terminal-window[data-theme="purple"] { --theme-color: #d9a6ff; --theme-glow: rgba(217, 166, 255, 0.75); }
+#terminal-window[data-theme="blue"] { --theme-color: #7cc4ff; --theme-glow: rgba(124, 196, 255, 0.75); }
+#terminal-window[data-theme="orange"] { --theme-color: #ffad5c; --theme-glow: rgba(255, 173, 92, 0.75); }
+#terminal-window[data-theme="green"] { --theme-color: #5cff9d; --theme-glow: rgba(92, 255, 157, 0.75); }
+#terminal-window[data-theme="red"] { --theme-color: #ff7a7a; --theme-glow: rgba(255, 122, 122, 0.75); }
 
 .theme-text {
   color: var(--theme-color);
@@ -60,7 +60,7 @@ body { overflow: hidden; } /* Evita el scroll en el escritorio */
 #terminal-window:not([data-theme])::before {
   inset: -1px;
   border: 1px solid;
-  border-image: linear-gradient(90deg, #ff0040, #ff8000, #ffe600, #00e060, #00c8ff, #8000ff, #ff0040) 1;
+  border-image: linear-gradient(90deg, #ff4d6d, #ffa040, #fff04d, #4dff8f, #4dd8ff, #b57aff, #ff4d6d) 1;
 }
 #terminal-titlebar { position: relative; }
 #terminal-window:not([data-theme]) #terminal-titlebar::after {
@@ -68,7 +68,7 @@ body { overflow: hidden; } /* Evita el scroll en el escritorio */
   right: 0;
   bottom: -1px;
   height: 1px;
-  background-image: linear-gradient(90deg, #ff0040, #ff8000, #ffe600, #00e060, #00c8ff, #8000ff, #ff0040);
+  background-image: linear-gradient(90deg, #ff4d6d, #ffa040, #fff04d, #4dff8f, #4dd8ff, #b57aff, #ff4d6d);
 }
 
 /* Marco y textos de la terminal con el color del tema activo */
@@ -86,6 +86,89 @@ body { overflow: hidden; } /* Evita el scroll en el escritorio */
 #terminal-window[data-theme] .rainbow-text,
 #terminal-window[data-theme] .rainbow-text * {
   color: var(--theme-color) !important;
+}
+
+/* Acentos de la ventana de bienvenida (botón y separador): siguen el color del ASCII activo */
+#terminal-window .welcome-accent { background-color: var(--theme-color); }
+#terminal-window:not([data-theme]) .welcome-accent {
+  background-image: linear-gradient(90deg, #ff4d6d, #ffa040, #fff04d, #4dff8f, #4dd8ff, #b57aff, #ff4d6d);
+}
+
+/* Botón de la bienvenida: translúcido con el color del ASCII activo (arcoíris con el primer arte) */
+#terminal-window .welcome-btn {
+  border: 1px solid var(--theme-color);
+  background-color: color-mix(in srgb, var(--theme-color) 12%, transparent);
+  box-shadow: 0 0 8px var(--theme-glow);
+}
+#terminal-window .welcome-btn:hover,
+#terminal-window .welcome-btn:focus-visible {
+  background-color: color-mix(in srgb, var(--theme-color) 25%, transparent);
+}
+#terminal-window:not([data-theme]) .welcome-btn {
+  border-image: linear-gradient(90deg, #ff4d6d, #ffa040, #fff04d, #4dff8f, #4dd8ff, #b57aff, #ff4d6d) 1;
+  background-color: rgba(255, 255, 255, 0.06);
+  box-shadow: none;
+}
+#terminal-window:not([data-theme]) .welcome-btn:hover,
+#terminal-window:not([data-theme]) .welcome-btn:focus-visible {
+  background-color: rgba(255, 255, 255, 0.14);
+}
+
+/* Ventana de bienvenida: pop-up, botón y cierre (solo transform/opacity) */
+#terminal-window.welcome-pending,
+#welcome-cta.welcome-cta-pending { opacity: 0; visibility: hidden; }
+
+@keyframes welcome-open {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes welcome-cta-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes welcome-close {
+  from { opacity: 1; transform: scale(1); }
+  to { opacity: 0; transform: scale(0.94); }
+}
+
+/* No es clicable hasta terminar de aparecer */
+#welcome-cta.welcome-cta-in { pointer-events: none; }
+
+@media (prefers-reduced-motion: no-preference) {
+  #terminal-window.welcome-opening { animation: welcome-open 200ms ease-out both; }
+  #welcome-cta.welcome-cta-in { animation: welcome-cta-in 300ms ease-out both; }
+  #terminal-window.welcome-closing { animation: welcome-close 180ms ease-in forwards; pointer-events: none; }
+}
+
+/* Ventanas abiertas desde un icono (appWindow.ts). Independiente de la ventana de bienvenida.
+   Se usan transiciones para que abrir/cerrar a mitad de camino invierta desde el estado actual. */
+.app-win-collapsed {
+  opacity: 0;
+  transform: scale(var(--app-win-from, 0.2));
+  pointer-events: none;
+}
+
+@keyframes app-icon-press {
+  0% { transform: scale(1); filter: brightness(1); }
+  50% { transform: scale(0.92); filter: brightness(1.25); }
+  100% { transform: scale(1); filter: brightness(1); }
+}
+
+@keyframes app-win-focus {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.012); }
+  100% { transform: scale(1); }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .app-win-opening {
+    transition: transform var(--app-win-open-ms, 250ms) ease-out, opacity var(--app-win-open-ms, 250ms) ease-out;
+  }
+  .app-win-closing { transition: transform 200ms ease-in, opacity 200ms ease-in; }
+  .app-icon-press { animation: app-icon-press 120ms ease-out; }
+  .app-win-focus { animation: app-win-focus 160ms ease-out; }
 }
 
 /* Rayo catódico del encendido CRT */
@@ -111,7 +194,9 @@ body { overflow: hidden; } /* Evita el scroll en el escritorio */
 @media (prefers-reduced-motion: no-preference) {
   .rainbow-text,
   #terminal-window:not([data-theme])::before,
-  #terminal-window:not([data-theme]) #terminal-titlebar::after { animation: rainbow-hue 0.6s linear infinite; }
+  #terminal-window:not([data-theme]) #terminal-titlebar::after,
+  #terminal-window:not([data-theme]) .welcome-accent,
+  #terminal-window:not([data-theme]) .welcome-btn { animation: rainbow-hue 0.6s linear infinite; }
   .red-text { animation: red-glow 1.5s ease-in-out infinite alternate; }
   .red-text.red-text-fast { animation-duration: 0.5s; }
   .animate-spin-y { animation: spin-y 3s linear infinite; transform-style: preserve-3d; }

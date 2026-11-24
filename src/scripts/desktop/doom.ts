@@ -1,4 +1,5 @@
 import type { DosCommandInterface, DosFactory } from './dosTypes';
+import { registerAppWindow } from './appWindow';
 
 let dosInstance: DosCommandInterface | null = null;
 let booting = false;
@@ -12,12 +13,11 @@ if (titleEl) {
   }).observe(titleEl, { childList: true, characterData: true, subtree: true });
 }
 
-function openDoom(): void {
-  const win = document.getElementById('doom-window');
+// Boots only after the open animation so the emulator doesn't stutter it
+function bootDoom(): void {
   const canvas = document.getElementById('jsdos') as HTMLCanvasElement | null;
   const Dos = (window as unknown as { Dos?: DosFactory }).Dos;
-  if (!win || !canvas) return;
-  win.classList.remove('hidden');
+  if (!canvas) return;
 
   if (dosInstance || booting || !Dos) return;
   booting = true;
@@ -26,7 +26,7 @@ function openDoom(): void {
       .then(() => main(['-c', 'cd DOOM', '-c', 'DOOM.EXE']))
       .then((ci) => {
         // La ventana pudo cerrarse mientras cargaba
-        if (win.classList.contains('hidden')) void ci.exit();
+        if (!doomWindow.isOpen()) void ci.exit();
         else dosInstance = ci;
       })
       .catch((err) => console.error('DOOM failed to start', err))
@@ -34,8 +34,7 @@ function openDoom(): void {
   });
 }
 
-function closeDoom(): void {
-  document.getElementById('doom-window')?.classList.add('hidden');
+function stopDoom(): void {
   const container = document.getElementById('dos-container');
   if (!dosInstance || !container) return;
   void dosInstance.exit();
@@ -43,8 +42,5 @@ function closeDoom(): void {
   container.innerHTML = '<canvas id="jsdos" class="!w-full !h-full block object-contain"></canvas>';
 }
 
-const icon = document.getElementById('doom-icon');
-icon?.addEventListener('dblclick', openDoom);
-icon?.addEventListener('keydown', (e) => { if (e.key === 'Enter') openDoom(); });
-document.getElementById('doom-close')?.addEventListener('click', closeDoom);
+const doomWindow = registerAppWindow('doom', { onOpened: bootDoom, onClosing: stopDoom });
 export {};

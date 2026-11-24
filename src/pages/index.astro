@@ -20,17 +20,27 @@ import { desktopIcons } from '../data/desktopApps';
 Astro.response.headers.set('Cache-Control', 'public, s-maxage=3600, stale-while-revalidate=86400');
 ---
 
-<BaseLayout title="SanchoDev | Software Engineer" description="Portafolio de Santiago Sánchez Márquez">
+<BaseLayout title="SanchoDev | Software Engineer" description="Portfolio of Santiago Sánchez Márquez, Software Engineer — AI, DevOps & Cloud">
+  <script is:inline>
+    // The desktop is unusable on small screens: send phones to /portfolio unless they asked for the desktop (/?desktop)
+    (function () {
+      try {
+        if (new URLSearchParams(location.search).has('desktop')) sessionStorage.setItem('force-desktop', '1');
+        if (sessionStorage.getItem('force-desktop')) return;
+      } catch (e) {}
+      if (window.matchMedia('(max-width: 767px)').matches) location.replace('/portfolio');
+    })();
+  </script>
   <script is:inline async src="https://js-dos.com/6.22/current/js-dos.js"></script>
 
   <main class="h-screen w-full relative z-10 flex flex-col">
     <CrtOverlay />
 
     <!-- Área del escritorio -->
-    <div class="flex-1 relative w-full h-full p-4 flex flex-col flex-wrap content-start gap-2">
+    <div class="flex-1 relative w-full h-full p-4 flex flex-col flex-wrap content-start gap-x-3 gap-y-2">
       {desktopIcons.map((entry) =>
         Array.isArray(entry) ? (
-          <div class="flex flex-row items-start gap-2">
+          <div class="flex flex-row items-start gap-3">
             {entry.map((icon) => <DesktopIcon {...icon} />)}
           </div>
         ) : (
@@ -60,6 +70,7 @@ Astro.response.headers.set('Cache-Control', 'public, s-maxage=3600, stale-while-
     import '../scripts/desktop/pinball';
     import '../scripts/desktop/wolf';
     import '../scripts/desktop/windows';
+    import '../scripts/desktop/welcome';
     import '../scripts/desktop/chaos';
     import '../scripts/desktop/pactasis';
     import '../scripts/desktop/paint';

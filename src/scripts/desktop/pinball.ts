@@ -1,8 +1,9 @@
-function openPinball(): void {
-  const win = document.getElementById('pinball-window');
+import { registerAppWindow } from './appWindow';
+
+// The iframe is injected only after the open animation so loading it doesn't stutter the animation
+function startPinball(): void {
   const container = document.getElementById('pinball-container');
-  if (!win || !container) return;
-  win.classList.remove('hidden');
+  if (!container) return;
 
   const existing = container.querySelector('iframe');
   if (existing) { existing.focus(); return; }
@@ -19,16 +20,12 @@ function openPinball(): void {
   frame.focus();
 }
 
-function closePinball(): void {
-  document.getElementById('pinball-window')?.classList.add('hidden');
+function stopPinball(): void {
   // Quitar el iframe apaga el audio y libera memoria
   document.getElementById('pinball-container')?.replaceChildren();
 }
 
-const pinballIcon = document.getElementById('pinball-icon');
-pinballIcon?.addEventListener('dblclick', openPinball);
-pinballIcon?.addEventListener('keydown', (e) => { if (e.key === 'Enter') openPinball(); });
-document.getElementById('pinball-close')?.addEventListener('click', closePinball);
+registerAppWindow('pinball', { onOpened: startPinball, onClosing: stopPinball });
 // Clicks on the title bar or edges would otherwise leave focus outside the game
 document.getElementById('pinball-window')?.addEventListener('click', (e) => {
   if ((e.target as HTMLElement).closest('#pinball-close')) return;

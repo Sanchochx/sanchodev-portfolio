@@ -11,7 +11,7 @@ const links = [
   aria-label="Navegación principal"
   class="reveal-base reveal-slow glass-nav fixed top-6 inset-x-0 mx-auto w-[94%] md:w-[90%] max-w-container-max flex justify-between items-center px-4 md:px-8 py-4 z-50 shadow-[0_0_20px_rgba(0,0,0,0.5)] rounded-none"
 >
-  <a href="/" aria-label="Ir a Red Lodge, la página principal">
+  <a href="/?desktop" aria-label="Go to the RED LODGE desktop">
     <img
       src="/images/brand/sanchodev_logo.png"
       alt="Sancho Dev logo"
@@ -34,6 +34,14 @@ const links = [
         </li>
       ))
     }
+    <li class="md:hidden">
+      <a
+        href="/?desktop"
+        class="font-sans text-[10px] uppercase tracking-wider font-medium transition-colors duration-200 text-on-surface/60 hover:text-primary-container"
+      >
+        Desktop
+      </a>
+    </li>
   </ul>
 </nav>
 

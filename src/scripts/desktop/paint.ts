@@ -1,4 +1,5 @@
 import { makeDraggable } from './windows';
+import { registerAppWindow } from './appWindow';
 
 makeDraggable(document.getElementById('paint-window'), document.getElementById('paint-titlebar'));
 
@@ -154,20 +155,15 @@ function initPaintCanvas(): void {
   paintCanvas.addEventListener('pointercancel', stopDrawing);
 }
 
-function openPaint(): void {
-  document.getElementById('paint-window')?.classList.remove('hidden');
+// The canvas is created after the open animation, when the window has its final size
+function startPaint(): void {
   if (!paintCanvas) {
     initPaintCanvas();
     updatePaintToolUI();
   }
 }
 
-const paintIcon = document.getElementById('paint-icon');
-paintIcon?.addEventListener('dblclick', openPaint);
-paintIcon?.addEventListener('keydown', (e) => { if (e.key === 'Enter') openPaint(); });
-document.getElementById('paint-close')?.addEventListener('click', () => {
-  document.getElementById('paint-window')?.classList.add('hidden');
-});
+registerAppWindow('paint', { onOpened: startPaint });
 document.getElementById('paint-clear')?.addEventListener('click', clearPaint);
 
 const fileBtn = document.getElementById('paint-file-btn');

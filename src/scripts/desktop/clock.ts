@@ -9,7 +9,7 @@ function updateClock(): void {
     const hours12 = hours % 12 || 12;
     const minutesStr = minutes < 10 ? '0' + minutes : String(minutes);
 
-    const date = now.toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' });
+    const date = now.toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' });
 
     timeElement.textContent = hours12 + ':' + minutesStr + ' ' + ampm;
     dateElement.textContent = date;

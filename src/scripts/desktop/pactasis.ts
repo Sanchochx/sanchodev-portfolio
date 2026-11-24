@@ -1,4 +1,5 @@
 import { makeDraggable } from './windows';
+import { registerAppWindow } from './appWindow';
 
 makeDraggable(document.getElementById('pactasis-window'), document.getElementById('pactasis-titlebar'));
 const pactasisInput = document.getElementById('pactasis-input') as HTMLInputElement | null;
@@ -6,16 +7,7 @@ const pactasisLog = document.getElementById('pactasis-chat-log');
 const pactasisHistory: Array<{ role: 'user' | 'assistant'; content: string }> = [];
 let pactasisBusy = false;
 
-function openPactasis(): void {
-  document.getElementById('pactasis-window')?.classList.remove('hidden');
-  pactasisInput?.focus();
-}
-const pactasisIcon = document.getElementById('pactasis-icon');
-pactasisIcon?.addEventListener('dblclick', openPactasis);
-pactasisIcon?.addEventListener('keydown', (e) => { if (e.key === 'Enter') openPactasis(); });
-document.getElementById('pactasis-close')?.addEventListener('click', () => {
-  document.getElementById('pactasis-window')?.classList.add('hidden');
-});
+registerAppWindow('pactasis', { onOpened: () => pactasisInput?.focus() });
 
 function pactasisPrint(kind: 'user' | 'sys', tag: string, text: string): void {
   if (!pactasisLog) return;

@@ -1,15 +1,15 @@
 import type { DosCommandInterface, DosFactory } from './dosTypes';
+import { registerAppWindow } from './appWindow';
 
 const WOLF_BUNDLE_URL = '/games/wolf3d.zip';
 let wolfInstance: DosCommandInterface | null = null;
 let wolfBooting = false;
 
-function openWolf(): void {
-  const win = document.getElementById('wolf-window');
+// Boots only after the open animation so the emulator doesn't stutter it
+function bootWolf(): void {
   const canvas = document.getElementById('jsdos-wolf') as HTMLCanvasElement | null;
   const Dos = (window as unknown as { Dos?: DosFactory }).Dos;
-  if (!win || !canvas) return;
-  win.classList.remove('hidden');
+  if (!canvas) return;
 
   if (wolfInstance || wolfBooting || !Dos) return;
   wolfBooting = true;
@@ -18,7 +18,7 @@ function openWolf(): void {
       .then(() => main(['-c', 'WOLF3D.EXE']))
       .then((ci) => {
         // La ventana pudo cerrarse mientras cargaba
-        if (win.classList.contains('hidden')) void ci.exit();
+        if (!wolfWindow.isOpen()) void ci.exit();
         else wolfInstance = ci;
       })
       .catch((err) => console.error('Wolfenstein 3D failed to start', err))
@@ -26,8 +26,7 @@ function openWolf(): void {
   });
 }
 
-function closeWolf(): void {
-  document.getElementById('wolf-window')?.classList.add('hidden');
+function stopWolf(): void {
   const container = document.getElementById('wolf-container');
   if (!wolfInstance || !container) return;
   void wolfInstance.exit();
@@ -35,9 +34,6 @@ function closeWolf(): void {
   container.innerHTML = '<canvas id="jsdos-wolf" class="!w-full !h-full block object-contain"></canvas>';
 }
 
-const wolfIcon = document.getElementById('wolf-icon');
-wolfIcon?.addEventListener('dblclick', openWolf);
-wolfIcon?.addEventListener('keydown', (e) => { if (e.key === 'Enter') openWolf(); });
-document.getElementById('wolf-close')?.addEventListener('click', closeWolf);
+const wolfWindow = registerAppWindow('wolf', { onOpened: bootWolf, onClosing: stopWolf });
 
 export {};
