@@ -29,7 +29,7 @@ src/
     portfolio/  ← /portfolio: Nav, Hero, SkillsBento, Projects, Contact, ChatWidget, CyberGrid
     desktop/    ← RED LODGE: DesktopIcon, DesktopWindow (shared window shell), CrtOverlay,
                   TerminalWindow (ASCII), Taskbar
-      apps/     ← one component per window: Notepad, Paint, Pactasis, Doom, Wolf, Pinball, Chaos,
+      apps/     ← one component per window: Notepad, Paint, Pactasis, Doom, Wolf, Pinball,
                   LetterboxdApp (Cinema), GamesApp (Videogames shelf)
   data/         ← projects.ts (Projects section), me.ts (chatbot context),
                   desktopApps.ts (desktop icon list and rows), asciiArts.ts (terminal arts)
@@ -37,16 +37,16 @@ src/
   lib/          ← chat-guard.ts (validation, rate limit, OpenAI call for both bots)
   pages/        ← index.astro (composes the desktop), portfolio.astro, 404.astro,
                   api/chat.ts, api/pactasis.ts
-  scripts/desktop/ ← client logic per window (ascii, crt, doom, wolf, pinball, chaos,
+  scripts/desktop/ ← client logic per window (ascii, crt, doom, wolf, pinball,
                   pactasis, paint, windows = drag + simple open/close), imported from index.astro
   styles/       ← global.css, desktop.css (RED LODGE only)
-public/         ← images/{brand,icons,404,projects,videogame_covers}/, games/ (wolf3d.zip, chaos_faction_2.swf)
+public/         ← images/{brand,icons,404,projects,videogame_covers}/, games/ (wolf3d.zip)
 ```
 
 ## RED LODGE desktop (`src/pages/index.astro`)
 - `index.astro` only composes components. Window ids follow `<name>-window`, `<name>-titlebar`, `<name>-close` (built by `DesktopWindow`) and the scripts in `scripts/desktop/` look elements up by id, so keep them in sync.
 - Hides Nav/ChatWidget via `desktop.css`; CRT power-on animation; draggable windows; ASCII terminal that rotates arts and sets a color theme (`data-theme`).
-- Icons (list in `src/data/desktopApps.ts`): My Portfolio (→ `/portfolio`), P.A.C.T.A.S.I.S, About Me (notepad), MS Paint, Cinema, ASCII (reopens the terminal), Videogames, DOOM, 3D Pinball (iframe injected on open, removed on close), Wolfenstein 3D, Chaos Faction 2 (Ruffle loaded on first open).
+- Icons (list in `src/data/desktopApps.ts`): My Portfolio (→ `/portfolio`), P.A.C.T.A.S.I.S, About Me (notepad), MS Paint, Cinema, ASCII (reopens the terminal), Videogames, DOOM, 3D Pinball (iframe injected on open, removed on close), Wolfenstein 3D.
 - Response is cached at the edge (`s-maxage=3600`) because Cinema queries Letterboxd/TMDB at render time.
 - Videogames: add `{ id }` to `localGames` in `components/desktop/apps/GamesApp.astro` plus `<id>.*` and `<id>-spine.*` in `public/images/videogame_covers/`.
 

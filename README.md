@@ -65,7 +65,7 @@ src/
 ├── components/
 │   ├── portfolio/        # /portfolio: Nav, Hero, SkillsBento, Projects, Contact, ChatWidget, CyberGrid
 │   └── desktop/          # RED LODGE: DesktopIcon, DesktopWindow, CrtOverlay, TerminalWindow, Taskbar
-│       └── apps/         # One component per window (Notepad, Paint, Pactasis, Doom, Wolf, Pinball, Chaos)
+│       └── apps/         # One component per window (Notepad, Paint, Pactasis, Doom, Wolf, Pinball)
 │                         # + LetterboxdApp (Cinema: TMDB + Letterboxd RSS) and GamesApp (Videogames shelf)
 ├── data/
 │   ├── projects.ts       # Projects shown in the Projects section
@@ -83,13 +83,13 @@ src/
 │   └── api/
 │       ├── chat.ts       # Portfolio chatbot (answers as Santiago)
 │       └── pactasis.ts   # P.A.C.T.A.S.I.S terminal bot
-├── scripts/desktop/      # Client logic per window (ascii, crt, doom, wolf, pinball, chaos, pactasis, paint, windows)
+├── scripts/desktop/      # Client logic per window (ascii, crt, doom, wolf, pinball, pactasis, paint, windows)
 └── styles/
     ├── global.css        # Fonts, Tailwind directives, .glass utilities
     └── desktop.css       # RED LODGE only: CRT, themes, rainbow/red text
 public/
 ├── images/               # brand/, icons/ (desktop + contact), 404/, projects/, videogame_covers/
-└── games/                # wolf3d.zip (js-dos bundle), chaos_faction_2.swf (Ruffle)
+└── games/                # wolf3d.zip (js-dos bundle)
 ```
 
 ## RED LODGE desktop (`/`)

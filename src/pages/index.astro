@@ -5,7 +5,6 @@ import CrtOverlay from '../components/desktop/CrtOverlay.astro';
 import DesktopIcon from '../components/desktop/DesktopIcon.astro';
 import TerminalWindow from '../components/desktop/TerminalWindow.astro';
 import Taskbar from '../components/desktop/Taskbar.astro';
-import ChaosApp from '../components/desktop/apps/ChaosApp.astro';
 import DoomApp from '../components/desktop/apps/DoomApp.astro';
 import PinballApp from '../components/desktop/apps/PinballApp.astro';
 import WolfApp from '../components/desktop/apps/WolfApp.astro';
@@ -49,7 +48,6 @@ Astro.response.headers.set('Cache-Control', 'public, s-maxage=3600, stale-while-
       )}
     </div>
 
-    <ChaosApp />
     <DoomApp />
     <PinballApp />
     <WolfApp />
@@ -70,7 +68,6 @@ Astro.response.headers.set('Cache-Control', 'public, s-maxage=3600, stale-while-
     import '../scripts/desktop/wolf';
     import '../scripts/desktop/windows';
     import '../scripts/desktop/welcome';
-    import '../scripts/desktop/chaos';
     import '../scripts/desktop/pactasis';
     import '../scripts/desktop/paint';
   </script>

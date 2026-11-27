@@ -20,5 +20,4 @@ export const desktopIcons: Array<DesktopIconData | DesktopIconData[]> = [
   { id: 'pinball-icon', label: '3D Pinball', icon: '/images/icons/pinball_icon.png', alt: '3D Pinball' },
   { id: 'doom-icon', label: 'DOOM', icon: '/images/icons/doom_icon.png', alt: 'DOOM' },
   { id: 'wolf-icon', label: 'Wolfenstein 3D', icon: '/images/icons/wolf_icon.png', alt: 'Wolfenstein 3D' },
-  { id: 'chaos-icon', label: 'Chaos Faction 2', icon: '/images/icons/chaos_faction_icon.png', alt: 'Chaos Faction 2' },
 ];
